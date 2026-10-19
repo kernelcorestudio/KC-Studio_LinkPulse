@@ -1,4 +1,5 @@
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
@@ -25,12 +26,12 @@ export default {
           orange: '#F88F22',
           amber: '#FBB931',
           cream: '#FFE3B3',
-          dark: '#100800',
-          deepDark: '#0a0400',
-          card: '#180c00',
-          panel: '#1c1000',
-          border: '#2a1800',
-          borderLight: '#3d2200',
+          dark: '#000000',
+          deepDark: '#000000',
+          card: '#080808',
+          panel: '#0e0e0e',
+          border: '#1f1f1f',
+          borderLight: '#2a2a2a',
         },
         neon: {
           green: '#10b981',
@@ -41,10 +42,10 @@ export default {
           purple: '#EA6113',
         },
         cyber: {
-          dark: '#100800',
-          surface: '#150900',
-          panel: '#1c1000',
-          border: 'rgba(248, 143, 34, 0.15)',
+          dark: '#000000',
+          surface: '#080808',
+          panel: '#0e0e0e',
+          border: 'rgba(248, 143, 34, 0.2)',
           borderPink: 'rgba(234, 97, 19, 0.3)',
         },
         // Sleek Linear / Vercel dark mode palette for slate

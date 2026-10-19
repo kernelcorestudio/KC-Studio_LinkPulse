@@ -2,7 +2,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
-import { EyeIcon, EyeOffIcon, GoogleIcon } from '../components/Icons';
+import { useTheme } from '../lib/theme';
+import { EyeIcon, EyeOffIcon, GoogleIcon, SunIcon, MoonIcon } from '../components/Icons';
+import MouseGlow from '../components/MouseGlow';
 
 function GoogleModal({ isOpen, onClose, onSelect, busy, error }) {
   const [customName, setCustomName] = useState('');
@@ -283,15 +285,35 @@ export default function AuthPage({ mode = 'login' }) {
     }
   }
 
+  const { isLight, toggleTheme } = useTheme();
+
   return (
-    <div className="relative grid min-h-screen place-items-center bg-[#100800] p-4 text-[#FFE3B3]">
+    <div className="relative grid min-h-screen place-items-center bg-[#000000] p-4 text-[#FFE3B3]">
+      {/* Theme Toggle Button top-right */}
+      <div className="absolute top-4 right-4 z-20">
+        <button
+          onClick={toggleTheme}
+          type="button"
+          title={isLight ? 'Switch to Dark Mode (Pure Black)' : 'Switch to Light Mode (#FFE3B3)'}
+          aria-label={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          className="group inline-flex items-center justify-center rounded-xl border border-zinc-800 bg-[#080808]/90 p-2.5 text-amber-200/80 transition-all duration-200 hover:border-[#F88F22]/60 hover:bg-[#141414] hover:text-[#FBB931] hover:shadow-[0_0_16px_rgba(234,97,19,0.3)] hover:-translate-y-0.5 active:scale-90 cursor-pointer"
+        >
+          {isLight ? (
+            <MoonIcon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12 text-[#EA6113]" />
+          ) : (
+            <SunIcon className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 text-[#FBB931]" />
+          )}
+        </button>
+      </div>
+
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-30" aria-hidden="true" />
       <div className="pointer-events-none absolute h-[400px] w-[500px] rounded-full bg-[#EA6113]/15 blur-[100px]" />
+      <MouseGlow />
 
-      <div className="relative w-full max-w-sm">
+      <div className="relative z-10 w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link to="/" className="inline-block group transition">
-            <div className="relative w-16 h-16 rounded-2xl bg-[#100800] border border-[#F88F22]/35 p-1 flex items-center justify-center overflow-hidden shadow-[0_0_35px_rgba(234,97,19,0.38)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_45px_rgba(251,185,49,0.55)] transition-all duration-300 mx-auto mb-4 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/25 before:opacity-80">
+            <div className="brand-logo-badge relative w-16 h-16 rounded-2xl bg-[#000000] border border-[#F88F22]/35 p-1 flex items-center justify-center overflow-hidden shadow-[0_0_35px_rgba(234,97,19,0.38)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_45px_rgba(251,185,49,0.55)] transition-all duration-300 mx-auto mb-4 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/25 before:opacity-80">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse logo"
@@ -307,7 +329,7 @@ export default function AuthPage({ mode = 'login' }) {
           </p>
         </div>
 
-        <form onSubmit={submit} className="rounded-2xl border border-[#2a1800]/80 bg-[#150900]/95 p-7 shadow-2xl backdrop-blur-xl space-y-4">
+        <form onSubmit={submit} className="rounded-2xl border border-zinc-800 bg-[#080808]/95 p-7 shadow-2xl backdrop-blur-xl space-y-4">
           {!isLogin && (
             <div>
               <label className="label">Full Name</label>
@@ -359,7 +381,7 @@ export default function AuthPage({ mode = 'login' }) {
                 )}
               </button>
             </div>
-            {!isLogin && <p className="mt-1.5 text-[11px] text-amber-900/60">Must be at least 8 characters.</p>}
+            {!isLogin && <p className="mt-1.5 text-[11px] text-zinc-500">Must be at least 8 characters.</p>}
           </div>
 
           {error && (
@@ -379,7 +401,7 @@ export default function AuthPage({ mode = 'login' }) {
           {/* Divider */}
           <div className="relative my-5 flex items-center justify-center">
             <div className="border-t border-white/10 w-full"></div>
-            <span className="bg-[#150900] px-3 text-xs text-zinc-400 whitespace-nowrap">
+            <span className="bg-[#080808] px-3 text-xs text-zinc-400 whitespace-nowrap">
               or continue with
             </span>
             <div className="border-t border-white/10 w-full"></div>

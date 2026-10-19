@@ -95,7 +95,7 @@ export default function Import() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-[#2a1800]/80 pb-5">
+      <div className="border-b border-zinc-800/80 pb-5">
         <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
           <ImportIcon className="h-6 w-6 text-[#FBB931]" />
           <span>Bulk Import</span>
@@ -185,8 +185,8 @@ export default function Import() {
                   </thead>
                   <tbody className="divide-y divide-zinc-800/60 font-mono text-xs">
                     {preview.results.map((r) => (
-                      <tr key={r.line} className="hover:bg-[#1c1000]/60">
-                        <td className="py-2 px-3 text-amber-900/60">{r.line}</td>
+                      <tr key={r.line} className="hover:bg-[#121214]">
+                        <td className="py-2 px-3 text-zinc-500">{r.line}</td>
                         <td className="max-w-[240px] truncate px-3 text-amber-200/80">{r.url || '—'}</td>
                         <td className="px-3 text-[#FBB931]">{r.alias || 'auto'}</td>
                         <td className="max-w-[160px] truncate px-3 text-amber-200/60">{r.title || ''}</td>

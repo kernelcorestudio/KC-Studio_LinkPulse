@@ -29,7 +29,7 @@ function QrPanel({ code }) {
           <div className="flex items-center gap-2">
             <label className="text-xs text-amber-200/60 font-medium">Resolution:</label>
             <select
-              className="rounded-lg border border-[#2a1800] bg-[#1c1000] px-2.5 py-1 text-xs text-amber-200/80 outline-none focus:border-[#F88F22]"
+              className="rounded-lg border border-zinc-800 bg-[#121212] px-2.5 py-1 text-xs text-amber-200/80 outline-none focus:border-[#F88F22]"
               value={size}
               onChange={(e) => setSize(Number(e.target.value))}
             >
@@ -148,7 +148,7 @@ function Analytics({ linkId }) {
     <div className="space-y-6">
       {/* Period Selector & Refresh */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex rounded-lg border border-[#2a1800] bg-[#1c1000]/80 p-0.5 text-xs shadow-inner">
+        <div className="flex rounded-lg border border-zinc-800 bg-[#080808] p-0.5 text-xs shadow-inner">
           {PERIODS.map(([val, label]) => (
             <button
               key={val}
@@ -180,7 +180,7 @@ function Analytics({ linkId }) {
           <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Clicks Timeline</h3>
           <span className="font-mono text-[10px] text-amber-900/60">[ HISTORICAL ]</span>
         </div>
-        <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#FFE3B3" label="Total Clicks" />
+        <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#F88F22" label="Total Clicks" />
       </div>
 
       {/* Breakdown Grid */}
@@ -385,7 +385,7 @@ function Settings({ link, onSaved }) {
       </div>
 
       {/* Device Targeting Box */}
-      <div className="rounded-xl border border-[#2a1800] bg-[#150900]/80 p-4 space-y-3">
+      <div className="rounded-xl border border-zinc-800 bg-[#080808] p-4 space-y-3">
         <div className="flex items-center gap-2">
           <DeviceIcon className="h-4 w-4 text-[#FBB931]" />
           <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Device Targeting Rules</h4>
@@ -449,7 +449,7 @@ export default function LinkDetail() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-[#2a1800]">
+      <div className="flex border-b border-zinc-800">
         {tabs.map(([key, label]) => (
           <button
             key={key}

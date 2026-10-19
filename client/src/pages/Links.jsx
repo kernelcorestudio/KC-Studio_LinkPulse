@@ -33,14 +33,14 @@ function QrModal({ link, onClose }) {
       onClick={onClose}
     >
       <div
-        className="relative m-auto w-full max-w-sm rounded-2xl border border-[#2a1800] bg-gradient-to-b from-[#180c00] to-[#100800] p-6 shadow-2xl space-y-5"
+        className="relative m-auto w-full max-w-sm rounded-2xl border border-zinc-800 bg-[#080808] p-6 shadow-2xl space-y-5"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Circular close cross button at top right corner */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-[#2a1800] bg-[#1c1000]/90 text-amber-200/70 shadow-md hover:border-rose-500/40 hover:bg-rose-500/20 hover:text-white hover:scale-105 active:scale-95 transition-all duration-150 z-10"
+          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-[#121212] text-amber-200/70 shadow-md hover:border-rose-500/40 hover:bg-rose-500/20 hover:text-white hover:scale-105 active:scale-95 transition-all duration-150 z-10"
           aria-label="Close QR Modal"
           title="Close"
         >
@@ -69,7 +69,7 @@ function QrModal({ link, onClose }) {
           <div className="flex items-center justify-between text-xs">
             <span className="text-amber-200/60 font-medium">Resolution</span>
             <select
-              className="rounded-lg border border-[#2a1800] bg-[#1c1000] px-2.5 py-1 text-xs text-amber-200/80 outline-none focus:border-[#F88F22]"
+              className="rounded-lg border border-zinc-800 bg-[#121212] px-2.5 py-1 text-xs text-amber-200/80 outline-none focus:border-[#F88F22]"
               value={size}
               onChange={(e) => setSize(Number(e.target.value))}
             >
@@ -123,14 +123,14 @@ function DeleteModal({ link, onConfirm, onCancel, deleting, error }) {
       onClick={onCancel}
     >
       <div
-        className="relative m-auto w-full max-w-sm rounded-2xl border border-rose-500/30 bg-gradient-to-b from-[#180c00] to-[#100800] p-6 shadow-2xl space-y-4"
+        className="relative m-auto w-full max-w-sm rounded-2xl border border-rose-500/30 bg-[#080808] p-6 shadow-2xl space-y-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Circular close cross button at top right corner */}
         <button
           type="button"
           onClick={onCancel}
-          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-[#2a1800] bg-[#1c1000]/90 text-amber-200/70 shadow-md hover:border-rose-500/40 hover:bg-rose-500/20 hover:text-white hover:scale-105 active:scale-95 transition-all duration-150 z-10"
+          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-[#121212] text-amber-200/70 shadow-md hover:border-rose-500/40 hover:bg-rose-500/20 hover:text-white hover:scale-105 active:scale-95 transition-all duration-150 z-10"
           aria-label="Close"
           title="Close"
         >
@@ -252,7 +252,7 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         aria-label="Share short link"
       >
         <ShareIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#100800] border border-[#2a1800] px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
           {shared ? 'Copied!' : 'Share'}
         </span>
       </button>
@@ -270,7 +270,7 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         aria-label="Copy short link"
       >
         {copied ? <CheckIcon className="h-3.5 w-3.5" /> : <CopyIcon className="h-3.5 w-3.5" />}
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#100800] border border-[#2a1800] px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
           {copied ? 'Copied!' : 'Copy'}
         </span>
       </button>
@@ -285,7 +285,7 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         aria-label="Open in new tab"
       >
         <ExternalLinkIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#100800] border border-[#2a1800] px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
           Open
         </span>
       </a>
@@ -299,7 +299,7 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         aria-label="QR Code"
       >
         <QrIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#100800] border border-[#2a1800] px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
           QR Code
         </span>
       </button>
@@ -318,7 +318,7 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         aria-label={isActive ? 'Disable link' : 'Enable link'}
       >
         <PowerIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#100800] border border-[#2a1800] px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
           {isActive ? 'Disable' : 'Enable'}
         </span>
       </button>
@@ -332,7 +332,7 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         aria-label="Delete link"
       >
         <TrashIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#100800] border border-[#2a1800] px-2 py-0.5 text-[10px] font-medium text-rose-300 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-rose-300 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
           Delete
         </span>
       </button>
@@ -459,7 +459,7 @@ export default function Links() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Links Directory</h1>
           <p className="text-xs text-amber-200/60 mt-1">
@@ -476,12 +476,12 @@ export default function Links() {
       <form onSubmit={applyFilters} className="flex flex-wrap items-center gap-2.5">
         <div className="relative flex-1 min-w-[240px] max-w-md">
           <input
-            className="w-full rounded-lg border border-[#2a1800] bg-[#1c1000]/90 pl-9 pr-3.5 py-2 text-xs text-[#FFE3B3] placeholder-amber-900/50 outline-none transition focus:border-[#F88F22]"
+            className="w-full rounded-lg border border-zinc-800 bg-[#080808] pl-9 pr-3.5 py-2 text-xs text-[#FFE3B3] placeholder-zinc-500 outline-none transition focus:border-[#F88F22]"
             placeholder="Search by code, title, or destination target…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
-          <span className="pointer-events-none absolute left-3 top-2.5 text-amber-900/50">
+          <span className="pointer-events-none absolute left-3 top-2.5 text-zinc-500">
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -489,7 +489,7 @@ export default function Links() {
           </span>
         </div>
         <select
-          className="rounded-lg border border-[#2a1800] bg-[#1c1000]/90 px-3 py-2 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
+          className="rounded-lg border border-zinc-800 bg-[#080808] px-3 py-2 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         >
@@ -531,11 +531,11 @@ export default function Links() {
         />
       ) : (
         <>
-          <div className="overflow-hidden rounded-xl border border-[#2a1800]/80 bg-[#150900]/80 shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-zinc-800/80 bg-[#080808] shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-[#2a1800] bg-[#1c1000]/50 text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">
+                  <tr className="border-b border-zinc-800 bg-[#0d0d0e] text-[11px] font-semibold uppercase tracking-wider text-amber-200/70">
                     <th className="px-5 py-3.5">Short Link</th>
                     <th className="px-5 py-3.5">Destination URL</th>
                     <th className="px-5 py-3.5">Status</th>
@@ -544,9 +544,9 @@ export default function Links() {
                     <th className="px-5 py-3.5 text-right whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#2a1800]/60 font-mono">
+                <tbody className="divide-y divide-zinc-800/60 font-mono">
                   {data.links.map((l) => (
-                    <tr key={l.id} className="hover:bg-[#1c1000]/60 transition">
+                    <tr key={l.id} className="hover:bg-[#121214] transition">
                       <td className="px-5 py-3.5">
                         <Link to={`/links/${l.id}`} className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
                           /{l.short_code}
@@ -556,7 +556,7 @@ export default function Links() {
                       <td className="max-w-64 truncate px-5 py-3.5 text-amber-200/70">{l.destination_url}</td>
                       <td className="px-5 py-3.5 font-sans">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${STATUS_STYLES[l.status] || 'border-[#2a1800] text-amber-200/70'}`}>
+                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${STATUS_STYLES[l.status] || 'border-zinc-800 text-amber-200/70'}`}>
                             {l.status}
                           </span>
                           {l.password_hash && (
@@ -575,7 +575,7 @@ export default function Links() {
                       <td className="px-5 py-3.5 text-right font-semibold text-[#FFE3B3]">
                         {Number(l.click_count).toLocaleString()}
                       </td>
-                      <td className="px-5 py-3.5 font-sans text-xs text-amber-900/60">
+                      <td className="px-5 py-3.5 font-sans text-xs text-zinc-500">
                         {new Date(l.created_at).toLocaleDateString()}
                       </td>
                       <td className="px-5 py-3.5 text-right whitespace-nowrap">

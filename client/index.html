@@ -6,7 +6,7 @@
     <link rel="icon" type="image/jpeg" href="/favicon.jpg?v=4" />
     <link rel="shortcut icon" type="image/jpeg" href="/favicon.jpg?v=4" />
     <link rel="apple-touch-icon" href="/favicon.jpg?v=4" />
-    <meta name="theme-color" content="#100800" />
+    <meta name="theme-color" content="#000000" />
     <meta name="description" content="Next-Gen URL Management & Real-Time Analytics — create branded short links, dynamic QR codes, and link-in-bio profiles." />
     <meta property="og:title" content="LinkPulse — URL Shortener & Analytics" />
     <meta property="og:description" content="Next-Gen URL Management & Real-Time Analytics" />
@@ -20,9 +20,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <title>LinkPulse — URL Shortener & Analytics</title>
+    <script>
+      try {
+        if (localStorage.getItem('linkpulse_theme') === 'light') {
+          document.documentElement.classList.add('light');
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.classList.add('dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    </script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
-  <body class="h-full bg-[#100800] text-[#FFE3B3] antialiased selection:bg-[#EA6113]/30 selection:text-[#FFE3B3]">
+  <body class="h-full bg-[#000000] text-[#FFE3B3] antialiased selection:bg-[#EA6113]/30 selection:text-[#FFE3B3]">
     <div id="root" class="h-full"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

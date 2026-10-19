@@ -83,7 +83,7 @@ export default function Bio() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
             <BioIcon className="h-6 w-6 text-[#FBB931]" />
@@ -156,8 +156,8 @@ export default function Bio() {
               key={p.id}
               className={`rounded-xl border p-4 transition cursor-pointer ${
                 selectedId === p.id
-                  ? 'border-[#F88F22]/50 bg-[#180c00] shadow-lg shadow-[#EA6113]/10'
-                  : 'border-[#2a1800] bg-[#140800]/80 hover:border-[#F88F22]/30'
+                  ? 'border-[#F88F22]/60 bg-[#121212] shadow-lg shadow-[#EA6113]/10'
+                  : 'border-zinc-800 bg-[#080808] hover:border-[#F88F22]/30'
               }`}
               onClick={() => setSelectedId(p.id)}
             >
@@ -289,7 +289,7 @@ function Editor({ pageId, onSaved }) {
 
   return (
     <div className="card space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#2a1800] pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-3">
         <h3 className="text-sm font-semibold text-white">Edit Profile /{page.slug}</h3>
         <a
           className="text-xs text-[#FBB931] hover:text-[#FFE3B3] font-medium hover:underline"

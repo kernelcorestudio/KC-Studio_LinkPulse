@@ -31,7 +31,7 @@ function AlertsPanel({ alerts }) {
       <div className="card flex flex-col justify-between animate-fade-in-up stagger-4">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">System Alerts</h2>
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#2a1800] bg-[#1c1000]/90 px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F88F22] opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#EA6113]"></span>
@@ -45,7 +45,7 @@ function AlertsPanel({ alerts }) {
           </div>
           <div>
             <span className="text-xs font-semibold tracking-wider text-emerald-400">ALL SYSTEMS NOMINAL</span>
-            <p className="mt-1 text-[11px] text-amber-900/60">No security warnings or quota limits triggered.</p>
+            <p className="mt-1 text-[11px] text-zinc-500">No security warnings or quota limits triggered.</p>
           </div>
         </div>
       </div>
@@ -62,9 +62,9 @@ function AlertsPanel({ alerts }) {
       </div>
       <ul className="space-y-2">
         {shown.map((a, i) => {
-          const [IconComponent, label, cls] = ALERT_LABEL[a.type] || [AlertIcon, a.type, 'border-[#2a1800] text-amber-200/70'];
+          const [IconComponent, label, cls] = ALERT_LABEL[a.type] || [AlertIcon, a.type, 'border-zinc-800 text-amber-200/70'];
           return (
-            <li key={i} className={`rounded-lg border ${SEVERITY_RING[a.severity] || 'border-[#2a1800]'} p-3 transition`}>
+            <li key={i} className={`rounded-lg border ${SEVERITY_RING[a.severity] || 'border-zinc-800'} p-3 transition`}>
               <div className="flex items-center gap-2">
                 <IconComponent className="h-3.5 w-3.5 shrink-0 text-amber-200/50" />
                 <span className={`badge ${cls}`}>{label}</span>
@@ -92,68 +92,68 @@ function DashboardSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
       {/* Header and Controls Skeleton */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
-          <div className="h-8 w-56 rounded-lg bg-[#2a1800]/60 mb-2"></div>
-          <div className="h-3.5 w-72 rounded bg-[#2a1800]/40"></div>
+          <div className="h-8 w-56 rounded-lg bg-zinc-800/60 mb-2"></div>
+          <div className="h-3.5 w-72 rounded bg-zinc-800/40"></div>
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-8 w-20 rounded-lg bg-[#2a1800]/60"></div>
-          <div className="h-8 w-24 rounded-lg bg-[#2a1800]/60"></div>
-          <div className="h-8 w-24 rounded-lg bg-[#2a1800]/60"></div>
+          <div className="h-8 w-20 rounded-lg bg-zinc-800/60"></div>
+          <div className="h-8 w-24 rounded-lg bg-zinc-800/60"></div>
+          <div className="h-8 w-24 rounded-lg bg-zinc-800/60"></div>
         </div>
       </div>
 
       {/* 4 Stat Cards Skeleton */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="card p-5 h-28 flex flex-col justify-between border border-[#2a1800]/60 bg-[#160b00]/60">
+          <div key={i} className="card p-5 h-28 flex flex-col justify-between border border-zinc-800/60 bg-[#080808]">
             <div className="flex items-center justify-between">
-              <div className="h-3 w-24 rounded bg-[#2a1800]/60"></div>
-              <div className="h-6 w-6 rounded-md bg-[#2a1800]/40"></div>
+              <div className="h-3 w-24 rounded bg-zinc-800/60"></div>
+              <div className="h-6 w-6 rounded-md bg-zinc-800/40"></div>
             </div>
-            <div className="h-7 w-20 rounded bg-[#2a1800]/80"></div>
+            <div className="h-7 w-20 rounded bg-zinc-800/80"></div>
           </div>
         ))}
       </div>
 
       {/* 2 Main Charts Skeleton */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="card p-5 lg:col-span-2 h-80 flex flex-col justify-between border border-[#2a1800]/60 bg-[#160b00]/60">
+        <div className="card p-5 lg:col-span-2 h-80 flex flex-col justify-between border border-zinc-800/60 bg-[#080808]">
           <div className="flex items-center justify-between">
-            <div className="h-4 w-36 rounded bg-[#2a1800]/60"></div>
-            <div className="h-4 w-20 rounded bg-[#2a1800]/40"></div>
+            <div className="h-4 w-36 rounded bg-zinc-800/60"></div>
+            <div className="h-4 w-20 rounded bg-zinc-800/40"></div>
           </div>
-          <div className="h-56 w-full rounded-xl bg-[#2a1800]/20 flex items-center justify-center">
-            <div className="h-32 w-4/5 rounded-lg border border-dashed border-[#2a1800]/50 flex items-center justify-center">
-              <span className="text-xs font-mono text-amber-200/40 uppercase tracking-widest">Synthesizing stream…</span>
+          <div className="h-56 w-full rounded-xl bg-zinc-900/40 flex items-center justify-center">
+            <div className="h-32 w-4/5 rounded-lg border border-dashed border-zinc-800/60 flex items-center justify-center">
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">Synthesizing stream…</span>
             </div>
           </div>
         </div>
-        <div className="card p-5 h-80 flex flex-col justify-between border border-[#2a1800]/60 bg-[#160b00]/60">
-          <div className="h-4 w-32 rounded bg-[#2a1800]/60"></div>
-          <div className="h-44 w-44 mx-auto rounded-full border-4 border-[#2a1800]/40 flex items-center justify-center">
-            <div className="h-28 w-28 rounded-full border-2 border-dashed border-[#2a1800]/30"></div>
+        <div className="card p-5 h-80 flex flex-col justify-between border border-zinc-800/60 bg-[#080808]">
+          <div className="h-4 w-32 rounded bg-zinc-800/60"></div>
+          <div className="h-44 w-44 mx-auto rounded-full border-4 border-zinc-800/40 flex items-center justify-center">
+            <div className="h-28 w-28 rounded-full border-2 border-dashed border-zinc-800/30"></div>
           </div>
-          <div className="h-3 w-32 mx-auto rounded bg-[#2a1800]/40"></div>
+          <div className="h-3 w-32 mx-auto rounded bg-zinc-800/40"></div>
         </div>
       </div>
 
       {/* Tables Skeleton */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="card p-5 lg:col-span-2 h-64 border border-[#2a1800]/60 bg-[#160b00]/60">
-          <div className="h-4 w-40 rounded bg-[#2a1800]/60 mb-4"></div>
+        <div className="card p-5 lg:col-span-2 h-64 border border-zinc-800/60 bg-[#080808]">
+          <div className="h-4 w-40 rounded bg-zinc-800/60 mb-4"></div>
           <div className="space-y-3">
             {[1, 2, 3].map((n) => (
-              <div key={n} className="h-10 rounded-lg bg-[#2a1800]/30"></div>
+              <div key={n} className="h-10 rounded-lg bg-zinc-900/60"></div>
             ))}
           </div>
         </div>
-        <div className="card p-5 h-64 border border-[#2a1800]/60 bg-[#160b00]/60">
-          <div className="h-4 w-32 rounded bg-[#2a1800]/60 mb-4"></div>
+        <div className="card p-5 h-64 border border-zinc-800/60 bg-[#080808]">
+          <div className="h-4 w-32 rounded bg-zinc-800/60 mb-4"></div>
           <div className="space-y-3">
             {[1, 2].map((n) => (
-              <div key={n} className="h-12 rounded-lg bg-[#2a1800]/30"></div>
+              <div key={n} className="h-12 rounded-lg bg-zinc-900/60"></div>
             ))}
           </div>
         </div>
@@ -228,7 +228,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header and Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">System Dashboard</h1>
           <p className="text-xs text-amber-200/60 mt-1">Real-Time Traffic & Performance Telemetry</p>
@@ -236,7 +236,7 @@ export default function Dashboard() {
         <div className="flex flex-wrap items-center gap-2.5">
           {campaigns.length > 0 && (
             <select
-              className="rounded-lg border border-[#2a1800] bg-[#1c1000]/90 px-3 py-1.5 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
+              className="rounded-lg border border-zinc-800 bg-[#080808] px-3 py-1.5 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
               value={campaignId}
               onChange={(e) => setCampaignId(e.target.value)}
               title="Filter by campaign"
@@ -252,7 +252,7 @@ export default function Dashboard() {
             </div>
           )}
           {/* Segmented Period Tabs */}
-          <div className="flex rounded-lg border border-[#2a1800] bg-[#1c1000]/80 p-0.5 text-xs shadow-inner">
+          <div className="flex rounded-lg border border-zinc-800 bg-[#080808] p-0.5 text-xs shadow-inner">
             {PERIODS.map(([val, label]) => (
               <button
                 key={val}
@@ -307,7 +307,7 @@ export default function Dashboard() {
         <div className="card lg:col-span-2 animate-fade-in-up stagger-3">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Clicks Timeline</h2>
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#2a1800] bg-[#1c1000]/90 px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F88F22] opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#EA6113]"></span>
@@ -316,7 +316,7 @@ export default function Dashboard() {
             </div>
           </div>
           {hasData ? (
-            <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#FFE3B3" label="Total Clicks" />
+            <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#F88F22" label="Total Clicks" />
           ) : (
             <EmptyState title="No traffic recorded" hint="Deploy your short links to begin capturing real-time telemetry." />
           )}
@@ -324,7 +324,7 @@ export default function Dashboard() {
         <div className="card animate-fade-in-up stagger-3">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Geo Distribution</h2>
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#2a1800] bg-[#1c1000]/90 px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F88F22] opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#EA6113]"></span>
@@ -349,11 +349,11 @@ export default function Dashboard() {
                   <span className="relative inline-flex h-3 w-3 rounded-full bg-[#EA6113] shadow-[0_0_12px_rgba(234,97,19,0.8)]"></span>
                 </span>
               </div>
-              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#2a1800] bg-[#1c1000]/80 px-2.5 py-1 text-[11px] font-mono text-amber-200/70">
+              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#FBB931] animate-pulse" />
                 Awaiting Geo Signal
               </span>
-              <p className="mt-1.5 text-[11px] text-amber-900/60 max-w-[200px]">
+              <p className="mt-1.5 text-[11px] text-zinc-500 max-w-[200px]">
                 Incoming traffic nodes will dynamically project regional telemetry here.
               </p>
             </div>
@@ -366,7 +366,7 @@ export default function Dashboard() {
         <div className="card lg:col-span-2 animate-fade-in-up stagger-4">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Top Transmission Nodes</h2>
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#2a1800] bg-[#1c1000]/90 px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F88F22] opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#EA6113]"></span>
@@ -378,15 +378,15 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-[#2a1800] text-[11px] font-semibold uppercase tracking-wider text-amber-900/70">
+                  <tr className="border-b border-zinc-800 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                     <th className="pb-3">Short Code</th>
                     <th className="pb-3">Destination Target</th>
                     <th className="pb-3 text-right">Hits</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#2a1800]/60 font-mono">
+                <tbody className="divide-y divide-zinc-800/60 font-mono">
                   {data.topLinks.map((l) => (
-                    <tr key={l.id} className="hover:bg-[#1c1000]/60 transition">
+                    <tr key={l.id} className="hover:bg-[#121214] transition">
                       <td className="py-3">
                         <Link to={`/links/${l.id}`} className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
                           /{l.short_code}

@@ -1,10 +1,13 @@
 // App navigation shell (Sleek Floating Dock Navbar with Neon Aura & Tactile Micro-Interactions)
 import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
+import { useTheme } from '../lib/theme';
 import {
   DashboardIcon, LinksIcon, CampaignIcon, TagIcon,
   CreateIcon, ImportIcon, BioIcon, AdminIcon,
+  SunIcon, MoonIcon,
 } from './Icons';
+import MouseGlow from './MouseGlow';
 
 const NAV = [
   { to: '/app', label: 'Dashboard', Icon: DashboardIcon, end: true },
@@ -19,6 +22,7 @@ const NAV = [
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { isLight, toggleTheme } = useTheme();
   const nav = useNavigate();
   const location = useLocation();
 
@@ -36,12 +40,13 @@ export default function Layout() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-[#100800]">
+    <div className="relative flex min-h-screen flex-col bg-[#000000]">
       {/* Subtle background grid */}
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-30" aria-hidden="true" />
+      <MouseGlow />
 
       {/* ── TOP FLOATING NAVBAR ── */}
-      <header className="relative z-30 border-b border-[#241202]/70 bg-[#0c0500]/90 backdrop-blur-2xl">
+      <header className="relative z-30 border-b border-white/[0.08] bg-[#000000]/95 backdrop-blur-2xl">
         {/* Ambient top spotlight spreading downwards */}
         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-24 bg-gradient-to-b from-[#EA6113]/15 via-[#F88F22]/10 to-transparent blur-2xl -z-10" />
 
@@ -52,7 +57,7 @@ export default function Layout() {
             to="/app"
             className="group flex items-center gap-3 shrink-0 transition-transform active:scale-95 duration-200"
           >
-            <div className="relative w-10 h-10 rounded-2xl bg-[#120700] border border-[#F88F22]/40 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_22px_rgba(234,97,19,0.35)] group-hover:border-[#FBB931]/80 group-hover:shadow-[0_0_30px_rgba(251,185,49,0.6)] group-hover:scale-105 transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/20 before:to-[#FBB931]/25">
+            <div className="brand-logo-badge relative w-10 h-10 rounded-2xl bg-[#000000] border border-[#F88F22]/40 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_22px_rgba(234,97,19,0.35)] group-hover:border-[#FBB931]/80 group-hover:shadow-[0_0_30px_rgba(251,185,49,0.6)] group-hover:scale-105 transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/20 before:to-[#FBB931]/25">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse Logo"
@@ -71,7 +76,7 @@ export default function Layout() {
 
             {/* Dock bar */}
             <nav
-              className="relative flex items-center gap-1.5 rounded-2xl border border-[#F88F22]/40 bg-[#120700]/95 backdrop-blur-2xl p-1.5 shadow-[0_0_35px_-5px_rgba(234,97,19,0.4),0_15px_30px_-10px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(251,185,49,0.3)] no-scrollbar overflow-x-auto max-w-full"
+              className="relative flex items-center gap-1.5 rounded-2xl border border-[#F88F22]/40 bg-[#080808]/95 backdrop-blur-2xl p-1.5 shadow-[0_0_35px_-5px_rgba(234,97,19,0.4),0_15px_30px_-10px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(251,185,49,0.3)] no-scrollbar overflow-x-auto max-w-full"
             >
               {NAV.filter((n) => !n.adminOnly || user?.role === 'admin').map((n) => {
                 const Icon = n.Icon;
@@ -84,8 +89,8 @@ export default function Layout() {
                     end={n.end}
                     className={`group relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap cursor-pointer select-none ${
                       active
-                        ? 'bg-gradient-to-b from-[#2e1302] via-[#240e01] to-[#1a0a00] border border-[#F88F22]/90 text-white font-semibold shadow-[0_0_20px_rgba(234,97,19,0.45),inset_0_1px_1px_rgba(251,185,49,0.35)] active:scale-95'
-                        : 'text-amber-200/60 border border-transparent hover:text-white hover:bg-[#200d00]/75 hover:border-[#F88F22]/40 hover:shadow-[0_0_16px_rgba(234,97,19,0.25)] hover:-translate-y-0.5 active:scale-95 active:translate-y-0'
+                        ? 'bg-gradient-to-b from-[#EA6113]/25 to-[#F88F22]/15 border border-[#F88F22] text-white font-semibold shadow-[0_0_18px_rgba(234,97,19,0.35)] active:scale-95'
+                        : 'text-amber-200/60 border border-transparent hover:text-white hover:bg-[#141414] hover:border-[#F88F22]/40 hover:shadow-[0_0_16px_rgba(234,97,19,0.25)] hover:-translate-y-0.5 active:scale-95 active:translate-y-0'
                     }`}
                   >
                     <Icon
@@ -105,7 +110,7 @@ export default function Layout() {
           {/* ── RIGHT: User Profile Pill + Create CTA + Logout ── */}
           <div className="flex items-center gap-3 shrink-0">
             {/* User profile pill */}
-            <div className="hidden sm:flex items-center gap-2.5 rounded-xl border border-[#2a1201] bg-[#140700]/90 px-3 py-1.5 shadow-[0_2px_10px_rgba(0,0,0,0.6)] hover:border-[#F88F22]/40 hover:shadow-[0_0_16px_rgba(234,97,19,0.2)] transition-all duration-200 group">
+            <div className="hidden sm:flex items-center gap-2.5 rounded-xl border border-zinc-800 bg-[#080808]/90 px-3 py-1.5 shadow-[0_2px_10px_rgba(0,0,0,0.6)] hover:border-[#F88F22]/40 hover:shadow-[0_0_16px_rgba(234,97,19,0.2)] transition-all duration-200 group">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#EA6113] to-[#F88F22] text-[11px] font-bold text-white shadow-[0_0_10px_rgba(234,97,19,0.5)] group-hover:scale-105 transition-transform duration-200">
                 {user?.email?.charAt(0).toUpperCase() || 'U'}
               </span>
@@ -117,20 +122,27 @@ export default function Layout() {
               )}
             </div>
 
-            {/* "+ Create" Action Button */}
-            <Link
-              to="/create"
-              className="group inline-flex items-center gap-1.5 rounded-xl border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] via-[#F88F22] to-[#F88F22] px-4 py-2 text-xs font-bold text-white shadow-[0_0_22px_rgba(234,97,19,0.45)] hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_32px_rgba(251,185,49,0.7)] hover:-translate-y-0.5 active:scale-95 transition-all duration-200 cursor-pointer"
+
+            {/* Theme Toggle Button (Pure Black Dark vs #FFE3B3 Light) */}
+            <button
+              onClick={toggleTheme}
+              type="button"
+              title={isLight ? 'Switch to Dark Mode (Pure Black)' : 'Switch to Light Mode (#FFE3B3)'}
+              aria-label={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+              className="group inline-flex items-center justify-center rounded-xl border border-zinc-800 bg-[#080808]/90 p-2 text-amber-200/80 transition-all duration-200 hover:border-[#F88F22]/60 hover:bg-[#141414] hover:text-[#FBB931] hover:shadow-[0_0_16px_rgba(234,97,19,0.3)] hover:-translate-y-0.5 active:scale-90 cursor-pointer"
             >
-              <span className="text-sm font-bold leading-none transition-transform duration-300 group-hover:rotate-90">+</span>
-              <span>Create</span>
-            </Link>
+              {isLight ? (
+                <MoonIcon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12 text-[#EA6113]" />
+              ) : (
+                <SunIcon className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 text-[#FBB931]" />
+              )}
+            </button>
 
             {/* Logout Button */}
             <button
               onClick={handleLogout}
               title="Disconnect session"
-              className="group inline-flex items-center justify-center rounded-xl border border-[#2a1201] bg-[#140700]/90 p-2 text-amber-200/60 transition-all duration-200 hover:border-[#F88F22]/50 hover:bg-[#220d00] hover:text-white hover:shadow-[0_0_16px_rgba(234,97,19,0.3)] hover:-translate-y-0.5 active:scale-90 cursor-pointer"
+              className="group inline-flex items-center justify-center rounded-xl border border-zinc-800 bg-[#080808]/90 p-2 text-amber-200/60 transition-all duration-200 hover:border-[#F88F22]/50 hover:bg-[#141414] hover:text-white hover:shadow-[0_0_16px_rgba(234,97,19,0.3)] hover:-translate-y-0.5 active:scale-90 cursor-pointer"
             >
               <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

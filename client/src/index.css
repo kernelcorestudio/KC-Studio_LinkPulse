@@ -9,10 +9,10 @@
   --sunset-2: #F88F22;
   --sunset-3: #FBB931;
   --sunset-4: #FFE3B3;
-  --bg-base:  #100800;
-  --bg-deep:  #0a0400;
-  --bg-card:  #150900;
-  --border:   #2a1800;
+  --bg-base:  #000000;
+  --bg-deep:  #000000;
+  --bg-card:  #080808;
+  --border:   #1f1f1f;
 }
 
 body {
@@ -31,36 +31,263 @@ body {
     @apply btn border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(251,185,49,0.55)] active:scale-[0.98];
   }
   .btn-ghost {
-    @apply btn border border-[#2a1800]/80 bg-[#1c1000]/60 text-amber-200/70 hover:bg-[#2a1800] hover:text-white hover:border-[#3d2200];
+    @apply btn border border-zinc-800 bg-[#121212] text-amber-200/80 hover:bg-[#1a1a1a] hover:text-white hover:border-[#F88F22]/40;
   }
   .btn-retro {
     @apply inline-flex items-center justify-center gap-2 rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-lg shadow-[#EA6113]/30 transition hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[#FBB931]/40 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-retro-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-[#2a1800] bg-[#1c1000]/80 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-200 transition hover:border-[#3d2200] hover:bg-[#2a1800] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-[#121212] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-200 transition hover:border-[#F88F22]/40 hover:bg-[#1a1a1a] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed;
   }
   /* ── Cards ── */
   .card {
-    @apply rounded-xl border border-[#2a1800]/60 bg-gradient-to-b from-[#180c00] to-[#100800] p-5 shadow-[inset_0_1px_0_0_rgba(248,143,34,0.07),0_8px_30px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-300 ease-out;
+    @apply rounded-xl border border-zinc-800/90 bg-[#080808] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 ease-out;
   }
   .card-hover {
-    @apply hover:-translate-y-0.5 hover:border-[#F88F22]/30 hover:shadow-[inset_0_1px_0_0_rgba(251,185,49,0.12),0_12px_35px_-10px_rgba(234,97,19,0.25)];
+    @apply hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[0_12px_35px_-10px_rgba(234,97,19,0.3)];
   }
   /* ── Form inputs ── */
   .input {
-    @apply w-full rounded-lg border border-[#2a1800] bg-[#0e0600] px-3.5 py-2 text-sm text-[#FFE3B3] placeholder-amber-900/50 outline-none transition focus:border-[#F88F22] focus:ring-1 focus:ring-[#F88F22]/50;
+    @apply w-full rounded-lg border border-zinc-800 bg-[#080808] px-3.5 py-2 text-sm text-[#FFE3B3] placeholder-zinc-500 outline-none transition focus:border-[#F88F22] focus:ring-1 focus:ring-[#F88F22]/50;
   }
   .label {
-    @apply mb-1.5 block text-xs font-medium text-amber-200/60;
+    @apply mb-1.5 block text-xs font-medium text-amber-200/70;
   }
   /* ── Badges ── */
   .badge {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-[#2a1800] bg-[#1c1000]/80 px-2.5 py-0.5 text-[11px] font-medium text-amber-200/80;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-0.5 text-[11px] font-medium text-amber-200/80;
   }
   .crt-frame {
-    @apply rounded-xl border border-[#2a1800] bg-[#0e0600] shadow-2xl;
+    @apply rounded-xl border border-zinc-800 bg-[#000000] shadow-2xl;
   }
 }
+
+/* ═══════════════════════════════════════════════════
+   LIGHT THEME: #FFE3B3 Sunset Glow Architecture
+   Preserves vibrant orange template with warm cream/peach canvas
+   ═══════════════════════════════════════════════════ */
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background-color: #FFE3B3 !important;
+  color: #1F0E02 !important;
+}
+
+/* Page background containers */
+html.light .bg-\[\#000000\],
+html.light [class*="bg-[#000000]"] {
+  background-color: #FFE3B3 !important;
+}
+
+/* Cards & modal surfaces */
+html.light .bg-\[\#080808\],
+html.light [class*="bg-[#080808]"] {
+  background-color: #FFF6E5 !important;
+}
+
+/* Secondary surfaces / pills */
+html.light .bg-\[\#121212\],
+html.light [class*="bg-[#121212]"] {
+  background-color: #FFEDCC !important;
+}
+
+/* Table headers & alternate rows */
+html.light .bg-\[\#0d0d0e\],
+html.light [class*="bg-[#0d0d0e]"],
+html.light .bg-\[\#101012\],
+html.light [class*="bg-[#101012]"] {
+  background-color: #F7D8A7 !important;
+}
+
+/* Borders */
+html.light .border-zinc-800,
+html.light [class*="border-zinc-800"],
+html.light .border-white\/\[0\.08\] {
+  border-color: rgba(234, 97, 19, 0.24) !important;
+}
+
+/* Texts */
+html.light .text-white {
+  color: #1F0E02 !important;
+}
+
+html.light .text-\[\#FFE3B3\],
+html.light [class*="text-[#FFE3B3]"] {
+  color: #1F0E02 !important;
+}
+
+html.light .text-amber-200\/80,
+html.light .text-amber-200\/70,
+html.light .text-amber-200\/60,
+html.light .text-amber-200\/50,
+html.light .text-amber-200 {
+  color: #6B3B10 !important;
+}
+
+html.light .text-amber-100,
+html.light .text-amber-100\/90 {
+  color: #1F0E02 !important;
+}
+
+html.light .text-zinc-500,
+html.light .text-zinc-400 {
+  color: #8C5523 !important;
+}
+
+html.light .hover\:text-white:hover {
+  color: #000000 !important;
+}
+
+/* Component Overrides */
+html.light .card {
+  background: #FFF8EB !important;
+  border-color: rgba(234, 97, 19, 0.22) !important;
+  box-shadow: 0 10px 30px rgba(234, 97, 19, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .card-hover:hover {
+  border-color: rgba(234, 97, 19, 0.5) !important;
+  box-shadow: 0 14px 35px rgba(234, 97, 19, 0.16) !important;
+}
+
+html.light nav.backdrop-blur-2xl,
+html.light nav[class*="backdrop-blur-2xl"] {
+  box-shadow: 0 10px 30px rgba(234, 97, 19, 0.16), 0 2px 8px rgba(234, 97, 19, 0.1) !important;
+}
+
+html.light .input {
+  background-color: #FFFFFF !important;
+  border-color: rgba(234, 97, 19, 0.28) !important;
+  color: #1F0E02 !important;
+}
+
+html.light .input::placeholder {
+  color: #9C683B !important;
+}
+
+html.light .btn-ghost {
+  background-color: #FFEDCC !important;
+  border-color: rgba(234, 97, 19, 0.28) !important;
+  color: #6B3B10 !important;
+}
+html.light .btn-ghost:hover {
+  background-color: #F8D69E !important;
+  color: #1F0E02 !important;
+  border-color: #F88F22 !important;
+}
+
+html.light .btn-retro-ghost {
+  background-color: #FFEDCC !important;
+  border-color: rgba(234, 97, 19, 0.28) !important;
+  color: #6B3B10 !important;
+}
+html.light .btn-retro-ghost:hover {
+  background-color: #F8D69E !important;
+  color: #1F0E02 !important;
+}
+
+html.light .badge {
+  background-color: #FFEDCC !important;
+  border-color: rgba(234, 97, 19, 0.25) !important;
+  color: #6B3B10 !important;
+}
+
+html.light .crt-frame {
+  background-color: #FFF6E5 !important;
+  border-color: rgba(234, 97, 19, 0.25) !important;
+}
+
+html.light .divide-zinc-800\/60 > * + * {
+  border-color: rgba(234, 97, 19, 0.16) !important;
+}
+
+html.light .hover\:bg-\[\#121214\]:hover,
+html.light .hover\:bg-\[\#141414\]:hover {
+  background-color: #F7D7A0 !important;
+}
+
+html.light .hover\:bg-\[\#1a1a1a\]:hover {
+  background-color: #F5CE8E !important;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: #FFE3B3 !important;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #D9A46B !important;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #EA6113 !important;
+}
+
+html.light .bg-grid {
+  background-image:
+    linear-gradient(rgba(234, 97, 19, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(234, 97, 19, 0.08) 1px, transparent 1px) !important;
+}
+
+/* ── LOCKED BRAND LOGO BADGE (Stays identical vibrant orange on pure black badge in Dark & Light modes) ── */
+.brand-logo-badge,
+html.light .brand-logo-badge,
+html.dark .brand-logo-badge {
+  background-color: #000000 !important;
+  background-image: none !important;
+  border-color: rgba(248, 143, 34, 0.45) !important;
+  box-shadow: 0 0 18px rgba(234, 97, 19, 0.35) !important;
+  isolation: isolate !important;
+}
+
+.brand-logo-badge:hover,
+html.light .brand-logo-badge:hover,
+html.dark .brand-logo-badge:hover {
+  border-color: rgba(251, 185, 49, 0.8) !important;
+  box-shadow: 0 0 28px rgba(251, 185, 49, 0.55) !important;
+}
+
+.brand-logo-badge img,
+html.light .brand-logo-badge img,
+html.dark .brand-logo-badge img {
+  mix-blend-mode: screen !important;
+  filter: brightness(1.08) contrast(1.08) !important;
+  opacity: 1 !important;
+}
+
+/* ── Ambient Translucent Orange Background Cursor Glow ── */
+.mouse-cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 320px;
+  border-radius: 9999px;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  background: radial-gradient(
+    circle,
+    rgba(248, 143, 34, 0.20) 0%,
+    rgba(234, 97, 19, 0.12) 35%,
+    rgba(234, 97, 19, 0.05) 60%,
+    transparent 75%
+  );
+  filter: blur(45px);
+  will-change: transform;
+  transition: opacity 0.4s ease;
+}
+
+html.light .mouse-cursor-glow {
+  background: radial-gradient(
+    circle,
+    rgba(234, 97, 19, 0.16) 0%,
+    rgba(248, 143, 34, 0.09) 35%,
+    transparent 70%
+  );
+  filter: blur(50px);
+  mix-blend-mode: multiply;
+}
+
+
 
 @layer utilities {
   .font-retro {
@@ -150,10 +377,10 @@ html {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0400;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3d2200;
+  background: #27272a;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {

@@ -13,25 +13,25 @@ const wrap = (title, badgeText, badgeClass, heading, body) => `<!doctype html><h
 body{
   margin:0;
   font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  background:#09090b;
+  background:#000000;
   color:#f4f4f5;
   display:grid;
   min-height:100vh;
   place-items:center;
   padding:24px 16px;
   background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12), transparent 70%),
-    radial-gradient(ellipse at 50% 100%, rgba(99, 102, 241, 0.04), transparent 60%);
+    radial-gradient(ellipse at 50% 0%, rgba(234, 97, 19, 0.15), transparent 70%),
+    radial-gradient(ellipse at 50% 100%, rgba(234, 97, 19, 0.05), transparent 60%);
 }
 .card{
   width:100%;
   max-width:440px;
   padding:36px 32px;
-  background:#0e0f12;
+  background:#080808;
   border:1px solid rgba(255,255,255,0.08);
   border-radius:16px;
   text-align:center;
-  box-shadow:0 20px 40px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.02);
+  box-shadow:0 20px 40px -15px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.02);
   backdrop-filter:blur(16px);
 }
 .icon-box{
@@ -122,11 +122,11 @@ input:focus{outline:none;border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,2
 // is indexable, and every button goes through the redirect engine (?src=bio)
 // -> clicks are tracked exactly like any other short link hit.
 const BIO_THEMES = {
-  dark: { bg: '#09090b', fg: '#f4f4f5', sub: '#a1a1aa', card: '#0e0f12', btn: '#14151b', btnFg: '#ffffff', ring: 'rgba(255,255,255,0.08)', ringHover: 'rgba(99,102,241,0.4)', accent: '#6366f1' },
+  dark: { bg: '#000000', fg: '#f4f4f5', sub: '#a1a1aa', card: '#080808', btn: '#121212', btnFg: '#ffffff', ring: 'rgba(255,255,255,0.08)', ringHover: 'rgba(248,143,34,0.4)', accent: '#F88F22' },
   light: { bg: '#f8fafc', fg: '#0f172a', sub: '#64748b', card: '#ffffff', btn: '#ffffff', btnFg: '#0f172a', ring: '#e2e8f0', ringHover: '#cbd5e1', accent: '#4f46e5' },
-  brand: { bg: '#090a16', fg: '#f8fafc', sub: '#94a3b8', card: '#0f1224', btn: '#151936', btnFg: '#ffffff', ring: 'rgba(99,102,241,0.25)', ringHover: 'rgba(99,102,241,0.6)', accent: '#6366f1' },
-  sunset: { bg: '#0d090d', fg: '#faf5ff', sub: '#a8a29e', card: '#181018', btn: '#221622', btnFg: '#ffffff', ring: 'rgba(244,63,94,0.25)', ringHover: 'rgba(244,63,94,0.6)', accent: '#f43f5e' },
-  ocean: { bg: '#060d13', fg: '#f0fdfa', sub: '#94a3b8', card: '#0a1622', btn: '#0f2030', btnFg: '#ffffff', ring: 'rgba(14,165,233,0.25)', ringHover: 'rgba(14,165,233,0.6)', accent: '#0ea5e9' },
+  brand: { bg: '#000000', fg: '#f8fafc', sub: '#94a3b8', card: '#080808', btn: '#121212', btnFg: '#ffffff', ring: 'rgba(234,97,19,0.25)', ringHover: 'rgba(248,143,34,0.6)', accent: '#EA6113' },
+  sunset: { bg: '#000000', fg: '#FFE3B3', sub: '#a8a29e', card: '#080808', btn: '#121212', btnFg: '#ffffff', ring: 'rgba(248,143,34,0.3)', ringHover: 'rgba(248,143,34,0.8)', accent: '#F88F22' },
+  ocean: { bg: '#000000', fg: '#f0fdfa', sub: '#94a3b8', card: '#080808', btn: '#0f1620', btnFg: '#ffffff', ring: 'rgba(14,165,233,0.25)', ringHover: 'rgba(14,165,233,0.6)', accent: '#0ea5e9' },
 };
 
 export function pageBio({ title, bio, theme = 'dark', buttons = [], slug = '' }) {

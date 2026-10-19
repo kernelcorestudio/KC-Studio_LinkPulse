@@ -1,8 +1,11 @@
 // Public landing page: Modern Dark SaaS hero + product demo video + login / get-started CTA.
 import { Link } from 'react-router-dom';
+import { useTheme } from '../lib/theme';
 import {
   ChartIcon, ZapIcon, CampaignIcon, BioIcon, QrIcon, ImportIcon, SparkleIcon,
+  SunIcon, MoonIcon,
 } from '../components/Icons';
+import MouseGlow from '../components/MouseGlow';
 
 const FEATURES = [
   {
@@ -38,17 +41,20 @@ const FEATURES = [
 ];
 
 export default function Landing() {
+  const { isLight, toggleTheme } = useTheme();
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#100800] text-[#FFE3B3]">
+    <div className="relative min-h-screen overflow-hidden bg-[#000000] text-[#FFE3B3]">
       {/* Background ambient gradient glow & grid */}
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-30" aria-hidden="true" />
       <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] rounded-full bg-[#EA6113]/15 blur-[120px]" />
+      <MouseGlow />
 
-      <div className="relative mx-auto max-w-6xl px-6 pb-20">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
         {/* Navigation Bar */}
         <header className="flex items-center justify-between py-6">
           <Link to="/" className="group flex items-center gap-3 transition">
-            <div className="relative w-10 h-10 rounded-xl bg-[#100800] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_22px_rgba(234,97,19,0.32)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_30px_rgba(251,185,49,0.5)] transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/20 before:opacity-80">
+            <div className="brand-logo-badge relative w-10 h-10 rounded-xl bg-[#000000] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_22px_rgba(234,97,19,0.32)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_30px_rgba(251,185,49,0.5)] transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/20 before:opacity-80">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse Logo"
@@ -60,6 +66,21 @@ export default function Landing() {
             </span>
           </Link>
           <div className="flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              type="button"
+              title={isLight ? 'Switch to Dark Mode (Pure Black)' : 'Switch to Light Mode (#FFE3B3)'}
+              aria-label={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+              className="group inline-flex items-center justify-center rounded-xl border border-zinc-800 bg-[#080808]/90 p-2 text-amber-200/80 transition-all duration-200 hover:border-[#F88F22]/60 hover:bg-[#141414] hover:text-[#FBB931] hover:shadow-[0_0_16px_rgba(234,97,19,0.3)] hover:-translate-y-0.5 active:scale-90 cursor-pointer"
+            >
+              {isLight ? (
+                <MoonIcon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12 text-[#EA6113]" />
+              ) : (
+                <SunIcon className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 text-[#FBB931]" />
+              )}
+            </button>
+
             <Link
               to="/login"
               className="rounded-lg px-3.5 py-1.5 text-xs font-medium text-amber-200/70 transition hover:text-white"
@@ -103,22 +124,22 @@ export default function Landing() {
             </Link>
             <Link
               to="/login"
-              className="w-full sm:w-auto rounded-lg border border-[#2a1800] bg-[#1c1000]/80 px-6 py-2.5 text-sm font-medium text-amber-200 transition hover:border-[#3d2200] hover:bg-[#2a1800] hover:text-white"
+              className="w-full sm:w-auto rounded-lg border border-zinc-800 bg-[#121212] px-6 py-2.5 text-sm font-medium text-amber-200 transition hover:border-[#F88F22]/40 hover:bg-[#1a1a1a] hover:text-white"
             >
               Sign In to Dashboard
             </Link>
           </div>
 
-          <p className="mt-4 font-mono text-xs text-amber-900/70">
+          <p className="mt-4 font-mono text-xs text-zinc-500">
             Instant Demo Account: <span className="text-amber-200/80">ada@example.com</span> / <span className="text-amber-200/80">password123</span>
           </p>
         </section>
 
         {/* Product Demo Video in Modern Window Frame */}
         <section className="mx-auto mt-8 max-w-4xl">
-          <div className="overflow-hidden rounded-2xl border border-[#2a1800] bg-[#0e0600] shadow-2xl shadow-[#EA6113]/10">
+          <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-[#000000] shadow-2xl shadow-[#EA6113]/10">
             {/* Window title bar */}
-            <div className="flex items-center justify-between border-b border-[#2a1800]/80 bg-[#140800] px-4 py-2.5">
+            <div className="flex items-center justify-between border-b border-zinc-800/80 bg-[#080808] px-4 py-2.5">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-[#EA6113]/80 inline-block" />
                 <span className="h-3 w-3 rounded-full bg-[#F88F22]/80 inline-block" />
@@ -150,7 +171,7 @@ export default function Landing() {
               return (
                 <div
                   key={f.title}
-                  className="rounded-xl border border-[#2a1800]/70 bg-[#150900]/80 p-6 shadow-sm transition duration-150 hover:border-[#F88F22]/40 hover:bg-[#1a0c00]"
+                  className="rounded-xl border border-zinc-800/80 bg-[#080808] p-6 shadow-sm transition duration-150 hover:border-[#F88F22]/40 hover:bg-[#121214]"
                 >
                   <div className="mb-4 inline-flex rounded-lg border border-[#F88F22]/30 bg-[#F88F22]/10 p-2.5 text-[#FBB931] shadow-sm">
                     <Icon className="h-5 w-5" />
@@ -165,7 +186,7 @@ export default function Landing() {
 
         {/* Bottom CTA Card */}
         <section className="mt-24">
-          <div className="relative overflow-hidden rounded-2xl border border-[#F88F22]/30 bg-gradient-to-b from-[#1c0c00] to-[#100800] px-6 py-14 text-center shadow-xl">
+          <div className="relative overflow-hidden rounded-2xl border border-[#F88F22]/30 bg-[#080808] px-6 py-14 text-center shadow-xl">
             <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-48 w-96 rounded-full bg-[#EA6113]/20 blur-3xl" />
             <h2 className="relative text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
               Supercharge your link workflows today
@@ -182,7 +203,7 @@ export default function Landing() {
               </Link>
               <Link
                 to="/login"
-                className="w-full sm:w-auto rounded-lg border border-[#2a1800] bg-[#1c1000]/80 px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-200 transition hover:border-[#3d2200] hover:bg-[#2a1800] hover:text-white"
+                className="w-full sm:w-auto rounded-lg border border-zinc-800 bg-[#121212] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-200 transition hover:border-[#F88F22]/40 hover:bg-[#1a1a1a] hover:text-white"
               >
                 Sign In
               </Link>
@@ -191,9 +212,9 @@ export default function Landing() {
         </section>
 
         {/* Footer */}
-        <footer className="mt-20 border-t border-[#2a1800]/80 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-amber-900/70">
+        <footer className="mt-20 border-t border-zinc-800/80 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <div className="flex items-center gap-2.5">
-            <div className="relative w-7 h-7 rounded-lg bg-[#100800] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(234,97,19,0.25)]">
+            <div className="brand-logo-badge relative w-7 h-7 rounded-lg bg-[#000000] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(234,97,19,0.25)]">
               <img src="/logo.jpg" alt="LinkPulse logo" className="w-full h-full object-contain mix-blend-screen scale-105" />
             </div>
             <span className="font-semibold text-amber-200/80">LinkPulse</span>

@@ -91,7 +91,7 @@ export default function Campaigns() {
   return (
     <div className="space-y-6">
       {/* Header and Create Campaign */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
             <CampaignIcon className="h-6 w-6 text-[#FBB931]" />
@@ -151,23 +151,23 @@ export default function Campaigns() {
                   )}
                 </div>
 
-                <div className="mt-4 grid grid-cols-3 gap-2 rounded-lg border border-[#2a1800] bg-[#1c1000]/60 p-2.5 text-center">
+                <div className="mt-4 grid grid-cols-3 gap-2 rounded-lg border border-zinc-800 bg-[#080808] p-2.5 text-center">
                   <div>
-                    <span className="text-[10px] uppercase font-semibold text-amber-900/60 block">Links</span>
+                    <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Links</span>
                     <span className="text-sm font-bold text-white font-mono">{c.link_count}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-semibold text-amber-900/60 block">Clicks</span>
+                    <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Clicks</span>
                     <span className="text-sm font-bold text-[#FBB931] font-mono">{c.clicks}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-semibold text-amber-900/60 block">Uniques</span>
+                    <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Uniques</span>
                     <span className="text-sm font-bold text-emerald-400 font-mono">{c.uniques}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#2a1800]/80 text-xs">
+              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-800/80 text-xs">
                 <button
                   className={`btn-ghost text-xs py-1 px-2.5 ${openId === c.id ? 'border-[#F88F22] text-[#FFE3B3]' : ''}`}
                   onClick={() => toggleStats(c)}
@@ -199,10 +199,10 @@ export default function Campaigns() {
               </div>
 
               {openId === c.id && (
-                <div className="rounded-xl border border-[#2a1800] bg-[#140800]/70 p-4 space-y-3">
+                <div className="rounded-xl border border-zinc-800 bg-[#080808] p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-amber-200/80">Campaign Timeline</span>
-                    <div className="flex gap-1 rounded-md border border-[#2a1800] bg-[#1c1000] p-0.5 text-xs">
+                    <div className="flex gap-1 rounded-md border border-zinc-800 bg-[#121212] p-0.5 text-xs">
                       {['7d', '30d', '90d'].map((p) => (
                         <button
                           key={p}

@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './lib/auth';
+import { ThemeProvider } from './lib/theme';
 import Layout from './components/Layout';
 import Landing from './pages/Landing';
 import AuthPage from './pages/AuthPage';
@@ -59,7 +60,7 @@ function CatchAll() {
 
   if (isShortCode) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[#0B0B0E] text-zinc-400">
+      <div className="grid min-h-screen place-items-center bg-[#000000] text-zinc-400">
         <Spinner label="Redirecting…" />
       </div>
     );
@@ -70,9 +71,10 @@ function CatchAll() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
           <Route index element={<Root />} />
           <Route path="/login" element={<PublicOnly><AuthPage mode="login" /></PublicOnly>} />
           <Route path="/register" element={<PublicOnly><AuthPage mode="register" /></PublicOnly>} />
@@ -102,6 +104,7 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 

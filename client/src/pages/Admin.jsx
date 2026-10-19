@@ -99,7 +99,7 @@ function Overview() {
             <h2 className="text-sm font-semibold text-zinc-100">Top Links (Platform-Wide)</h2>
             <span className="text-[11px] text-zinc-400 font-mono">By Engagement</span>
           </div>
-          <div className="divide-y divide-[#2a1800]/60">
+          <div className="divide-y divide-zinc-800/60">
             {stats.topLinks.map((l) => (
               <div key={l.id} className="flex items-center gap-3 py-2.5 text-xs">
                 <Link className="truncate font-mono font-medium text-[#FBB931] hover:text-[#FFE3B3] hover:underline" to={`/links/${l.id}`}>
@@ -451,7 +451,7 @@ export default function Admin() {
         </p>
       </div>
 
-      <div className="inline-flex rounded-xl border border-[#2a1800] bg-[#100800]/80 p-1 backdrop-blur gap-1">
+      <div className="inline-flex rounded-xl border border-zinc-800 bg-[#080808]/80 p-1 backdrop-blur gap-1">
         {TABS.map(([id, label, Icon]) => {
           const active = tab === id;
           return (
@@ -459,8 +459,8 @@ export default function Admin() {
               key={id}
               className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition ${
                 active
-                  ? 'bg-[#1c1000] text-white shadow-sm border border-[#3d2200]'
-                  : 'text-amber-200/50 hover:text-amber-100 hover:bg-[#1c1000]/40'
+                  ? 'bg-[#1a1a1a] text-white shadow-sm border border-zinc-700'
+                  : 'text-amber-200/50 hover:text-amber-100 hover:bg-[#121212]'
               }`}
               onClick={() => setTab(id)}
             >

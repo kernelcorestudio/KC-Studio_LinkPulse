@@ -388,7 +388,7 @@ export function PieChart3D({
               className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium border transition-all duration-150 ${
                 isHovered
                   ? 'border-[#F88F22] bg-[#F88F22]/20 text-white scale-105 shadow-[0_0_12px_rgba(234,97,19,0.4)]'
-                  : 'border-[#2a1800] bg-[#1c1000]/70 text-amber-200/70 hover:border-[#3d2200] hover:text-white'
+                  : 'border-zinc-800 bg-[#121212] text-amber-200/70 hover:border-[#F88F22]/40 hover:text-white'
               }`}
             >
               <span

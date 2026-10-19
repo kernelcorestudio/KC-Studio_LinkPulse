@@ -29,7 +29,7 @@ export function Spinner({ label = 'Loading…', inline = false, className = '' }
   if (inline) {
     return (
       <div className={`flex items-center gap-2 text-xs text-amber-200/60 ${className}`}>
-        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[#2a1800] border-t-[#F88F22]" />
+        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-zinc-800 border-t-[#F88F22]" />
         <span className="font-medium tracking-wide">{label}</span>
       </div>
     );
@@ -38,7 +38,7 @@ export function Spinner({ label = 'Loading…', inline = false, className = '' }
     <div className={`flex min-h-[280px] w-full flex-col items-center justify-center gap-3.5 py-16 text-center animate-fade-in-up ${className}`}>
       <div className="relative flex h-8 w-8 items-center justify-center">
         <span className="absolute h-8 w-8 animate-ping rounded-full bg-[#F88F22]/20" />
-        <span className="h-6 w-6 animate-spin rounded-full border-2 border-[#2a1800] border-t-[#F88F22] shadow-sm" />
+        <span className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-800 border-t-[#F88F22] shadow-sm" />
       </div>
       <span className="font-mono text-[11px] font-medium tracking-wider uppercase text-amber-200/60">{label}</span>
     </div>
@@ -47,7 +47,7 @@ export function Spinner({ label = 'Loading…', inline = false, className = '' }
 
 export function EmptyState({ title, hint, action, icon }) {
   return (
-    <div className="group relative overflow-hidden flex flex-col items-center justify-center gap-3.5 rounded-xl border border-dashed border-[#2a1800]/90 bg-gradient-to-b from-[#180c00]/80 to-[#100800]/90 py-12 px-6 text-center shadow-inner">
+    <div className="group relative overflow-hidden flex flex-col items-center justify-center gap-3.5 rounded-xl border border-dashed border-zinc-800/90 bg-[#080808] py-12 px-6 text-center shadow-inner">
       {/* Subtle animated telemetry pulse wave grid background */}
       <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true">
         <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
@@ -100,7 +100,7 @@ export function ErrorState({ message, onRetry }) {
 export function StatCard({ label, value, sub, icon, className = '' }) {
   const isPositive = typeof sub === 'string' && sub.startsWith('+');
   return (
-    <div className={`group relative overflow-hidden rounded-xl border border-[#2a1800]/80 bg-gradient-to-b from-[#180c00] to-[#100800] p-5 shadow-[inset_0_1px_0_0_rgba(248,143,34,0.08),0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[inset_0_1px_0_0_rgba(251,185,49,0.15),0_12px_35px_-10px_rgba(234,97,19,0.25)] ${className}`}>
+    <div className={`group relative overflow-hidden rounded-xl border border-zinc-800/80 bg-[#080808] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.7)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[0_12px_35px_-10px_rgba(234,97,19,0.3)] ${className}`}>
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">{label}</p>
         {icon && (
@@ -115,7 +115,7 @@ export function StatCard({ label, value, sub, icon, className = '' }) {
           <span className={`inline-flex items-center rounded px-2 py-0.5 text-[11px] font-medium ${
             isPositive
               ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm'
-              : 'bg-[#1c1000] text-amber-200/50 border border-[#2a1800]'
+              : 'bg-[#121212] text-amber-200/50 border border-zinc-800'
           }`}>
             {sub}
           </span>
@@ -206,7 +206,7 @@ const lineOpts = (color) => ({
   },
 });
 
-export function LineChart({ labels, data, label = 'Total Clicks', color = '#FFE3B3' }) {
+export function LineChart({ labels, data, label = 'Total Clicks', color = '#F88F22' }) {
   return (
     <div className="h-64">
       <Line
