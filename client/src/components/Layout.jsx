@@ -59,14 +59,9 @@ export default function Layout() {
                 className="relative z-10 w-full h-full object-contain rounded-xl select-none scale-105 group-hover:scale-115 transition-transform duration-300 mix-blend-screen drop-shadow-[0_0_10px_rgba(251,185,49,0.5)]"
               />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-base font-bold tracking-tight text-white group-hover:text-amber-100 transition-colors leading-tight">
-                LinkPulse
-              </span>
-              <span className="rounded-md bg-[#F88F22]/15 text-[#FFE3B3] border border-[#F88F22]/40 text-[10px] font-mono font-semibold px-1.5 py-0.5 shadow-[0_0_8px_rgba(234,97,19,0.25)]">
-                PRO
-              </span>
-            </div>
+            <span className="text-base font-bold tracking-tight text-white group-hover:text-amber-100 transition-colors leading-tight">
+              LinkPulse
+            </span>
           </Link>
 
           {/* ── CENTER: Floating Dock ── */}

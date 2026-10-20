@@ -55,9 +55,8 @@ export default function Landing() {
                 className="relative z-10 w-full h-full object-contain rounded-lg select-none scale-105 group-hover:scale-115 transition-transform duration-300 mix-blend-screen drop-shadow-[0_0_10px_rgba(251,185,49,0.45)]"
               />
             </div>
-            <span className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
+            <span className="text-xl font-bold tracking-tight text-white">
               LinkPulse
-              <span className="rounded bg-[#F88F22]/15 text-[#FFE3B3] border border-[#F88F22]/30 text-[10px] font-mono px-1.5 py-0.5">PRO</span>
             </span>
           </Link>
           <div className="flex items-center gap-3">
