@@ -280,7 +280,7 @@ export function pagePassword(code, error) {
     'Protected Link',
     'Password Protected',
     'badge-indigo',
-    'Password Required',
+    'This link is protected',
     `${error ? `<p class="error-msg">${escapeHtml(error)}</p>` : '<p>Please enter the required passcode to unlock this destination.</p>'}
      <form method="POST" action="/${encodeURIComponent(code)}">
        <input type="password" name="password" placeholder="Enter link password" autofocus required>

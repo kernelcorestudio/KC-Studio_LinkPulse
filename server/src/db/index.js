@@ -84,10 +84,10 @@ export async function initDb() {
     if (config.databaseUrl) {
       mode = 'pg';
       const { default: pg } = await import('pg');
+      const isLocalhost = config.databaseUrl.includes('localhost') || config.databaseUrl.includes('127.0.0.1');
       pool = new pg.Pool({
-        connectionString: config.databaseUrl,
-        // TLS is controlled via the connection string (?sslmode=require|disable),
-        // which pg parses natively - Neon/Supabase strings include sslmode=require.
+        connectionString: config.databaseUrl.replace(/[?&]sslmode=[^&]+/, ''),
+        ssl: isLocalhost ? false : { rejectUnauthorized: false },
         max: 10,
       });
       pool.on('error', (err) => console.error('[db] pg pool error:', err.message));

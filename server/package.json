@@ -9,6 +9,7 @@
     "dev": "node --watch --env-file-if-exists=.env src/index.js",
     "seed": "node --env-file-if-exists=.env src/seed.js",
     "clear": "node --env-file-if-exists=.env scripts/clear.js",
+    "migrate:supabase": "node --env-file-if-exists=.env scripts/migrate-sqlite-to-pg.mjs",
     "test": "node --test"
   },
   "engines": { "node": ">=20.0.0" },
