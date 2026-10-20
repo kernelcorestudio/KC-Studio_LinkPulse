@@ -145,6 +145,8 @@ function GoogleModal({ isOpen, onClose, onSelect, busy, error }) {
   );
 }
 
+const DEFAULT_GOOGLE_CLIENT_ID = '1086670605458-jbm5ki4p21g1ddkuu5jrucd5qrvm96nd.apps.googleusercontent.com';
+
 export default function AuthPage({ mode = 'login' }) {
   const isLogin = mode === 'login';
   const { login, register, loginWithGoogle } = useAuth();
@@ -158,8 +160,9 @@ export default function AuthPage({ mode = 'login' }) {
   const [googleModalError, setGoogleModalError] = useState('');
   const googleBtnContainerRef = useRef(null);
 
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID;
+
   useEffect(() => {
-    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     if (!googleClientId || typeof window === 'undefined') return;
 
     let mounted = true;
@@ -198,7 +201,7 @@ export default function AuthPage({ mode = 'login' }) {
       mounted = false;
       clearInterval(interval);
     };
-  }, []);
+  }, [googleClientId]);
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
@@ -219,7 +222,6 @@ export default function AuthPage({ mode = 'login' }) {
 
   async function handleGoogleClick() {
     setError('');
-    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
     if (googleClientId && typeof window !== 'undefined') {
       // 1. Modern Google OAuth2 Token Client (opens real Google account chooser popup with device accounts)
