@@ -5,9 +5,41 @@ import { queryOne, run } from '../db/index.js';
 import { asyncHandler, HttpError } from '../middleware/errors.js';
 import { requireAuth } from '../middleware/auth.js';
 import { registerSchema, loginSchema } from '../utils/validation.js';
-import { hashPassword, verifyPassword, signToken, publicUser } from '../services/authService.js';
+import { hashPassword, verifyPassword, signToken, publicUser, upsertGoogleUser } from '../services/authService.js';
 
 export const authRoutes = Router();
+
+authRoutes.post(
+  '/google',
+  asyncHandler(async (req, res) => {
+    const { credential, email, name } = req.body || {};
+    let userEmail = email;
+    let userName = name;
+
+    // Mode A: Real Google ID Token
+    if (credential && typeof credential === 'string') {
+      try {
+        const parts = credential.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+          if (payload && payload.email) {
+            userEmail = payload.email;
+            userName = payload.name || payload.given_name || userName;
+          }
+        }
+      } catch {
+        // Fallback to provided email/name if token decoding fails
+      }
+    }
+
+    if (!userEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(userEmail).trim())) {
+      throw new HttpError(400, 'A valid Google email address is required');
+    }
+
+    const result = await upsertGoogleUser({ email: userEmail, name: userName });
+    res.json(result);
+  }),
+);
 
 authRoutes.post(
   '/register',

@@ -54,6 +54,7 @@ export const api = {
   // auth
   register: (p) => request('/api/auth/register', { method: 'POST', body: p, auth: false }),
   login: (p) => request('/api/auth/login', { method: 'POST', body: p, auth: false }),
+  googleLogin: (p) => request('/api/auth/google', { method: 'POST', body: p, auth: false }),
   me: () => request('/api/auth/me'),
   // links
   listLinks: (qs = '') => request(`/api/links${qs}`),

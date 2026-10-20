@@ -29,13 +29,19 @@ export function AuthProvider({ children }) {
     setUser(r.user);
     return r.user;
   }
+  async function loginWithGoogle(payload) {
+    const r = await api.googleLogin(payload);
+    setToken(r.token);
+    setUser(r.user);
+    return r.user;
+  }
   function logout() {
     setToken(null);
     setUser(null);
   }
 
   return (
-    <AuthCtx.Provider value={{ user, loading, login, register, logout }}>
+    <AuthCtx.Provider value={{ user, loading, login, register, loginWithGoogle, logout }}>
       {children}
     </AuthCtx.Provider>
   );
