@@ -12,11 +12,29 @@ export const authRoutes = Router();
 authRoutes.post(
   '/google',
   asyncHandler(async (req, res) => {
-    const { credential, email, name } = req.body || {};
+    const { credential, email, name, access_token } = req.body || {};
     let userEmail = email;
     let userName = name;
 
-    // Mode A: Real Google ID Token
+    // Mode A1: Real Google OAuth2 Access Token
+    if (access_token && typeof access_token === 'string') {
+      try {
+        const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${access_token}` },
+        });
+        if (userInfoRes.ok) {
+          const info = await userInfoRes.json();
+          if (info.email) {
+            userEmail = info.email;
+            userName = info.name || info.given_name || userName;
+          }
+        }
+      } catch {
+        // Fallback to provided email/name if userinfo fetch fails
+      }
+    }
+
+    // Mode A2: Real Google ID Token
     if (credential && typeof credential === 'string') {
       try {
         const parts = credential.split('.');

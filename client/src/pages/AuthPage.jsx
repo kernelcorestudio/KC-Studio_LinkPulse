@@ -220,18 +220,49 @@ export default function AuthPage({ mode = 'login' }) {
   async function handleGoogleClick() {
     setError('');
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-    if (googleClientId) {
-      const nativeGoogleBtn = googleBtnContainerRef.current?.querySelector('div[role=button]');
-      if (nativeGoogleBtn) {
-        nativeGoogleBtn.click();
-        return;
+
+    if (googleClientId && typeof window !== 'undefined') {
+      // 1. Modern Google OAuth2 Token Client (opens real Google account chooser popup with device accounts)
+      if (window.google?.accounts?.oauth2?.initTokenClient) {
+        try {
+          const tokenClient = window.google.accounts.oauth2.initTokenClient({
+            client_id: googleClientId,
+            scope: 'email profile openid',
+            callback: async (tokenResponse) => {
+              if (tokenResponse.error) {
+                if (tokenResponse.error !== 'popup_closed_by_user') {
+                  setError(tokenResponse.error_description || tokenResponse.error || 'Google sign-in was cancelled');
+                }
+                return;
+              }
+              if (tokenResponse.access_token) {
+                setGoogleBusy(true);
+                try {
+                  await loginWithGoogle({ access_token: tokenResponse.access_token });
+                  nav('/app');
+                } catch (err) {
+                  setError(err.message || 'Google authentication failed');
+                } finally {
+                  setGoogleBusy(false);
+                }
+              }
+            },
+          });
+          tokenClient.requestAccessToken({ prompt: 'select_account' });
+          return;
+        } catch (e) {
+          console.warn('OAuth2 token client error, falling back to ID client:', e);
+        }
       }
-      if (typeof window !== 'undefined' && window.google?.accounts?.id) {
+
+      // 2. Fallback to GIS ID prompt
+      if (window.google?.accounts?.id) {
         window.google.accounts.id.prompt();
         return;
       }
     }
-    // Zero-config local/hackathon mode: open custom modal
+
+    // Zero-config fallback modal
     setGoogleModalError('');
     setShowGoogleModal(true);
   }
