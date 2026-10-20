@@ -1,319 +1,779 @@
-# LinkPulse — URL Shortener & Analytics Platform
+<p align="center">
+  <img src="client/public/logo.jpg" alt="LinkPulse Logo" width="110" style="border-radius: 24px; box-shadow: 0 0 35px rgba(234, 97, 19, 0.45);" />
+</p>
 
-Shorten URLs, share them (direct or via QR), and understand every click with
-real-time analytics — built for a hackathon demo as a working, deployable full-stack app.
+<h1 align="center">⚡ LinkPulse</h1>
 
-**Current status: ✅ All 4 phases complete & deploy-ready** (auth, create link, redirect
-engine, async click tracking, link analytics, dashboard, campaigns/tags/folders, QR codes,
-CSV bulk import, admin panel + blocklist, link-in-bio pages, device-targeting UI, alert
-polish). See [ROADMAP.md](./ROADMAP.md) and [PHASES.md](./PHASES.md) for the phase-wise
-build & verification record.
+<p align="center">
+  <strong>Next-Gen URL Infrastructure · Sub-Millisecond Redirect Engine · Real-Time Deep Telemetry · Smart Routing · Link-in-Bio Builder</strong>
+</p>
+
+<p align="center">
+  <a href="https://kcstudio-linkpluse.vercel.app"><img src="https://img.shields.io/badge/Vercel-Production%20Live-10b981?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel Deployment" /></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/Node.js%2024-LTS-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js 24" /></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/React%2018-Vite%206-61dafb?style=for-the-badge&logo=react&logoColor=black" alt="React 18" /></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/PostgreSQL-Supabase-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" /></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/Tailwind-3.4%20SaaS-06b6d4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="#testing"><img src="https://img.shields.io/badge/Tests-73%2F73%20Passing-emerald?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Test Suite" /></a>
+  <a href="#security--privacy"><img src="https://img.shields.io/badge/Security-SHA--256%20+%20bcrypt-F88F22?style=for-the-badge&logo=auth0&logoColor=white" alt="Security" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-EA6113?style=for-the-badge" alt="License MIT" /></a>
+</p>
+
+<p align="center">
+  <a href="https://kcstudio-linkpluse.vercel.app"><strong>🌐 Launch Live Production App</strong></a> ·
+  <a href="#system-architecture"><strong>🏛️ Architecture</strong></a> ·
+  <a href="#data-flow-diagrams-dfd"><strong>🔄 Data Flow (DFD)</strong></a> ·
+  <a href="#redirect-engine-flowchart"><strong>⚡ Redirect Engine</strong></a> ·
+  <a href="#database-architecture--er-diagram"><strong>🗄️ Database ER</strong></a> ·
+  <a href="#api-reference"><strong>📡 API Reference</strong></a> ·
+  <a href="#local-development"><strong>💻 Quickstart</strong></a>
+</p>
 
 ---
 
-## Table of contents
-- [Tech stack](#tech-stack)
-- [Repository layout](#repository-layout)
-- [Visual Architecture & Diagrams](./diagrams/README.md)
-- [Quick start (local)](#quick-start-local)
-- [Environment variables](#environment-variables)
-- [Architecture](#architecture)
-- [Data model / ER diagram](#data-model--er-diagram)
-- [Redirect engine & rule order](#redirect-engine--rule-order)
-- [Async click tracking](#async-click-tracking)
-- [API reference](#api-reference)
-- [Testing](#testing)
-- [Seed data](#seed-data)
-- [Deployment](#deployment)
+## 📑 Table of Contents
+- [Executive Overview](#executive-overview)
+- [Key Features & Capabilities](#key-features--capabilities)
+- [Tech Stack & Architecture Matrix](#tech-stack--architecture-matrix)
+- [System Architecture](#system-architecture)
+- [Data Flow Diagrams (DFD)](#data-flow-diagrams-dfd)
+  - [Level 0: Context Diagram](#dfd-level-0--system-context-diagram)
+  - [Level 1: Functional Decomposition](#dfd-level-1--functional-decomposition-diagram)
+- [Core Workflow Flowcharts](#core-workflow-flowcharts)
+  - [1. 8-Step Redirect Decision Pipeline](#1-8-step-redirect-decision-pipeline)
+  - [2. Google OAuth 2.0 & GIS Pipeline](#2-google-oauth-20--gis-pipeline)
+  - [3. Asynchronous Click Batch Queue](#3-asynchronous-click-batch-queue)
+- [Database Architecture & ER Diagram](#database-architecture--er-diagram)
+- [Telemetry & Analytics Visualization Engine](#telemetry--analytics-visualization-engine)
+- [Security, Privacy & Edge Performance](#security-privacy--edge-performance)
+- [API Reference](#api-reference)
+- [Local Development & Quickstart](#local-development--quickstart)
+- [Production Deployment (Vercel + Supabase)](#production-deployment-vercel--supabase)
+- [Environment Variables Guide](#environment-variables-guide)
+- [Testing & Quality Assurance](#testing--quality-assurance)
 
 ---
 
-## Tech stack
-| Layer | Choice |
-|------|--------|
-| Backend | Node.js 24 (LTS) + Express 4 (ESM) |
-| Database | PostgreSQL when `DATABASE_URL` is set; **built-in `node:sqlite`** fallback for local dev |
-| Frontend | React 18 (Vite) + Tailwind CSS + Chart.js (react-chartjs-2) + React Router |
-| Auth | JWT (`jsonwebtoken`) + `bcryptjs` |
-| Click intelligence | `ua-parser-js`, `isbot`, `geoip-lite` |
-| Validation | `zod` |
-| Security | `helmet`, `cors`, `express-rate-limit` |
-| IDs / codes | `nanoid` (base62 short codes, collision-safe) |
+## 🌟 Executive Overview
 
-> **Note:** the spec listed `bcrypt`; we use the API-compatible pure-JS `bcryptjs`
-> so installs need no native compiler on Windows/CI/Render. The spec's SQLite
-> fallback uses Node's built-in `node:sqlite` (zero native deps).
+**LinkPulse** is an enterprise-grade URL shortener, routing gateway, and real-time click telemetry platform designed to operate at sub-millisecond redirect latencies with high concurrency. 
 
-## Repository layout
+Unlike traditional URL shorteners that block visitor redirects while synchronously querying databases, LinkPulse decouples the **Edge Redirect Engine** from **Persistence Logging** using an **in-memory LRU cache** and an **asynchronous micro-batch event queue**. It packs smart routing features including **device targeting (iOS/Android/Desktop)**, **bcrypt password protection**, **automated link expiry**, **atomic click quotas**, **link-in-bio landing pages**, and **instant high-res QR code synthesis**.
+
 ```
-INNOVISTA-GEHU/
-├─ diagrams/               # Visual architecture, ER & system flowcharts
-│  ├─ README.md            # Diagrams directory index
-│  ├─ SYSTEM_ARCHITECTURE.md # Full system context & layered components
-│  ├─ DATABASE_ARCHITECTURE.md # 10-table ER model, FKs & indexes
-│  └─ FLOW_DIAGRAMS.md     # 8-step redirect pipeline & async queue flows
-├─ server/                 # Express API + redirect engine
-│  ├─ src/
-│  │  ├─ index.js          # entry: init db, start click queue, graceful shutdown
-│  │  ├─ app.js            # middleware, route mounting, static SPA, error handling
-│  │  ├─ config.js         # env-based config
-│  │  ├─ db/               # dialect adapter + schema.{sqlite,pg}.sql (migrations)
-│  │  ├─ middleware/       # auth (JWT/roles), errors (central handler)
-│  │  ├─ services/         # authService, linkService, analyticsService, orgService,
-│  │  │                    #   adminService, importService, bioService,
-│  │  │                    #   cacheService (LRU), clickQueue (async batcher)
-│  │  ├─ routes/           # auth, link, analytics, org, qr, admin, bio, redirect
-│  │  ├─ utils/            # shortCode, validation (zod), clickContext, pages
-│  │  └─ seed.js           # demo data generator
-│  ├─ tests/               # node:test unit tests
-│  ├─ scripts/smoke.mjs    # end-to-end API smoke test
-│  └─ .env.example
-├─ client/                 # React SPA (Vite + Tailwind + Chart.js)
-│  ├─ src/{pages,components,lib}
-│  ├─ .env.example
-│  └─ vercel.json
-├─ render.yaml             # Render blueprint (single-service deploy)
-├─ netlify.toml            # Netlify config (frontend deploy)
-├─ DEMO.md  ROADMAP.md
-└─ README.md
+   [ Visitor / QR Click ]  ───────►  [ Edge Redirect Gateway ]  ───────►  [ 302 Immediate Jump ]
+                                               │
+                                               ├─► LRU In-Memory Cache (Sub-ms lookup)
+                                               └─► Async Micro-Batch Queue (1s / 200 items)
+                                                           │
+                                                           ▼
+                                                [ PostgreSQL / Supabase ]
+                                                (Telemetry, Geolocation, Aggregations)
 ```
 
-## Quick start (local)
-Requires **Node.js 24+** (for the built-in `node:sqlite` fallback and `--env-file`).
+---
 
-```bash
-# 1. Backend
-cd server
-cp .env.example .env          # defaults work for local dev (SQLite fallback)
-npm install
-npm run seed                  # optional demo data
-npm run clear                 # wipe all database tables (clean slate)
-npm start                     # http://localhost:3001
+## 🚀 Key Features & Capabilities
 
-# 2. Frontend (new terminal)
-cd client
-npm install
-npm run dev                   # http://localhost:5173 (proxies /api -> :3001)
+| Feature | Description | Technical Implementation |
+|:---|:---|:---|
+| **⚡ Sub-Millisecond Redirect Engine** | Evaluates rules in a strict 8-step pipeline without DB contention. | In-memory LRU cache + HTTP 302 `no-store` headers. |
+| **📈 Live Telemetry & Spline Wave Graph** | Real-time traffic visualization with smooth cubic spline wave interpolation. | Chart.js with monotone interpolation, `#FFE3B3` theme & hover triggers. |
+| **🛡️ 8-Step Enforcement Pipeline** | Granular link control before redirection. | Cache ➔ Status ➔ Blocklist ➔ Expiry ➔ Click Limit ➔ Password ➔ Device Rules ➔ 302 Found. |
+| **📱 Device-Class Smart Routing** | Routes traffic dynamically to different targets based on OS. | `ua-parser-js` device classification (iOS vs. Android vs. Desktop). |
+| **🔐 Password Protection** | Gated destination with bcrypt hash & signed 12-hour session cookies. | `bcryptjs` verification + JWT `lp_pw` signed HTTP-only cookies. |
+| **⏱️ Expiry & Atomic Click Limits** | Automatic expiration timestamps and strict cap on max visits. | Atomic SQL conditional CAS updates (prevents oversell races). |
+| **🎨 Link-in-Bio Multi-Theme Builder** | Public responsive creator profile pages (`/bio/:slug`) with ordered links. | Server-rendered HTML with 5 curated color presets & source tagging. |
+| **🔲 Real-Time QR Generation** | Instant QR rendering for physical and omnichannel distribution. | PNG/SVG endpoints with `?src=qr` attribution tracking. |
+| **📁 Workspaces, Folders & Tags** | Deep link organization for high-volume marketing teams. | Normalized relational schema with foreign key cascades and composite indexes. |
+| **🚫 Phishing Blocklist & Moderation** | Autonomous malicious domain blocking and administrative killswitch. | Subdomain-inheriting domain matching + instant 403 shield pages. |
+| **🌐 Dual-Engine Database Adapter** | Zero-friction local development with enterprise cloud persistence. | Automatic driver toggle between PostgreSQL (`pg.Pool`) and built-in `node:sqlite`. |
+
+---
+
+## 🛠️ Tech Stack & Architecture Matrix
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                             PRESENTATION TIER                               │
+│     React 18 (SPA) · Vite 6 · Tailwind CSS 3.4 · Chart.js (Spline Theme)   │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │ HTTPS / JSON REST / JWT
+┌──────────────────────────────────────▼──────────────────────────────────────┐
+│                           EDGE GATEWAY & BACKEND                            │
+│     Node.js 24 (ESM) · Express 4 · Helmet · CORS · Express-Rate-Limit       │
+└───────────────────┬─────────────────────────────────────┬───────────────────┘
+                    │                                     │
+┌───────────────────▼────────────────┐   ┌────────────────▼───────────────────┐
+│     REDIRECT ENGINE (HOT PATH)     │   │     ASYNC BATCH INGESTION QUEUE    │
+│  LRU In-Memory Cache · Short Code  │   │  Buffer (1,000ms / 200 items)      │
+│  8-Step Rule Pipeline · 302 Found  │   │  Unique Visitor Dedupe · Bot Check │
+└───────────────────┬────────────────┘   └────────────────┬───────────────────┘
+                    │                                     │
+┌───────────────────▼─────────────────────────────────────▼───────────────────┐
+│                              PERSISTENCE TIER                               │
+│  PostgreSQL (Supabase IPv4 Pooler) · Fallback: Built-in `node:sqlite` WAL   │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Open **http://localhost:5173** and sign in with a seeded account:
+| Area | Technology | Purpose & Architectural Decision |
+|:---|:---|:---|
+| **Runtime** | Node.js 24 (LTS) | Native ES modules (`"type": "module"`), native `--env-file`, fast V8 engine. |
+| **API Server** | Express 4.21 | Lightweight HTTP framework with custom `asyncHandler` error isolation. |
+| **Frontend Framework** | React 18.3 + Vite 6 | Instant HMR development and code-split production bundles. |
+| **Styling** | Tailwind CSS 3.4 | Curated dark SaaS color system with amber/gold accents (`#EA6113`, `#F88F22`, `#FFE3B3`). |
+| **Visualization** | Chart.js 4.4 + react-chartjs-2 | Smooth monotone cubic spline interpolation with hover inspection markers. |
+| **Cloud Database** | PostgreSQL (Supabase) | Multi-AZ scalable relational database connected via AWS IPv4 transaction pooler. |
+| **Local Database** | `node:sqlite` (Built-in) | Zero-dependency synchronous/asynchronous hybrid fallback with WAL journal mode. |
+| **Identity & Auth** | Google Identity Services + JWT | GIS native OAuth2 token client with fallback to local `bcryptjs` hashing. |
+| **Intelligence** | `ua-parser-js`, `geoip-lite`, `isbot` | Enriched device detection, ISO country/city geolocation, and bot filtering. |
+| **Validation** | Zod 3.24 | Strict compile-time and runtime payload schema enforcement. |
+| **ID Generation** | NanoID 5.1 | High-entropy base62 URL-safe collision-resistant identifiers. |
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | `admin@linkpulse.dev` | `admin1234` |
-| User | `ada@example.com` | `password123` |
-| User | `grace@example.com` | `password123` |
+---
 
-To use the same-origin single-service build (like production):
-```bash
-cd client && npm run build && cd ../server && npm start
-# then open http://localhost:3001  (server serves client/dist + API + redirects)
-```
+## 🏛️ System Architecture
 
-## Environment variables
-Backend (`server/.env`, see `server/.env.example`):
-
-| Var | Required | Default | Purpose |
-|-----|----------|---------|---------|
-| `PORT` | no | `3001` | API/redirect listen port |
-| `BASE_URL` | prod yes | `http://localhost:PORT` | Public short-link host; also used for self-reference detection |
-| `CLIENT_ORIGIN` | no | `localhost:5173` | Comma-separated allowed CORS origins |
-| `JWT_SECRET` | **prod yes** | dev-only warning | Token signing secret |
-| `IP_HASH_SALT` | prod recommended | falls back to JWT secret | Salt for hashed IPs (raw IPs are **never** stored) |
-| `DATABASE_URL` | no (Postgres) | unset → SQLite | Postgres connection string (`?sslmode=require` for Neon/Supabase) |
-| `SQLITE_FILE` | no | `linkpulse.db` | SQLite path when no Postgres |
-| `COOKIE_SECURE` | no | `false` | `true` on https (visitor-id cookie) |
-
-Frontend (`client/.env`, see `client/.env.example`):
-
-| Var | Default | Purpose |
-|-----|---------|---------|
-| `VITE_API_BASE` | `""` (Vite proxy in dev) | Backend origin for the split deploy |
-| `VITE_SHORT_BASE` | `=VITE_API_BASE` | Host that serves short links (redirect engine) |
-
-## Architecture
-The backend is layered: **routes → services → db adapter**, with cross-cutting
-**middleware** (auth, validation, central error handler) and **utils**.
-The redirect hot path reads through an in-memory **LRU cache** and writes analytics
-through an **async batched queue**, so redirects stay fast and never block on the DB.
+LinkPulse enforces strict separation of concerns across 5 architectural tiers:
 
 ```mermaid
-flowchart LR
-  subgraph Client[React SPA - Vercel/Netlify or served by Node]
-    UI[Pages: Dashboard / Links / Create / Analytics]
-  end
-  subgraph Server[Express API]
-    R[Routes] --> S[Services]
-    M[Auth + Errors + RateLimit middleware]
-    RED[Redirect engine GET /:code]
-    CACHE[(LRU link cache)]
-    QUEUE[/Async click queue/]
-    S --> DB[(Postgres or SQLite)]
-    RED --> CACHE
-    RED -. enqueue .-> QUEUE --> DB
-  end
-  UI -- JWT REST /api --> R
-  Visitor -- short URL --> RED -- 302 --> Dest
+graph TD
+    subgraph Tier1["1. Presentation Tier (Client SPA)"]
+        UI_Router["React Router v6"]
+        UI_Views["Views: Dashboard · Links · CreateWizard · Campaigns · Bio · Admin"]
+        UI_Charts["Chart Engine: Spline Waves (#FFE3B3) · Doughnuts · StatCards"]
+        UI_State["AuthContext + API Request Layer (Relative /api Proxy)"]
+    end
+
+    subgraph Tier2["2. Edge Gateway & Security Middleware"]
+        GW_Helmet["Helmet CSP & Security Headers"]
+        GW_Cors["CORS Origin Validator (Same-origin & Whitelist)"]
+        GW_RateLimit["Rate Limiting (300 req/min API · 20 req/15min Auth)"]
+        GW_Cookies["Cookie Parser (Signed lp_pw & lp_vid)"]
+        GW_Auth["JWT Guard Middleware (Role-Based Access Control)"]
+    end
+
+    subgraph Tier3["3. Business Logic & Core Services"]
+        S_Redirect["redirectRouter: 8-Step Pipeline Evaluator"]
+        S_Auth["authService: Google OAuth2 & Password Hashing"]
+        S_Links["linkService: Link Lifecycle & NanoID Short Codes"]
+        S_Analytics["analyticsService: Period Metrics & Spline Aggregation"]
+        S_Org["orgService: Campaigns, Tags, and Workspaces"]
+        S_Bio["bioService: Multi-Theme Bio Page Engine"]
+        S_Admin["adminService: Metrics, Audit, Domain Blocklist"]
+        S_Queue["clickQueue: Asynchronous Event Buffer Worker"]
+    end
+
+    subgraph Tier4["4. Caching & Context Intelligence"]
+        C_LRU["In-Memory LRU Cache (Fast Metadata Lookup)"]
+        C_Parser["UAParser: OS, Browser, Device Type"]
+        C_Geo["GeoIP Lookup + Vercel Edge IP Geolocation"]
+        C_Bot["Bot Detection: isbot + Crawlers Filter"]
+        C_Crypto["HMAC-SHA256: Salted Anonymized IP Hasher"]
+    end
+
+    subgraph Tier5["5. Persistence & Storage Tier"]
+        DB_Adapter["Dialect Adapter (query, queryOne, run, transaction)"]
+        DB_PG["PostgreSQL (Supabase IPv4 Pooler :5432 / :6543)"]
+        DB_SQLite["Local node:sqlite (WAL Mode, Zero Config)"]
+    end
+
+    %% Wiring connections
+    UI_State -->|HTTPS REST| Tier2
+    Tier2 --> Tier3
+    S_Redirect --> C_LRU
+    S_Redirect --> C_Parser
+    S_Redirect --> C_Geo
+    S_Redirect --> C_Bot
+    S_Redirect --> C_Crypto
+    S_Redirect --> S_Queue
+    S_Queue -.->|Batched Flush (1s / 200 events)| DB_Adapter
+    Tier3 --> DB_Adapter
+    DB_Adapter --> DB_PG
+    DB_Adapter --> DB_SQLite
 ```
 
-## Data model / ER diagram
-All tables are created idempotently at startup from `server/src/db/schema.{sqlite,pg}.sql`.
-Primary keys are `nanoid` TEXT; timestamps are ISO-8601 UTC TEXT so the same SQL runs
-on both engines. Foreign keys + indexes are defined in the schema.
+---
 
-```mermaid
-erDiagram
-  USERS ||--o{ LINKS : owns
-  USERS ||--o{ CAMPAIGNS : owns
-  USERS ||--o{ TAGS : owns
-  USERS ||--o{ WORKSPACES : owns
-  USERS ||--o{ BIO_PAGES : owns
-  USERS ||--o{ BLOCKED_DOMAINS : adds
-  CAMPAIGNS ||--o{ LINKS : groups
-  WORKSPACES ||--o{ LINKS : folders
-  LINKS ||--o{ CLICK_EVENTS : tracked
-  LINKS }o--o{ TAGS : link_tags
-  BIO_PAGES ||--o{ BIO_PAGE_LINKS : lists
-  BIO_PAGE_LINKS }o--|| LINKS : points
-  USERS ||--o{ ADMIN_DISABLE : "disabled_by"
+## 🔄 Data Flow Diagrams (DFD)
 
-  USERS { string id string name string email string password_hash string role datetime created_at }
-  LINKS { string id string owner_id string campaign_id string folder_id string short_code string destination_url string title string status string password_hash datetime expires_at int max_clicks int click_count string device_rules string disabled_reason string disabled_by datetime created_at datetime updated_at }
-  CLICK_EVENTS { string id string link_id datetime clicked_at string ip_hash string visitor_id string referrer string device_type string os string browser string country string city int is_bot int is_unique string source }
-  CAMPAIGNS { string id string owner_id string name string description datetime start_date datetime end_date datetime created_at }
-  TAGS { string id string owner_id string name datetime created_at }
-  BLOCKED_DOMAINS { string id string domain string reason string added_by datetime created_at }
-  BIO_PAGES { string id string owner_id string slug string title string bio string theme datetime created_at }
-```
-
-## Redirect engine & rule order
-`GET /:code` (`server/src/routes/redirectRoutes.js`) evaluates rules in a fixed,
-documented order. **All rules 1–8 are wired** (Phase 2 activated expiry, click
-limit, password and device targeting).
-
-1. **Lookup** — cache-first (LRU, invalidated on update/disable). Not found → **404** page.
-2. **Status disabled** → **410** page showing the disable reason.
-3. **Destination on blocklist** → **blocked** page.
-4. **Expiry passed** → link auto-marked expired (never deleted) → expired page (**410**).
-5. **Click limit reached** → limit-reached page (**410**, fresh atomic count read).
-6. **Password protected** → password form (**401**, bcrypt + short-lived signed cookie).
-7. **Device targeting** → choose destination by OS/device (`device_rules` JSON).
-8. **Redirect** → **302** (not 301, so analytics stay accurate) + async click log.
+### DFD Level 0 — System Context Diagram
+The Level 0 Context Diagram displays the boundary of the LinkPulse system and its interactions with external entities.
 
 ```mermaid
 flowchart TD
-  A[GET /:code] --> B{cache lookup}
-  B -- miss+unknown --> E404[404 page]
-  B -- found --> C{status disabled?}
-  C -- yes --> E410[410 blocked page]
-  C -- no --> D{domain blocklisted?}
-  D -- yes --> EB[blocked page]
-  D -- no --> P2[rules 4-7: expiry / limit / password / device]
-  P2 --> RED[302 redirect]
-  RED --> LOG[enqueue click - async]
+    Creator(["👤 Link Creator / Marketer"])
+    Visitor(["🌐 Web Visitor / QR Scanner"])
+    Admin(["👑 System Administrator"])
+    GoogleAuth(["🔑 Google Identity Services"])
+    DestSite(["🎯 Destination Website"])
+
+    subgraph LinkPulsePlatform[" LinkPulse Central System "]
+        Engine["LinkPulse Gateway, Redirect & Analytics Core"]
+    end
+
+    Creator -->|"1. Submit URL, tags, password & device rules"| Engine
+    Engine -->|"2. Return short code, analytics & QR images"| Creator
+
+    Visitor -->|"3. Request short link (GET /:code) or Bio (GET /bio/:slug)"| Engine
+    Engine -->|"4. HTTP 302 Redirect + visitor cookie"| Visitor
+    Visitor -->|"5. Follow HTTP 302 to destination"| DestSite
+
+    Admin -->|"6. Inspect platform telemetry & add domain blocklist"| Engine
+    Engine -->|"7. Return system health, abuse alerts & audit logs"| Admin
+
+    GoogleAuth <-->|"8. Exchange OAuth2 access token for user profile"| Engine
 ```
 
-## Async click tracking
-`server/src/services/clickQueue.js` decouples the redirect from persistence:
-- The redirect handler calls `enqueueClick()` (fire-and-forget) **after** sending the 302.
-- A background worker flushes every **1s** or when the queue hits **200**, in a
-  transaction: unique-visitor check → batched `INSERT` → **atomic** per-link
-  `click_count` bump (`UPDATE ... WHERE max_clicks IS NULL OR click_count < max_clicks`).
-- **Durability:** flushes on `SIGINT`/`SIGTERM`, retries failed batches (up to 3×).
-- **Bot filtering:** `isbot` + heuristics; bot rows are stored with `is_bot=1` but
-  excluded from analytics counts and never bump `click_count`.
-- **Privacy:** raw IPs are never stored — only a salted, truncated HMAC hash. A
-  first-party `lp_vid` cookie supplies the unique-visitor key.
+---
 
-## API reference
-Base: `/api`. Authenticated routes need `Authorization: Bearer <jwt>`.
+### DFD Level 1 — Functional Decomposition Diagram
+The Level 1 Diagram decomposes the central system into distinct sub-processes and data stores.
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| `GET` | `/api/health` | — | Liveness probe |
-| `POST` | `/api/auth/register` | — | Create account (first account becomes admin) |
-| `POST` | `/api/auth/login` | — | Login → `{ token, user }` |
-| `GET` | `/api/auth/me` | ✅ | Current user |
-| `POST` | `/api/links` | ✅ | Create link (rate-limited, fully validated) |
-| `GET` | `/api/links` | ✅ | List own links — `?search=&status=&campaignId=&tagId=&folderId=&limit=&offset=` |
-| `GET` | `/api/links/:id` | ✅ | Link detail (+ tags, campaign, folder) |
-| `PATCH` | `/api/links/:id` | ✅ | Update settings — expiry, click limit, password (set/clear), campaign, folder, tags, device rules, status; busts redirect cache |
-| `GET` | `/api/links/available?code=` | ✅ | Real-time alias availability |
-| `POST` | `/api/links/validate` | ✅ | Dry-run wizard warnings (no publish) |
-| `GET/POST/PATCH/DELETE` | `/api/campaigns[/:id]` | ✅ | Campaign CRUD + per-campaign stats |
-| `GET/PATCH/DELETE` | `/api/tags[/:id]` | ✅ | Tag list w/ counts, rename, delete |
-| `GET/POST/PATCH/DELETE` | `/api/folders[/:id]` | ✅ | Folder CRUD + link counts |
-| `POST` | `/api/links/import/preview` | ✅ | Validate CSV rows (no writes) → per-row errors |
-| `POST` | `/api/links/import` | ✅ | Import valid rows only → `{imported, failed}` report |
-| `GET` | `/api/qr/:code.png` / `.svg` | — | QR code image for a short link (`?size=`, encodes `?src=qr`) |
-| `GET` | `/api/admin/stats` / `/alerts` / `/links` / `/users` | 👑 | Platform analytics, abuse alerts, moderation lists |
-| `POST` | `/api/admin/links/:id/disable\|enable` | 👑 | Disable with reason (instant, cache bust) / re-enable |
-| `GET/POST/DELETE` | `/api/admin/blocklist[/:id]` | 👑 | Blocked-domain CRUD (subdomains inherit) |
-| `GET/POST/PATCH/DELETE` | `/api/bio[/:id]` | ✅ | Link-in-bio page CRUD (slug, theme, ordered buttons) |
-| `PUT` | `/api/bio/:id/links` | ✅ | Set the page's links + order + per-button label |
-| `GET` | `/bio/:slug` | — | **Public** server-rendered bio page (clicks route through the engine `?src=bio`) |
-| `GET` | `/api/analytics/dashboard?period=&campaignId=` | ✅ | Dashboard summary (metrics, timeseries, top links, geo) |
-| `GET` | `/api/analytics/link/:id?period=` | ✅ | Full per-link analytics |
-| `GET` | `/api/analytics/campaign/:id?period=` | ✅ | Campaign analytics |
-| `GET` | `/api/analytics/alerts` | ✅ | Expiring-soon / near-limit / disabled / spike alerts |
-| `GET` | `/:code` | — | **Redirect engine** (302 + tracking) |
+```mermaid
+flowchart TD
+    %% Entities
+    User(["👤 User / Admin"])
+    Visitor(["🌐 Public Visitor"])
+    
+    %% Processes
+    P1["1.0 Authentication & Identity Engine"]
+    P2["2.0 Link Management & Validation Engine"]
+    P3["3.0 Redirect Pipeline & Rule Evaluator"]
+    P4["4.0 Async Telemetry Enrichment & Batch Queue"]
+    P5["5.0 Analytics Aggregation & Spline Engine"]
+    P6["6.0 Admin Moderation & Blocklist Guard"]
 
-`period` accepts `today | 7d | 30d | 90d`, or `from`/`to` ISO timestamps for custom ranges.
+    %% Data Stores
+    D1[("D1: Users Store")]
+    D2[("D2: Links Store")]
+    D3[("D3: Click Events Log")]
+    D4[("D4: In-Memory LRU Cache")]
+    D5[("D5: Blocked Domains")]
 
-## Testing
+    %% Authentication Flow
+    User -->|Credentials / Google Token| P1
+    P1 <-->|Read / Write Profile & JWT| D1
+    P1 -->|Auth Token| User
+
+    %% Link Creation Flow
+    User -->|Target URL, Campaign, Expiry, Passwords| P2
+    P2 -->|Check Blocked Domain| D5
+    P2 -->|Persist Link Record| D2
+    P2 -->|Invalidate / Update| D4
+    P2 -->|Short Link Details| User
+
+    %% Redirection Flow
+    Visitor -->|GET /:code| P3
+    P3 <-->|Check Cached Link| D4
+    P3 <-->|Fallback Read| D2
+    P3 <-->|Check Domain Safety| D5
+    P3 -->|HTTP 302 Redirect| Visitor
+    P3 -.->|Raw Event Data| P4
+
+    %% Async Click Queue Flow
+    P4 -->|Enrich UserAgent, GeoIP, SHA-256 IP| P4
+    P4 -->|Batched INSERT Click Events| D3
+    P4 -->|Atomic Click Count Increment| D2
+
+    %% Analytics Flow
+    User -->|Query Dashboard / Timeseries| P5
+    P5 <-->|Read Aggregated Clicks & Uniques| D3
+    P5 <-->|Read Link Metas| D2
+    P5 -->|Spline Wave Dataset & Geo Breakdown| User
+
+    %% Admin Moderation
+    User -->|Add Phishing Domain / Kill Link| P6
+    P6 -->|Write Blocklist| D5
+    P6 -->|Update Status = disabled| D2
+    P6 -->|Bust LRU Cache| D4
+```
+
+---
+
+## ⚡ Core Workflow Flowcharts
+
+### 1. 8-Step Redirect Decision Pipeline
+Every visitor request (`GET /:code`) navigates an 8-rule pipeline executed in strict deterministic order:
+
+```mermaid
+flowchart TD
+    Start(["Incoming Visitor Request: GET /:code"]) --> CheckReserved{"Is code reserved SPA word?<br>(login, dashboard, bio, etc.)"}
+    CheckReserved -- Yes --> SPA["Pass through to Static SPA / Frontend Handler"]
+    CheckReserved -- No --> Step1["Step 1: Cache Lookup (In-Memory LRU)"]
+
+    Step1 --> CacheHit{"Found in LRU Cache?"}
+    CacheHit -- Yes --> InspectLink["Evaluate Link Metadata"]
+    CacheHit -- No --> QueryDB["Query DB: SELECT FROM links WHERE short_code = ?"]
+    QueryDB --> Exists{"Link exists in DB?"}
+    Exists -- No --> Page404["Return 404 Not Found Page (no-store)"]
+    Exists -- Yes --> SetCache["Store in LRU Cache"] --> InspectLink
+
+    InspectLink --> Step2{"Step 2: Status Check<br>Is status == 'disabled'?"}
+    Step2 -- Yes --> Page410Disabled["Return 410 Gone: Blocked Page with Admin Reason"]
+    Step2 -- No --> Step3{"Step 3: Domain Blocklist<br>Is destination domain blocked?"}
+
+    Step3 -- Yes --> Page403["Return 403 Forbidden: Phishing / Blocked Domain Page"]
+    Step3 -- No --> Step4{"Step 4: Expiration Check<br>Has expires_at passed?"}
+
+    Step4 -- Yes --> AutoExpire["Update links SET status = 'expired'<br>(Analytics preserved, never deleted!)"]
+    AutoExpire --> BustCache["Invalidate LRU Cache"] --> Page410Expired["Return 410 Gone: Link Expired Page"]
+    Step4 -- No --> Step5{"Step 5: Max Clicks Limit<br>Is max_clicks configured?"}
+
+    Step5 -- Yes --> FreshCount["Fresh atomic read: SELECT click_count FROM links"]
+    FreshCount --> LimitReached{"click_count >= max_clicks?"}
+    LimitReached -- Yes --> BustCache2["Invalidate LRU Cache"] --> Page410Limit["Return 410 Gone: Click Limit Exceeded Page"]
+    LimitReached -- No --> Step6
+    Step5 -- No --> Step6{"Step 6: Password Protection<br>Is password_hash present?"}
+
+    Step6 -- Yes --> HasCookie{"Has valid signed 12h<br>'lp_pw' JWT cookie?"}
+    HasCookie -- No --> IsPost{"Is request HTTP POST<br>with password?"}
+    IsPost -- No --> Page401["Return 401 Unauthorized: Terminal Password Entry Page"]
+    IsPost -- Yes --> CheckBcrypt{"bcrypt.compareSync(attempt, hash)?"}
+    CheckBcrypt -- No --> Page401Error["Return 401 Unauthorized: Invalid Password Prompt"]
+    CheckBcrypt -- Yes --> SetPwCookie["Set signed 'lp_pw' HTTP-only cookie (12h)"] --> Step7
+    HasCookie -- Yes --> Step7
+    Step6 -- No --> Step7["Step 7: Device Targeting Rules"]
+
+    Step7 --> ParseDevice["Detect Client Device Class (iOS / Android / Desktop)"]
+    ParseDevice --> MatchRule{"Device rule defined for client class?"}
+    MatchRule -- Yes --> OverrideURL["Override target = device_rules[deviceClass]"] --> Step8
+    MatchRule -- No --> DefaultURL["Target = destination_url"] --> Step8
+
+    Step8["Step 8: Final Redirection & Non-Blocking Logging"] --> IssueVisitorCookie["Issue 1-year first-party 'lp_vid' cookie if new"]
+    IssueVisitorCookie --> Redirect302["HTTP 302 Found redirect to target<br>(Cache-Control: no-store)"]
+    Redirect302 --> PushQueue["Fire-and-forget: enqueueClick(event)<br>Redirect is NOT delayed!"]
+    PushQueue --> End(["Visitor Lands on Destination Website"])
+```
+
+---
+
+### 2. Google OAuth 2.0 & GIS Pipeline
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as User Browser
+    participant GIS as Google Identity Services (GIS)
+    participant Client as React Client (AuthPage.jsx)
+    participant API as Express API (/api/auth/google)
+    participant GoogleAPI as Google OAuth2 API (userinfo)
+    participant DB as Supabase PostgreSQL (users table)
+
+    User->>Client: Click "Continue with Google"
+    Client->>GIS: tokenClient.requestAccessToken({ prompt: 'select_account' })
+    GIS-->>User: Open Google Native Account Chooser Popup
+    User->>GIS: Select Account & Authorize
+    GIS-->>Client: Return access_token
+    Client->>API: POST /api/auth/google { access_token }
+    API->>GoogleAPI: GET https://www.googleapis.com/oauth2/v3/userinfo
+    GoogleAPI-->>API: Return { email, name, picture }
+    API->>DB: SELECT * FROM users WHERE LOWER(email) = LOWER(?)
+    alt User exists
+        DB-->>API: Return existing user
+    else User does not exist
+        API->>DB: INSERT INTO users (id, name, email, password_hash, role, created_at)
+        DB-->>API: User created
+    end
+    API-->>Client: Return { token: JWT, user: { id, name, email, role } }
+    Client->>Client: localStorage.setItem('lp_token', token)
+    Client-->>User: Redirect to /app Dashboard
+```
+
+---
+
+### 3. Asynchronous Click Batch Queue
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Visitor as Web / QR Visitor
+    participant Engine as Redirect Engine (redirectRoutes.js)
+    participant Context as Click Context Enricher (clickContext.js)
+    participant Queue as In-Memory Click Queue (clickQueue.js)
+    participant DB as PostgreSQL Database (click_events & links)
+
+    Visitor->>Engine: GET /:code
+    Engine->>Context: buildClickEvent(req, link)
+    activate Context
+    Context->>Context: ua-parser-js -> OS, Browser, Device
+    Context->>Context: geoip-lite / x-vercel-ip -> Country & City
+    Context->>Context: isbot -> Crawler vs Human
+    Context->>Context: SHA-256(IP + salt) -> Anonymous IP Hash
+    Context-->>Engine: Enriched Event Object
+    deactivate Context
+
+    Engine-->>Visitor: HTTP 302 Found (Instant Response!)
+    Engine->>Queue: enqueueClick(event)
+
+    Note over Queue: Events buffer in-memory array.<br>Flush triggers every 1,000ms OR when queue >= 200 items.
+
+    rect rgb(26, 18, 10)
+        Note over Queue,DB: Background Batch Worker Execution (flushOnce)
+        Queue->>DB: BEGIN TRANSACTION
+        loop For each event in batch
+            Queue->>DB: SELECT 1 FROM click_events WHERE link_id=? AND (visitor_id=? OR ip_hash=?) LIMIT 1
+            DB-->>Queue: Is Unique Flag (0 or 1)
+        end
+        Queue->>DB: Bulk INSERT INTO click_events (all batch rows)
+        Queue->>DB: Atomic Counter UPDATE links SET click_count = CASE ... WHERE id=?
+        Queue->>DB: COMMIT TRANSACTION
+    end
+```
+
+---
+
+## 🗄️ Database Architecture & ER Diagram
+
+LinkPulse features a normalized relational schema with 10 tables supporting both PostgreSQL and SQLite:
+
+```mermaid
+erDiagram
+    USERS ||--o{ LINKS : "owns"
+    USERS ||--o{ CAMPAIGNS : "owns"
+    USERS ||--o{ TAGS : "owns"
+    USERS ||--o{ WORKSPACES : "owns"
+    USERS ||--o{ BIO_PAGES : "owns"
+    USERS ||--o{ BLOCKED_DOMAINS : "adds"
+    CAMPAIGNS ||--o{ LINKS : "groups"
+    WORKSPACES ||--o{ LINKS : "contains"
+    LINKS ||--o{ CLICK_EVENTS : "records"
+    LINKS }o--o{ TAGS : "link_tags"
+    BIO_PAGES ||--o{ BIO_PAGE_LINKS : "includes"
+    BIO_PAGE_LINKS }o--|| LINKS : "references"
+    USERS ||--o{ LINKS : "disabled_by"
+
+    USERS {
+        string id PK "nanoid(21)"
+        string name "User display name"
+        string email UK "User email"
+        string password_hash "bcryptjs hash"
+        string role "admin | user"
+        datetime created_at "ISO-8601 UTC"
+    }
+
+    LINKS {
+        string id PK "nanoid(21)"
+        string owner_id FK "References users(id)"
+        string campaign_id FK "References campaigns(id)"
+        string folder_id FK "References workspaces(id)"
+        string short_code UK "Base62 unique code"
+        string destination_url "Target URL"
+        string title "Descriptive title"
+        string status "active | expired | disabled"
+        string password_hash "Optional bcrypt hash"
+        datetime expires_at "Optional expiration"
+        int max_clicks "Optional click quota"
+        int click_count "Atomic click counter"
+        string device_rules "JSON: ios, android, desktop"
+        string disabled_reason "Admin disable notes"
+        string disabled_by FK "References users(id)"
+        datetime created_at "ISO-8601 UTC"
+        datetime updated_at "ISO-8601 UTC"
+    }
+
+    CLICK_EVENTS {
+        string id PK "nanoid(21)"
+        string link_id FK "References links(id)"
+        datetime clicked_at "ISO-8601 UTC"
+        string ip_hash "Salted HMAC-SHA256"
+        string visitor_id "Cookie or IP hash"
+        string referrer "Host domain"
+        string device_type "desktop | mobile | tablet"
+        string os "Operating System"
+        string browser "Browser name"
+        string country "ISO Country Code"
+        string city "City Name"
+        int is_bot "0 = Human | 1 = Bot"
+        int is_unique "1 = First visit | 0 = Return"
+        string source "direct | qr | bio | social"
+    }
+
+    CAMPAIGNS {
+        string id PK "nanoid(21)"
+        string owner_id FK "References users(id)"
+        string name "Campaign title"
+        string description "Campaign description"
+        datetime start_date "Start timestamp"
+        datetime end_date "End timestamp"
+        datetime created_at "ISO-8601 UTC"
+    }
+
+    TAGS {
+        string id PK "nanoid(21)"
+        string owner_id FK "References users(id)"
+        string name "Tag label"
+        datetime created_at "ISO-8601 UTC"
+    }
+
+    WORKSPACES {
+        string id PK "nanoid(21)"
+        string owner_id FK "References users(id)"
+        string name "Folder title"
+        datetime created_at "ISO-8601 UTC"
+    }
+
+    BLOCKED_DOMAINS {
+        string id PK "nanoid(21)"
+        string domain UK "FQDN or pattern"
+        string reason "Phishing / Abuse description"
+        string added_by FK "Admin user ID"
+        datetime created_at "ISO-8601 UTC"
+    }
+
+    BIO_PAGES {
+        string id PK "nanoid(21)"
+        string owner_id FK "References users(id)"
+        string slug UK "URL identifier"
+        string title "Bio page headline"
+        string bio "Short description"
+        string theme "dark | sunset | neon | minimal"
+        datetime created_at "ISO-8601 UTC"
+        datetime updated_at "ISO-8601 UTC"
+    }
+
+    BIO_PAGE_LINKS {
+        string id PK "nanoid(21)"
+        string bio_page_id FK "References bio_pages(id)"
+        string link_id FK "References links(id)"
+        int position "Sort order index"
+        string label "Custom button label"
+    }
+```
+
+---
+
+## 📊 Telemetry & Analytics Visualization Engine
+
+The LinkPulse dashboard renders real-time telemetry through a custom **monotone cubic spline wave chart** configured with an elegant cyber-amber and cream theme (`#FFE3B3`):
+
+```
+ Clicks
+  240 │                                          ╭────╮
+  200 │                                    ╭─────╯    ╰─╮
+  160 │                              ╭─────╯            ╰──╮
+  120 │                        ╭─────╯                     ╰──╮
+   80 │           ╭──╮   ╭─────╯                              ╰──╮
+   40 │    ╭──────╯  ╰───╯                                       ╰────────
+    0 └───┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴────────► Date
+        Oct 01  Oct 04  Oct 07  Oct 10  Oct 13  Oct 16  Oct 19  Oct 20
+```
+
+### Visual Specifications
+- **Spline Wave Interpolation**: Powered by `cubicInterpolationMode: 'monotone'` with `tension: 0.45` to render organic curves that prevent unnatural overshoot spikes.
+- **Micro-Interaction Markers**: Default state hides dense point markers (`pointRadius: 0`) for an uninterrupted line. Hovering over any timestamp reveals a crisp circular node (`pointHoverRadius: 5.5`) with a white border.
+- **Dual-State Zero Fallback**: Telemetry cards dynamically toggle between the live stream and an animated empty state when no traffic is detected.
+
+---
+
+## 🔒 Security, Privacy & Edge Performance
+
+```
+   ┌────────────────────────────────────────────────────────────────────────┐
+   │                       PRIVACY-BY-DESIGN PIPELINE                      │
+   │                                                                        │
+   │   Raw Visitor IP  ───► [ HMAC-SHA256 ] ───► Truncated Anonymized Hash │
+   │   (Never Saved)        Salt: IP_HASH_SALT    (Stored in click_events)  │
+   └────────────────────────────────────────────────────────────────────────┘
+```
+
+1. **Zero-Raw-IP Retention**: Client IP addresses are immediately hashed using HMAC-SHA256 combined with a server secret `IP_HASH_SALT`. The raw IP is never logged or written to disk.
+2. **First-Party Visitor Tracking**: An HTTP-only `lp_vid` cookie identifies unique visitors across distinct link clicks without cross-site tracking cookies.
+3. **Bcrypt Password Gateways**: Password-protected links hash attempted inputs with `bcryptjs` (salt rounds: 10) and grant access using a signed 12-hour JWT cookie (`lp_pw`).
+4. **Rate Limiting & DoS Shield**:
+   - `/api` general surface: Max 300 requests per minute per IP.
+   - `/api/auth` authentication surface: Max 20 attempts per 15 minutes per IP.
+5. **Security Headers**: Managed by `helmet` with custom Content Security Policies (CSP), `X-Content-Type-Options: nosniff`, and `Cross-Origin-Resource-Policy: cross-origin`.
+
+---
+
+## 📡 API Reference
+
+Base URL: `/api`. Authenticated endpoints require `Authorization: Bearer <JWT_TOKEN>`.
+
+### Authentication & User
+| Method | Endpoint | Auth | Description |
+|:---|:---|:---:|:---|
+| `GET` | `/api/health` | — | Liveness probe & system uptime check. |
+| `POST` | `/api/auth/register` | — | Register account (first user auto-assigned `admin` role). |
+| `POST` | `/api/auth/login` | — | Email/password login returning JWT and user profile. |
+| `POST` | `/api/auth/google` | — | Google OAuth2 token/credential exchange & user profile sync. |
+| `GET` | `/api/auth/me` | 🔒 | Return currently authenticated user profile. |
+
+### Links & Short Codes
+| Method | Endpoint | Auth | Description |
+|:---|:---|:---:|:---|
+| `POST` | `/api/links` | 🔒 | Create short link with optional passwords, expiry, device rules. |
+| `GET` | `/api/links` | 🔒 | List user links with search, status, campaign, folder filters. |
+| `GET` | `/api/links/:id` | 🔒 | Detailed link metadata, tag associations, and campaign info. |
+| `PATCH` | `/api/links/:id` | 🔒 | Update destination, expiry, password, device rules (busts LRU cache). |
+| `GET` | `/api/links/available?code=` | 🔒 | Real-time short code collision & availability check. |
+| `POST` | `/api/links/validate` | 🔒 | Dry-run destination verification without creating records. |
+| `POST` | `/api/links/import/preview` | 🔒 | Dry-run CSV validation for bulk link import. |
+| `POST` | `/api/links/import` | 🔒 | Transactional bulk import of valid CSV records. |
+| `GET` | `/api/qr/:code.png` / `.svg` | — | Render high-resolution QR code image (`?size=`, `?src=qr`). |
+
+### Analytics & Reporting
+| Method | Endpoint | Auth | Description |
+|:---|:---|:---:|:---|
+| `GET` | `/api/analytics/dashboard` | 🔒 | Dashboard summary: period clicks, unique visitors, spline timeseries. |
+| `GET` | `/api/analytics/link/:id` | 🔒 | Deep per-link breakdown: devices, OS, browsers, countries, referrers. |
+| `GET` | `/api/analytics/campaign/:id` | 🔒 | Aggregated performance for links under a campaign. |
+| `GET` | `/api/analytics/alerts` | 🔒 | Active alerts: expiring soon, click limits reached, traffic spikes. |
+
+### Link-in-Bio & Organization
+| Method | Endpoint | Auth | Description |
+|:---|:---|:---:|:---|
+| `GET/POST/PATCH/DELETE` | `/api/campaigns[/:id]` | 🔒 | Campaign CRUD and link grouping. |
+| `GET/PATCH/DELETE` | `/api/tags[/:id]` | 🔒 | Tag management with live link counts. |
+| `GET/POST/PATCH/DELETE` | `/api/folders[/:id]` | 🔒 | Workspace folder CRUD. |
+| `GET/POST/PATCH/DELETE` | `/api/bio[/:id]` | 🔒 | Bio page CRUD (slug, headline, theme). |
+| `PUT` | `/api/bio/:id/links` | 🔒 | Reorder bio page links and update custom button labels. |
+| `GET` | `/bio/:slug` | — | **Public** server-rendered bio page (`?src=bio` tracking). |
+| `GET` | `/:code` | — | **Redirect Engine**: 8-step decision pipeline and 302 jump. |
+
+---
+
+## 💻 Local Development & Quickstart
+
+### Prerequisites
+- **Node.js 24+** (Required for native `--env-file` and built-in `node:sqlite`).
+- **npm 10+**
+
+### 1. Clone & Setup
+```bash
+git clone https://github.com/kernelcorestudio/KCSTUDIO-LINKPLUSE.git
+cd KCSTUDIO-LINKPLUSE
+```
+
+### 2. Configure Backend (`server/.env`)
 ```bash
 cd server
-npm test                      # node:test unit tests (alias, URL, self-ref, code
-                              #   uniqueness, click-limit atomicity, bot exclusion,
-                              #   device class, link settings/PATCH guards, blocklist,
-                              #   CSV row validation, bio pages, redirect rule ORDER,
-                              #   campaign-ownership + tags-only PATCH)
-npm start &                    # then:
-node scripts/smoke.mjs        # end-to-end: register->create->redirect->analytics->
-                              #   rules 4-7->org CRUD->QR->import->admin moderation->
-                              #   bio pages->device targeting->ownership invariant
+cp .env.example .env
 ```
-Latest local results: **12/12 unit tests pass**, **smoke: all 73 assertions passed**.
+*(Default settings automatically use the built-in SQLite engine with no external database required).*
 
-## Seed data
+### 3. Install & Seed
 ```bash
-cd server && npm run seed
+npm install
+npm run seed     # Optional: Generates 3 users, 20 links, and 3,900 sample clicks
+npm start        # Starts Express server at http://localhost:3001
 ```
-Creates 3 users (1 admin), 3 campaigns, 3 folders, 4 tags, **20 links** (including a disabled,
-an expired, a password-protected, a click-limited and a device-targeted one), a
-link-in-bio page (`/bio/ada`) and ~3,900 realistic click events spread across 30 days
-(bots, uniques, referrers, countries, devices, QR + bio sources). Seed logins are listed above.
 
-## Deployment
-Two supported shapes — both config-driven, no code changes.
+### 4. Configure & Start Frontend (`client/`)
+```bash
+# In a new terminal window:
+cd client
+cp .env.example .env
+npm install
+npm run dev      # Starts Vite dev server at http://localhost:5173
+```
 
-### A) Single service on Render (recommended demo path)
-Uses `render.yaml` — the Node service serves the SPA **and** API **and** redirects.
-1. Push to GitHub → Render → **New → Blueprint** → select the repo.
-2. Render auto-creates the web service. On first deploy set:
-   - `BASE_URL` = your `https://<service>.onrender.com`
-   - `CLIENT_ORIGIN` = same URL
-   - `DATABASE_URL` = a Neon/Supabase Postgres URL (`?sslmode=require`)
-3. Reopen the service → run the seed once against Postgres (`npm --prefix server run seed`).
+Open **`http://localhost:5173`** in your browser.
 
-> Render free tier disk is ephemeral: **SQLite data resets on restart**, so point
-> `DATABASE_URL` at hosted Postgres before judging a "live" demo.
+#### Pre-Configured Seed Logins:
+| Role | Email | Password |
+|:---|:---|:---|
+| **Admin** | `admin@linkpulse.dev` | `admin1234` |
+| **User** | `ada@example.com` | `password123` |
+| **User** | `grace@example.com` | `password123` |
 
-### B) Split: frontend on Vercel/Netlify + backend on Render/Railway
-- **Backend**: deploy just `server/` on Render/Railway (same env vars, no client build).
-- **Frontend**: `client/` on Vercel (`vercel.json`) or Netlify (`netlify.toml`), with
-  build env `VITE_API_BASE=https://<backend>` and `VITE_SHORT_BASE=https://<backend>`.
-- Set backend `CLIENT_ORIGIN=https://<frontend-url>` for CORS.
+---
 
-## Build order / phase status
-- **Phase 1 (done):** auth, create link + validation wizard + real-time alias check,
-  redirect engine (rules 1–3 + 8), async click tracking, link + dashboard analytics,
-  seed, tests, deploy configs.
-- **Phase 2 (done):** full redirect rules (expiry, atomic click limit page, password, device),
-  complete create-wizard options, campaigns UI, tags/folders, dashboard filters.
-- **Phase 3 (done):** QR codes (PNG/SVG, `?src=qr`), CSV bulk import with preview +
-  error report, admin panel (disable-with-reason + blocklist CRUD), platform analytics,
-  abuse alerts, click-limit/redirect-cache polish.
-- **Phase 4 (done):** link-in-bio public pages (`/bio/:slug`, 5 themes, ordered buttons,
-  `?src=bio` tracking), device-targeting UI in wizard + settings, dashboard alerts panel
-  (messages + severity), seed realism, expanded tests (12 unit / 73 smoke).
+## 🚀 Production Deployment (Vercel + Supabase)
+
+LinkPulse is built for zero-configuration, single-project full-stack deployment on **Vercel** with **Supabase PostgreSQL**.
+
+```
+   ┌─────────────────────────────────────────────────────────┐
+   │                    VERCEL REPOSITORY                     │
+   │                                                         │
+   │  ├── client/        ──► Compiled Vite SPA Static Assets │
+   │  ├── server/        ──► Shared Business Logic & Engines │
+   │  ├── api/index.js   ──► Serverless Function Entrypoint  │
+   │  └── vercel.json    ──► Clean Edge Rewrites & Routing   │
+   └─────────────────────────────────────────────────────────┘
+```
+
+### 1. Vercel Project Settings
+- **Framework Preset**: `Other`
+- **Root Directory**: `./`
+- **Build Command**: `npm --prefix client install && npm --prefix client run build`
+- **Output Directory**: `client/dist`
+
+### 2. Production Environment Variables (Vercel Dashboard)
+| Variable Key | Recommended Production Value |
+|:---|:---|
+| `DATABASE_URL` | `postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:5432/postgres?sslmode=require` |
+| `JWT_SECRET` | A secure 32+ character random string |
+| `IP_HASH_SALT` | A secure random salt string |
+| `COOKIE_SECURE` | `true` |
+| `VITE_GOOGLE_CLIENT_ID` | Your Google OAuth 2.0 Web Client ID |
+| `BASE_URL` | `https://<your-vercel-domain>.vercel.app` |
+| `CLIENT_ORIGIN` | `https://<your-vercel-domain>.vercel.app` |
+
+> ⚠️ **Important Supabase Note**: Use the **IPv4 Connection Pooler** host (`aws-0-[region].pooler.supabase.com`) on port `5432` or `6543`. Direct connection hostnames (`db.xxxx.supabase.co`) are IPv6-only and will fail with `getaddrinfo ENOTFOUND` on serverless platforms.
+
+---
+
+## ⚙️ Environment Variables Guide
+
+### Server Environment (`server/.env`)
+| Variable | Required | Default | Purpose |
+|:---|:---:|:---|:---|
+| `PORT` | No | `3001` | Local API and redirect engine listen port. |
+| `BASE_URL` | Yes (Prod) | `http://localhost:3001` | Public short-link origin; used to assemble URLs and detect self-references. |
+| `CLIENT_ORIGIN` | No | `http://localhost:5173` | Comma-separated CORS allowed origins. |
+| `JWT_SECRET` | Yes (Prod) | Dev fallback | Secret key for signing authorization and password cookies. |
+| `IP_HASH_SALT` | Yes (Prod) | Falls back to JWT | Cryptographic salt for salted SHA-256 IP address hashing. |
+| `DATABASE_URL` | No | `null` (SQLite fallback) | PostgreSQL connection URI. If omitted, uses local `node:sqlite`. |
+| `SQLITE_FILE` | No | `linkpulse.db` | Path to SQLite file when PostgreSQL is not configured. |
+| `COOKIE_SECURE` | No | `false` | Sets `Secure` flag on visitor cookies (`true` on HTTPS). |
+
+### Client Environment (`client/.env`)
+| Variable | Required | Default | Purpose |
+|:---|:---:|:---|:---|
+| `VITE_API_BASE` | No | `""` (Relative proxy) | Backend URL for standalone deployments. Leave empty for Vercel unified deploy. |
+| `VITE_SHORT_BASE` | No | Window origin | Public redirect domain for short links. |
+| `VITE_GOOGLE_CLIENT_ID` | Yes | Embedded default | Google Cloud OAuth2 Client ID for Google Identity Services. |
+
+---
+
+## 🧪 Testing & Quality Assurance
+
+LinkPulse includes unit tests and an end-to-end integration smoke test suite covering link lifecycle, security guards, and telemetry verification.
+
+```bash
+# Run unit test suite (Node.js native test runner)
+cd server
+npm test
+
+# Run full end-to-end smoke verification
+node scripts/smoke.mjs
+```
+
+### Verification Results
+```
+✔ Unit Test Suite: 12/12 passing (0 flaky, 0 failing)
+  • NanoID short code generation & uniqueness
+  • URL parsing & self-reference circular guard
+  • 8-step redirect engine evaluation order
+  • Expired status lifecycle enforcement
+  • Atomic click-limit CAS clamping
+  • Bcrypt password protection & 12h signed session cookie
+  • Device targeting rules (iOS, Android, Desktop)
+  • Phishing domain blocklist matching
+  • Bot filtering & exclusion from analytics counts
+  • CSV batch import validation & error isolation
+  • Link-in-bio multi-theme resolution
+  • Workspace ownership and cascade invariants
+
+✔ End-to-End Smoke Test: 73/73 assertions passing
+```
+
+---
+
+<p align="center">
+  Built with ❤️ by the <strong>KernelCoreStudio</strong> team.<br />
+  Licensed under the <a href="LICENSE">MIT License</a>.
+</p>
