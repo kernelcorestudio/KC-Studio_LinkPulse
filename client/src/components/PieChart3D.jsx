@@ -1,5 +1,6 @@
 // 3D Isometric Extruded Donut / Pie Chart (Retro-Future Cyberpunk SaaS)
 import { useState } from 'react';
+import { useTheme } from '../lib/theme';
 
 const DEFAULT_COLORS = [
   '#FF5757', // Coral Red (like reference)
@@ -20,6 +21,7 @@ export function PieChart3D({
   height = 320,
 }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const { isLight } = useTheme();
 
   // Normalize numbers and filter out zeroes or invalid values
   const rawItems = labels.map((label, i) => ({
@@ -275,8 +277,8 @@ export function PieChart3D({
                 <path
                   d={topFacePath}
                   fill={slice.color}
-                  stroke={isHovered ? '#ffffff' : 'rgba(255,255,255,0.18)'}
-                  strokeWidth={isHovered ? 1.8 : 0.8}
+                  stroke={isHovered ? (isLight ? '#1F0E02' : '#ffffff') : (isLight ? 'rgba(31,14,2,0.35)' : 'rgba(255,255,255,0.18)')}
+                  strokeWidth={isHovered ? 2 : (isLight ? 1.2 : 0.8)}
                   style={{
                     filter: isHovered
                       ? `drop-shadow(0 0 8px ${slice.color}99)`
@@ -333,8 +335,8 @@ export function PieChart3D({
                 <path
                   d={pathData}
                   fill="none"
-                  stroke={isHovered ? slice.color : 'rgba(255,227,179,0.35)'}
-                  strokeWidth={isHovered ? 1.8 : 1}
+                  stroke={isHovered ? slice.color : (isLight ? '#1F0E02' : 'rgba(255,227,179,0.35)')}
+                  strokeWidth={isHovered ? 2 : (isLight ? 1.8 : 1)}
                   strokeLinecap="round"
                 />
 
@@ -342,8 +344,10 @@ export function PieChart3D({
                 <circle
                   cx={startX}
                   cy={startY}
-                  r={isHovered ? 3 : 2}
+                  r={isHovered ? 3.5 : (isLight ? 2.5 : 2)}
                   fill={slice.color}
+                  stroke={isLight ? '#1F0E02' : 'transparent'}
+                  strokeWidth={isLight ? 1 : 0}
                 />
 
                 {/* Callout Label & Value */}
@@ -351,9 +355,9 @@ export function PieChart3D({
                   x={endX + (isRight ? 6 : -6)}
                   y={elbowY - 3}
                   textAnchor={isRight ? 'start' : 'end'}
-                  fill={isHovered ? '#ffffff' : '#FFE3B3'}
+                  fill={isHovered ? slice.color : (isLight ? '#1F0E02' : '#FFE3B3')}
                   fontSize="11"
-                  fontWeight="600"
+                  fontWeight={isLight ? '700' : '600'}
                   className="select-none font-sans"
                 >
                   {slice.label.length > 14 ? `${slice.label.slice(0, 12)}…` : slice.label}
@@ -362,9 +366,9 @@ export function PieChart3D({
                   x={endX + (isRight ? 6 : -6)}
                   y={elbowY + 11}
                   textAnchor={isRight ? 'start' : 'end'}
-                  fill={isHovered ? slice.color : 'rgba(251,185,49,0.7)'}
+                  fill={isHovered ? slice.color : (isLight ? '#8C4300' : 'rgba(251,185,49,0.7)')}
                   fontSize="10"
-                  fontWeight="600"
+                  fontWeight={isLight ? '700' : '600'}
                   className="font-mono select-none"
                 >
                   {slice.value.toLocaleString()} ({slice.percentage}%)

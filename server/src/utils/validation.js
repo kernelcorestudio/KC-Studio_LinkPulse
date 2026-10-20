@@ -102,12 +102,12 @@ export const createLinkSchema = z.object({
 
 // PATCH /api/links/:id - every field optional; only provided keys are updated.
 // password: "" clears it. expiresAt/maxClicks: null clears them.
-// status: 'active' re-activates an expired link (disabled is admin-only, Phase 3).
+// status: 'active', 'disabled', or 'expired'.
 export const updateLinkSchema = createLinkSchema
   .omit({ destinationUrl: true })
   .extend({
     destinationUrl: z.string().min(1).optional(),
-    status: z.enum(['active', 'expired']).optional(),
+    status: z.enum(['active', 'disabled', 'expired']).optional(),
     password: z.string().max(128).optional().nullable(),
   })
   .refine((d) => Object.keys(d).length > 0, { message: 'No fields to update' });

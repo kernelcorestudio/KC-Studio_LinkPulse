@@ -391,7 +391,8 @@ export default function Links() {
         };
       });
     } catch (err) {
-      alert(err.message || 'Failed to update link status');
+      const msg = err.details?.map((d) => `${d.path ? d.path + ': ' : ''}${d.message}`).join(', ') || err.message || 'Failed to update link status';
+      alert(msg);
     }
   }
 

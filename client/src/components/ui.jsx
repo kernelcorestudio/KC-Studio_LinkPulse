@@ -6,6 +6,7 @@ import {
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { EmptyIcon, AlertIcon } from './Icons';
 import { PieChart3D } from './PieChart3D';
+import { useTheme } from '../lib/theme';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Tooltip, Legend, Filler);
 
@@ -125,7 +126,7 @@ export function StatCard({ label, value, sub, icon, className = '' }) {
   );
 }
 
-const lineOpts = (color) => ({
+const lineOpts = (color, isLight = false) => ({
   responsive: true,
   maintainAspectRatio: false,
   interaction: {
@@ -139,21 +140,21 @@ const lineOpts = (color) => ({
       align: 'start',
       labels: {
         boxWidth: 16,
-        boxHeight: 2.5,
+        boxHeight: 3,
         usePointStyle: false,
-        color: '#94a3b8',
-        font: { family: 'Inter, sans-serif', size: 11, weight: '500' },
+        color: isLight ? '#1F0E02' : '#94a3b8',
+        font: { family: 'Inter, sans-serif', size: 11, weight: isLight ? '700' : '500' },
         padding: 14,
       },
     },
     tooltip: {
-      backgroundColor: '#18181b',
-      titleColor: '#e4e4e7',
-      titleFont: { family: 'Inter, sans-serif', size: 11, weight: '600' },
-      bodyColor: '#ffffff',
-      bodyFont: { family: 'Inter, sans-serif', size: 12, weight: '600' },
-      borderColor: 'rgba(255, 255, 255, 0.12)',
-      borderWidth: 1,
+      backgroundColor: isLight ? '#FFFFFF' : '#18181b',
+      titleColor: isLight ? '#1F0E02' : '#e4e4e7',
+      titleFont: { family: 'Inter, sans-serif', size: 11, weight: '700' },
+      bodyColor: isLight ? '#1F0E02' : '#ffffff',
+      bodyFont: { family: 'Inter, sans-serif', size: 12, weight: '700' },
+      borderColor: isLight ? '#1F0E02' : 'rgba(255, 255, 255, 0.12)',
+      borderWidth: 1.5,
       padding: { top: 8, bottom: 8, left: 12, right: 12 },
       cornerRadius: 8,
       displayColors: true,
@@ -168,16 +169,18 @@ const lineOpts = (color) => ({
   scales: {
     x: {
       grid: {
-        display: false, // Clean look, no vertical grid lines
+        display: isLight,
+        color: isLight ? 'rgba(31, 14, 2, 0.18)' : 'transparent',
+        lineWidth: 1,
       },
       border: {
         display: true,
-        color: 'rgba(255, 255, 255, 0.15)', // Clean baseline like reference
-        width: 1.5,
+        color: isLight ? '#1F0E02' : 'rgba(255, 255, 255, 0.15)', // Dark baseline in light mode
+        width: isLight ? 2.2 : 1.5,
       },
       ticks: {
-        color: '#94a3b8',
-        font: { family: 'Inter, sans-serif', size: 10 },
+        color: isLight ? '#1F0E02' : '#94a3b8',
+        font: { family: 'Inter, sans-serif', size: 10, weight: isLight ? '600' : '400' },
         maxRotation: 0,
         autoSkip: true,
         maxTicksLimit: 10,
@@ -187,18 +190,19 @@ const lineOpts = (color) => ({
     y: {
       beginAtZero: true,
       grid: {
-        color: 'rgba(255, 255, 255, 0.05)', // Subtle horizontal guidelines
+        color: isLight ? 'rgba(31, 14, 2, 0.30)' : 'rgba(255, 255, 255, 0.05)', // Dark dark horizontal guidelines
+        lineWidth: isLight ? 1.5 : 1,
         drawTicks: false,
       },
       border: {
         display: true,
-        color: 'rgba(255, 255, 255, 0.15)', // Clean vertical axis line on left
-        width: 1.5,
+        color: isLight ? '#1F0E02' : 'rgba(255, 255, 255, 0.15)', // Dark vertical axis in light mode
+        width: isLight ? 2.2 : 1.5,
       },
       ticks: {
         precision: 0,
-        color: '#94a3b8',
-        font: { family: 'Inter, sans-serif', size: 10 },
+        color: isLight ? '#1F0E02' : '#94a3b8',
+        font: { family: 'Inter, sans-serif', size: 10, weight: isLight ? '600' : '400' },
         padding: 8,
         callback: (v) => (v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v),
       },
@@ -207,29 +211,35 @@ const lineOpts = (color) => ({
 });
 
 export function LineChart({ labels, data, label = 'Total Clicks', color = '#F88F22' }) {
+  const { isLight } = useTheme();
+  const effectiveColor = isLight ? '#B83800' : color; // Bold, punchy dark burnt orange in light theme
+
   return (
     <div className="h-64">
       <Line
-        options={lineOpts(color)}
+        options={lineOpts(effectiveColor, isLight)}
         data={{
           labels,
           datasets: [{
             label,
             data,
-            borderColor: color,
-            borderWidth: 2.2,
-            cubicInterpolationMode: 'monotone', // Ultra-smooth organic curves matching reference
+            borderColor: effectiveColor,
+            borderWidth: isLight ? 3 : 2.2, // Thicker, darker line in light theme
+            cubicInterpolationMode: 'monotone',
             tension: 0.45,
             borderCapStyle: 'round',
             borderJoinStyle: 'round',
-            pointRadius: 0, // Clean continuous wave, points hidden by default
-            pointHoverRadius: 5.5, // Shows crisp circular point only on hover
-            pointHoverBackgroundColor: color,
-            pointHoverBorderColor: '#ffffff',
+            pointRadius: isLight ? 3 : 0,
+            pointBackgroundColor: effectiveColor,
+            pointBorderColor: isLight ? '#1F0E02' : '#ffffff',
+            pointBorderWidth: isLight ? 1.5 : 2,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: effectiveColor,
+            pointHoverBorderColor: isLight ? '#1F0E02' : '#ffffff',
             pointHoverBorderWidth: 2,
             pointHitRadius: 15,
             fill: true,
-            backgroundColor: `${color}18`,
+            backgroundColor: isLight ? 'rgba(184, 56, 0, 0.22)' : `${color}18`,
           }],
         }}
       />
@@ -237,39 +247,63 @@ export function LineChart({ labels, data, label = 'Total Clicks', color = '#F88F
   );
 }
 
-const barOpts = (horizontal = false) => ({
+const barOpts = (horizontal = false, isLight = false) => ({
   indexAxis: horizontal ? 'y' : 'x',
   responsive: true,
   maintainAspectRatio: false,
   plugins: { legend: { display: false } },
   scales: {
     x: {
-      grid: { color: 'rgba(248, 143, 34, 0.05)' },
+      grid: {
+        color: isLight ? 'rgba(31, 14, 2, 0.25)' : 'rgba(248, 143, 34, 0.05)',
+        lineWidth: isLight ? 1.2 : 1,
+      },
       beginAtZero: true,
-      ticks: { precision: 0, color: '#a77242', font: { family: 'Inter', size: 10 } },
-      border: { display: false },
+      ticks: {
+        precision: 0,
+        color: isLight ? '#1F0E02' : '#a77242',
+        font: { family: 'Inter', size: 10, weight: isLight ? '600' : '400' },
+      },
+      border: {
+        display: true,
+        color: isLight ? '#1F0E02' : 'transparent',
+        width: isLight ? 2 : 1,
+      },
     },
     y: {
-      grid: { display: false },
-      ticks: { color: '#d4a373', font: { family: 'Inter', size: 10 } },
-      border: { display: false },
+      grid: {
+        color: isLight ? 'rgba(31, 14, 2, 0.20)' : 'transparent',
+        lineWidth: isLight ? 1.2 : 1,
+      },
+      ticks: {
+        color: isLight ? '#1F0E02' : '#d4a373',
+        font: { family: 'Inter', size: 10, weight: isLight ? '600' : '400' },
+      },
+      border: {
+        display: true,
+        color: isLight ? '#1F0E02' : 'transparent',
+        width: isLight ? 2 : 1,
+      },
     },
   },
 });
 
 export function BarChart({ labels, data, label = 'Count', color = '#EA6113', horizontal = false }) {
+  const { isLight } = useTheme();
+  const barColor = isLight ? '#B83800' : color;
+
   return (
     <div className="h-64">
       <Bar
-        options={barOpts(horizontal)}
+        options={barOpts(horizontal, isLight)}
         data={{
           labels,
           datasets: [{
             label,
             data,
-            backgroundColor: `${color}cc`,
+            backgroundColor: `${barColor}dd`,
             borderRadius: 4,
-            hoverBackgroundColor: color,
+            hoverBackgroundColor: barColor,
           }],
         }}
       />
