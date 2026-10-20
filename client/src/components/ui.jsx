@@ -317,10 +317,11 @@ export function DoughnutChart({
   labels,
   data,
   colors,
+  items,
 }) {
   return (
     <div className="w-full flex items-center justify-center">
-      <PieChart3D labels={labels} data={data} colors={colors} />
+      <PieChart3D labels={labels} data={data} colors={colors} items={items} />
     </div>
   );
 }

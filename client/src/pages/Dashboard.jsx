@@ -336,6 +336,7 @@ export default function Dashboard() {
             <DoughnutChart
               labels={data.countries.map((c) => c.label)}
               data={data.countries.map((c) => Number(c.clicks))}
+              items={data.countries}
             />
           ) : (
             <div className="relative flex flex-col items-center justify-center py-10 px-4 text-center">
