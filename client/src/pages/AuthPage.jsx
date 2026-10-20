@@ -1,5 +1,5 @@
 // Login + Register pages (shared modern SaaS form shell).
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { EyeIcon, EyeOffIcon, GoogleIcon } from '../components/Icons';
@@ -7,7 +7,6 @@ import { EyeIcon, EyeOffIcon, GoogleIcon } from '../components/Icons';
 function GoogleModal({ isOpen, onClose, onSelect, busy, error }) {
   const [customName, setCustomName] = useState('');
   const [customEmail, setCustomEmail] = useState('');
-  const [showCustom, setShowCustom] = useState(false);
 
   if (!isOpen) return null;
 
@@ -35,11 +34,11 @@ function GoogleModal({ isOpen, onClose, onSelect, busy, error }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-[400px] rounded-2xl border border-white/10 bg-[#16110d] p-6 shadow-2xl text-white transition-all"
+        className="relative w-full max-w-[420px] rounded-2xl border border-white/10 bg-[#16110d] p-6 shadow-2xl text-white transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -56,11 +55,11 @@ function GoogleModal({ isOpen, onClose, onSelect, busy, error }) {
         </button>
 
         {/* Google Header */}
-        <div className="flex flex-col items-center text-center mb-6">
+        <div className="flex flex-col items-center text-center mb-5">
           <div className="p-2.5 rounded-full bg-white/5 border border-white/10 shadow-inner mb-3">
             <GoogleIcon className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-semibold text-white tracking-tight">Choose an account</h3>
+          <h3 className="text-lg font-semibold text-white tracking-tight">Sign in with Google</h3>
           <p className="text-xs text-zinc-400 mt-1">
             to continue to <span className="text-[#FBB931] font-medium">LinkPulse</span>
           </p>
@@ -72,95 +71,75 @@ function GoogleModal({ isOpen, onClose, onSelect, busy, error }) {
           </div>
         )}
 
-        {/* 1-Click Accounts */}
-        <div className="space-y-2 mb-4">
-          {defaultAccounts.map((acc) => (
-            <button
-              key={acc.email}
-              type="button"
-              disabled={busy}
-              onClick={() => onSelect(acc)}
-              className="w-full flex items-center gap-3.5 p-3 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-amber-500/30 active:scale-[0.99] transition-all duration-150 text-left group"
-            >
-              <div
-                className={`h-9 w-9 rounded-full bg-gradient-to-tr ${acc.gradient} flex items-center justify-center text-sm font-bold text-white shadow-sm shrink-0`}
+        {/* Direct Account Input */}
+        <form onSubmit={handleCustomSubmit} className="space-y-3 rounded-xl border border-white/10 bg-black/40 p-4 mb-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-amber-200">Enter Your Google Account</span>
+            <span className="text-[10px] text-zinc-400 font-mono">1-click login</span>
+          </div>
+          <div>
+            <label className="text-[11px] text-zinc-400 mb-1 block">Your Name</label>
+            <input
+              type="text"
+              value={customName}
+              onChange={(e) => setCustomName(e.target.value)}
+              placeholder="e.g. Karan Nayal"
+              className="w-full rounded-lg border border-white/10 bg-zinc-900/90 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+            />
+          </div>
+          <div>
+            <label className="text-[11px] text-zinc-400 mb-1 block">Google Email</label>
+            <input
+              type="email"
+              value={customEmail}
+              onChange={(e) => setCustomEmail(e.target.value)}
+              placeholder="e.g. your.email@gmail.com"
+              required
+              className="w-full rounded-lg border border-white/10 bg-zinc-900/90 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={busy}
+            className="w-full rounded-lg bg-gradient-to-r from-[#EA6113] to-[#F88F22] py-2 text-xs font-semibold uppercase tracking-wider text-white hover:from-[#F88F22] hover:to-[#FBB931] shadow-md transition disabled:opacity-50"
+          >
+            {busy ? 'Connecting…' : 'Continue with this account'}
+          </button>
+        </form>
+
+        {/* Quick Demo Accounts */}
+        <div className="mb-4">
+          <div className="text-[11px] font-medium text-zinc-400 mb-2 uppercase tracking-wider">Or choose a test account:</div>
+          <div className="space-y-2">
+            {defaultAccounts.map((acc) => (
+              <button
+                key={acc.email}
+                type="button"
+                disabled={busy}
+                onClick={() => onSelect(acc)}
+                className="w-full flex items-center gap-3.5 p-2.5 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-amber-500/30 active:scale-[0.99] transition-all duration-150 text-left group"
               >
-                {acc.name.charAt(0)}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-white group-hover:text-amber-200 transition-colors truncate">
-                  {acc.name}
+                <div
+                  className={`h-8 w-8 rounded-full bg-gradient-to-tr ${acc.gradient} flex items-center justify-center text-xs font-bold text-white shadow-sm shrink-0`}
+                >
+                  {acc.name.charAt(0)}
                 </div>
-                <div className="text-xs text-zinc-400 truncate">{acc.email}</div>
-              </div>
-              <div className="text-xs text-zinc-500 group-hover:text-amber-400 transition-colors">
-                ➔
-              </div>
-            </button>
-          ))}
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-medium text-white group-hover:text-amber-200 transition-colors truncate">
+                    {acc.name}
+                  </div>
+                  <div className="text-[11px] text-zinc-400 truncate">{acc.email}</div>
+                </div>
+                <div className="text-xs text-zinc-500 group-hover:text-amber-400 transition-colors">➔</div>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Use another Google account toggle/section */}
-        {!showCustom ? (
-          <button
-            type="button"
-            onClick={() => setShowCustom(true)}
-            className="w-full flex items-center gap-3 p-3 rounded-xl border border-dashed border-white/15 bg-transparent hover:bg-white/[0.04] text-xs font-medium text-zinc-300 hover:text-white transition-all text-left"
-          >
-            <div className="h-8 w-8 rounded-full border border-white/20 flex items-center justify-center text-zinc-400">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="8.5" cy="7" r="4" />
-                <line x1="20" y1="8" x2="20" y2="14" />
-                <line x1="23" y1="11" x2="17" y2="11" />
-              </svg>
-            </div>
-            <span>Use another Google account</span>
-          </button>
-        ) : (
-          <form onSubmit={handleCustomSubmit} className="space-y-3 rounded-xl border border-white/10 bg-black/40 p-3.5 mt-2">
-            <div className="text-xs font-medium text-amber-200/80 mb-1">Enter Google Account Details</div>
-            <div>
-              <input
-                type="text"
-                value={customName}
-                onChange={(e) => setCustomName(e.target.value)}
-                placeholder="Name (e.g. Karan Nayal)"
-                className="w-full rounded-lg border border-white/10 bg-zinc-900/80 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-              />
-            </div>
-            <div>
-              <input
-                type="email"
-                value={customEmail}
-                onChange={(e) => setCustomEmail(e.target.value)}
-                placeholder="Google Email (e.g. you@gmail.com)"
-                required
-                className="w-full rounded-lg border border-white/10 bg-zinc-900/80 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-              />
-            </div>
-            <div className="flex gap-2 pt-1">
-              <button
-                type="button"
-                onClick={() => setShowCustom(false)}
-                className="w-1/3 rounded-lg border border-white/10 py-1.5 text-xs text-zinc-400 hover:text-white hover:bg-white/5 transition"
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                disabled={busy}
-                className="w-2/3 rounded-lg bg-gradient-to-r from-[#EA6113] to-[#F88F22] py-1.5 text-xs font-semibold text-white hover:from-[#F88F22] hover:to-[#FBB931] shadow transition disabled:opacity-50"
-              >
-                {busy ? 'Signing in…' : 'Continue'}
-              </button>
-            </div>
-          </form>
-        )}
-
-        <p className="text-[10px] text-zinc-500 text-center mt-5 leading-relaxed">
-          To continue, Google will share your name, email address, and profile picture with LinkPulse.
-        </p>
+        {/* Device Accounts Explanatory Note */}
+        <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-2.5 text-[11px] text-amber-200/70 leading-relaxed text-center">
+          💡 <span className="font-medium text-amber-200">Device Google Accounts:</span> To open the native browser popup with your device's logged-in Google accounts, add <code className="text-[#FBB931] font-mono">VITE_GOOGLE_CLIENT_ID</code> in <code className="text-[#FBB931] font-mono">client/.env</code>.
+        </div>
       </div>
     </div>
   );
@@ -177,6 +156,49 @@ export default function AuthPage({ mode = 'login' }) {
   const [googleBusy, setGoogleBusy] = useState(false);
   const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [googleModalError, setGoogleModalError] = useState('');
+  const googleBtnContainerRef = useRef(null);
+
+  useEffect(() => {
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!googleClientId || typeof window === 'undefined') return;
+
+    let mounted = true;
+    const interval = setInterval(() => {
+      if (window.google?.accounts?.id && googleBtnContainerRef.current) {
+        clearInterval(interval);
+        try {
+          window.google.accounts.id.initialize({
+            client_id: googleClientId,
+            callback: async (res) => {
+              if (res.credential && mounted) {
+                setGoogleBusy(true);
+                try {
+                  await loginWithGoogle({ credential: res.credential });
+                  nav('/app');
+                } catch (err) {
+                  setError(err.message || 'Google authentication failed');
+                } finally {
+                  if (mounted) setGoogleBusy(false);
+                }
+              }
+            },
+          });
+          window.google.accounts.id.renderButton(googleBtnContainerRef.current, {
+            type: 'standard',
+            theme: 'outline',
+            size: 'large',
+          });
+        } catch (e) {
+          console.warn('Google Identity Services init error:', e);
+        }
+      }
+    }, 200);
+
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
@@ -199,23 +221,12 @@ export default function AuthPage({ mode = 'login' }) {
     setError('');
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     if (googleClientId) {
+      const nativeGoogleBtn = googleBtnContainerRef.current?.querySelector('div[role=button]');
+      if (nativeGoogleBtn) {
+        nativeGoogleBtn.click();
+        return;
+      }
       if (typeof window !== 'undefined' && window.google?.accounts?.id) {
-        window.google.accounts.id.initialize({
-          client_id: googleClientId,
-          callback: async (res) => {
-            if (res.credential) {
-              setGoogleBusy(true);
-              try {
-                await loginWithGoogle({ credential: res.credential });
-                nav('/app');
-              } catch (err) {
-                setError(err.message || 'Google authentication failed');
-              } finally {
-                setGoogleBusy(false);
-              }
-            }
-          },
-        });
         window.google.accounts.id.prompt();
         return;
       }
@@ -351,6 +362,7 @@ export default function AuthPage({ mode = 'login' }) {
             <GoogleIcon className="h-4 w-4 shrink-0" />
             <span>{googleBusy ? 'Connecting…' : 'Continue with Google'}</span>
           </button>
+          <div ref={googleBtnContainerRef} className="hidden" aria-hidden="true" />
 
           <p className="text-center text-xs text-amber-200/60 pt-2">
             {isLogin ? (
