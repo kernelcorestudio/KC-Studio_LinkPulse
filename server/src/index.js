@@ -1,18 +1,21 @@
 // Server entry: init DB, start async click queue, graceful shutdown.
 import { config } from './config.js';
 import { initDb, closeDb } from './db/index.js';
-import { createApp } from './app.js';
+import { createApp } from './createApp.js';
 import { startClickQueue, shutdownClickQueue } from './services/clickQueue.js';
 
 await initDb();
 
-if (!process.env.VERCEL) {
+const isVercel = Boolean(process.env.VERCEL);
+const isTest = process.env.NODE_ENV === 'test' || process.execArgv.includes('--test');
+
+if (!isVercel && !isTest) {
   startClickQueue();
 }
 
 const app = createApp();
 
-if (!process.env.VERCEL) {
+if (!isVercel && !isTest) {
   const server = app.listen(config.port, () => {
     console.log(`[linkpulse] API listening on ${config.baseUrl} (port ${config.port})`);
   });

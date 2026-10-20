@@ -5,12 +5,18 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config } from '../config.js';
+import { PG_SCHEMA, SQLITE_SCHEMA } from './schemas.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let mode; // 'pg' | 'sqlite'
 let pool = null; // pg Pool
 let sqlite = null; // node:sqlite DatabaseSync (built-in, no native deps)
+
+async function ensureDb() {
+  if (!initDbPromise) await initDb();
+  else await initDbPromise;
+}
 
 function toPgSql(sql) {
   // Our SQL never contains literal '?' outside of placeholders.
@@ -20,6 +26,7 @@ function toPgSql(sql) {
 
 // node:sqlite is synchronous; wrap it so callers can always await.
 export async function query(sql, params = []) {
+  await ensureDb();
   if (mode === 'pg') {
     const res = await pool.query(toPgSql(sql), params);
     return res.rows;
@@ -33,6 +40,7 @@ export async function queryOne(sql, params = []) {
 }
 
 export async function run(sql, params = []) {
+  await ensureDb();
   if (mode === 'pg') {
     const res = await pool.query(toPgSql(sql), params);
     return { changes: res.rowCount };
@@ -43,6 +51,7 @@ export async function run(sql, params = []) {
 
 // Run many statements atomically (used by batch click inserts & tests).
 export async function transaction(fn) {
+  await ensureDb();
   if (mode === 'pg') {
     const client = await pool.connect();
     try {
@@ -119,17 +128,29 @@ async function applySchema(file) {
   }
 
   if (!raw) {
-    console.warn(`[db] schema file not found on disk: ${file}, skipping local schema load`);
-    return;
+    raw = mode === 'pg' ? PG_SCHEMA : SQLITE_SCHEMA;
   }
 
-  const statements = raw
-    .split(/;\s*(?:\r?\n|$)/)
-    .map((s) => s.replace(/^\s*--.*$/gm, '').trim())
-    .filter(Boolean);
-  for (const stmt of statements) {
-    if (mode === 'pg') await pool.query(stmt);
-    else sqlite.exec(stmt);
+  try {
+    if (mode === 'pg') {
+      await pool.query(raw);
+    } else {
+      sqlite.exec(raw);
+    }
+  } catch (err) {
+    // If multi-statement fails for any reason, fall back to individual statements
+    const statements = raw
+      .split(/;\s*(?:\r?\n|$)/)
+      .map((s) => s.replace(/^\s*--.*$/gm, '').trim())
+      .filter(Boolean);
+    for (const stmt of statements) {
+      try {
+        if (mode === 'pg') await pool.query(stmt);
+        else sqlite.exec(stmt);
+      } catch {
+        // Ignore duplicate index/table errors
+      }
+    }
   }
   await addMissingColumns();
 }

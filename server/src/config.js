@@ -20,14 +20,18 @@ export const config = {
         ? `https://${env.VERCEL_URL}`
         : `http://localhost:${env.PORT || 3001}`),
   // Frontend origin(s) for CORS, comma separated
-  clientOrigins: (
-    env.CLIENT_ORIGIN ||
-    (env.VERCEL_URL
-      ? `https://${env.VERCEL_URL}`
-      : 'http://localhost:5173,http://127.0.0.1:5173')
-  )
-    .split(',')
-    .map((s) => s.trim()),
+  clientOrigins: Array.from(
+    new Set([
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'https://kcstudio-linkpluse.vercel.app',
+      ...(env.VERCEL_PROJECT_PRODUCTION_URL ? [`https://${env.VERCEL_PROJECT_PRODUCTION_URL}`] : []),
+      ...(env.VERCEL_URL ? [`https://${env.VERCEL_URL}`] : []),
+      ...(env.CLIENT_ORIGIN ? env.CLIENT_ORIGIN.split(',').map((s) => s.trim()).filter(Boolean) : []),
+    ]),
+  ),
   databaseUrl: env.DATABASE_URL || null, // absent => local SQLite fallback
   sqliteFile: env.SQLITE_FILE || (env.VERCEL ? '/tmp/linkpulse.db' : 'linkpulse.db'),
   jwtSecret: env.JWT_SECRET || 'dev-insecure-secret-change-me',

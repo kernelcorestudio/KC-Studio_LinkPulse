@@ -6,6 +6,7 @@ import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { rmSync } from 'node:fs';
 
+process.env.NODE_ENV = 'test';
 process.env.SQLITE_FILE = new URL('./test-run.db', import.meta.url).pathname.replace(/^\//, '');
 process.env.JWT_SECRET = 'test-secret';
 process.env.BASE_URL = 'http://localhost:3001';
@@ -90,11 +91,6 @@ test('bot clicks are flagged and excluded from counts', async () => {
   assert.equal(Number(totals.n), 1, 'bot excluded from analytics count');
 });
 
-// Close DB only after every test has finished.
-after(async () => {
-  await closeDb();
-  rmSync(process.env.SQLITE_FILE, { force: true });
-});
 
 // ---- Phase 2: device targeting + link settings (PATCH) logic ----
 const { deviceClass } = await import('../src/utils/clickContext.js');
@@ -321,4 +317,10 @@ test('redirect engine applies rules in the documented order', async () => {
     server.close();
     await removeBlockedDomain((await queryOne('SELECT id FROM blocked_domains WHERE domain = ?', ['order-blocked.example'])).id);
   }
+});
+
+// Close DB only after every test has finished.
+after(async () => {
+  await closeDb();
+  rmSync(process.env.SQLITE_FILE, { force: true });
 });
