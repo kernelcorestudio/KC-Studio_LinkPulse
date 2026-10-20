@@ -83,8 +83,11 @@ html.light [class*="bg-[#000000]"] {
 
 /* Cards & modal surfaces */
 html.light .bg-\[\#080808\],
-html.light [class*="bg-[#080808]"] {
-  background-color: #FFF6E5 !important;
+html.light [class*="bg-[#080808]"],
+html.light .bg-\[\#0c0d0e\],
+html.light [class*="bg-[#0c0d0e]"],
+html.light [class*="bg-[#0c0d0e]/80"] {
+  background-color: #FFF8EB !important;
 }
 
 /* Secondary surfaces / pills */
@@ -93,19 +96,54 @@ html.light [class*="bg-[#121212]"] {
   background-color: #FFEDCC !important;
 }
 
-/* Table headers & alternate rows */
+/* Active buttons & tabs */
+html.light .bg-\[\#1a1a1a\],
+html.light [class*="bg-[#1a1a1a]"] {
+  background-color: #FFFFFF !important;
+  color: #1F0E02 !important;
+  border-color: rgba(234, 97, 19, 0.4) !important;
+}
+
+/* Table headers & alternate rows & dark zinc containers */
 html.light .bg-\[\#0d0d0e\],
 html.light [class*="bg-[#0d0d0e]"],
 html.light .bg-\[\#101012\],
-html.light [class*="bg-[#101012]"] {
+html.light [class*="bg-[#101012]"],
+html.light .bg-zinc-900,
+html.light [class*="bg-zinc-900"] {
   background-color: #F7D8A7 !important;
 }
 
-/* Borders */
+/* Zinc 800 backgrounds (e.g. badges, skeletons) */
+html.light .bg-zinc-800,
+html.light [class*="bg-zinc-800"] {
+  background-color: #FFEDCC !important;
+  color: #8C5523 !important;
+}
+
+/* Table row hovers */
+html.light tr[class*="hover:bg-zinc-800"]:hover,
+html.light div[class*="hover:bg-zinc-800"]:hover,
+html.light [class*="hover:bg-zinc-800"]:hover {
+  background-color: rgba(248, 216, 168, 0.5) !important;
+}
+
+/* Borders & Dividers */
 html.light .border-zinc-800,
 html.light [class*="border-zinc-800"],
-html.light .border-white\/\[0\.08\] {
-  border-color: rgba(234, 97, 19, 0.24) !important;
+html.light .border-zinc-700,
+html.light [class*="border-zinc-700"],
+html.light .border-white\/\[0\.08\],
+html.light [class*="border-white"] {
+  border-color: rgba(234, 97, 19, 0.22) !important;
+}
+
+html.light [class*="divide-white"] > * + * {
+  border-color: rgba(234, 97, 19, 0.15) !important;
+}
+
+html.light [class*="divide-zinc-800"] > * + * {
+  border-color: rgba(234, 97, 19, 0.15) !important;
 }
 
 /* Texts */
@@ -115,6 +153,12 @@ html.light .text-white {
 
 html.light .text-\[\#FFE3B3\],
 html.light [class*="text-[#FFE3B3]"] {
+  color: #1F0E02 !important;
+}
+
+html.light .text-zinc-100,
+html.light .text-zinc-200,
+html.light .text-zinc-300 {
   color: #1F0E02 !important;
 }
 
