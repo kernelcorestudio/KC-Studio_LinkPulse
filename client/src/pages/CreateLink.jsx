@@ -139,18 +139,18 @@ export default function CreateLink() {
     const devCount = ['ios', 'android', 'desktop'].filter((k) => devRules[k]).length;
     return (
       <div className="mx-auto max-w-lg space-y-6 text-center pt-8">
-        <div className="inline-flex rounded-2xl border border-indigo-500/30 bg-indigo-500/10 p-4 shadow-lg shadow-indigo-500/20">
-          <SparkleIcon className="h-8 w-8 text-indigo-400" />
+        <div className="inline-flex rounded-2xl border border-[#F88F22]/30 bg-[#F88F22]/10 p-4 shadow-lg shadow-[#EA6113]/20">
+          <SparkleIcon className="h-8 w-8 text-[#FBB931]" />
         </div>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Your Short Link is Live</h1>
-          <p className="text-xs text-zinc-400 mt-1">Ready to share, redirect, and collect telemetry data.</p>
+          <p className="text-xs text-amber-200/60 mt-1">Ready to share, redirect, and collect telemetry data.</p>
         </div>
 
         <div className="card space-y-4 text-center">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Public Short URL</span>
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">Public Short URL</span>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <a href={url} target="_blank" rel="noreferrer" className="break-all font-mono text-lg font-bold text-indigo-400 hover:text-indigo-300 hover:underline">
+            <a href={url} target="_blank" rel="noreferrer" className="break-all font-mono text-lg font-bold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
               {url}
             </a>
             <button
@@ -172,24 +172,24 @@ export default function CreateLink() {
           </div>
 
           {(devCount || created.password_hash || created.expires_at || created.max_clicks) && (
-            <div className="mt-2 flex flex-wrap justify-center gap-2 pt-2 border-t border-zinc-800">
+            <div className="mt-2 flex flex-wrap justify-center gap-2 pt-2 border-t border-[#2a1800]">
               {created.password_hash && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-medium text-amber-400">
                   <LockIcon className="h-3 w-3" /> Password Protected
                 </span>
               )}
               {created.expires_at && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-zinc-800 bg-zinc-900 px-2.5 py-0.5 text-[11px] font-medium text-zinc-400">
+                <span className="inline-flex items-center gap-1 rounded-full border border-[#2a1800] bg-[#1c1000] px-2.5 py-0.5 text-[11px] font-medium text-amber-200/60">
                   <ClockIcon className="h-3 w-3" /> Expires: {new Date(created.expires_at).toLocaleDateString()}
                 </span>
               )}
               {created.max_clicks && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-medium text-indigo-300">
+                <span className="inline-flex items-center gap-1 rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#FBB931]">
                   <ChartIcon className="h-3 w-3" /> Cap: {created.max_clicks} clicks
                 </span>
               )}
               {devCount > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-medium text-indigo-300">
+                <span className="inline-flex items-center gap-1 rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#FBB931]">
                   <DeviceIcon className="h-3 w-3" /> {devCount} Device Rules
                 </span>
               )}
@@ -214,26 +214,26 @@ export default function CreateLink() {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       {/* Header and Step Indicator */}
-      <div className="border-b border-zinc-800/80 pb-5">
+      <div className="border-b border-[#2a1800]/80 pb-5">
         <h1 className="text-2xl font-bold tracking-tight text-white">Create Short Link</h1>
-        <p className="text-xs text-zinc-400 mt-1">Configure your destination target, custom slug, and routing protocols.</p>
+        <p className="text-xs text-amber-200/60 mt-1">Configure your destination target, custom slug, and routing protocols.</p>
 
         <div className="mt-4 flex items-center gap-3 text-xs font-medium">
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 ${
             step >= 1
-              ? 'border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 font-semibold'
-              : 'text-zinc-500'
+              ? 'border border-[#F88F22]/30 bg-[#F88F22]/10 text-[#FBB931] font-semibold'
+              : 'text-amber-200/40'
           }`}>
-            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] text-white">1</span>
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#EA6113] text-[10px] text-white">1</span>
             <span>Target & Slug</span>
           </span>
-          <span className="text-zinc-600">→</span>
+          <span className="text-amber-900/60">→</span>
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 ${
             step >= 2
-              ? 'border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 font-semibold'
-              : 'text-zinc-500'
+              ? 'border border-[#F88F22]/30 bg-[#F88F22]/10 text-[#FBB931] font-semibold'
+              : 'text-amber-200/40'
           }`}>
-            <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${step >= 2 ? 'bg-indigo-600 text-white' : 'bg-zinc-800 text-zinc-500'}`}>2</span>
+            <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${step >= 2 ? 'bg-[#EA6113] text-white' : 'bg-[#1c1000] text-amber-200/50'}`}>2</span>
             <span>Settings & Rules</span>
           </span>
         </div>
@@ -377,16 +377,16 @@ export default function CreateLink() {
           <details className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
             <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wider text-zinc-200 flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <DeviceIcon className="h-4 w-4 text-indigo-400" />
+                <DeviceIcon className="h-4 w-4 text-[#FBB931]" />
                 <span>Device-Specific Routing</span>
               </span>
               {(form.ios || form.android || form.desktop) && (
-                <span className="rounded-full bg-indigo-500/20 px-2 py-0.5 text-[10px] font-medium text-indigo-300">
+                <span className="rounded-full bg-[#F88F22]/20 px-2 py-0.5 text-[10px] font-medium text-[#FFE3B3]">
                   Active
                 </span>
               )}
             </summary>
-            <p className="mt-2 text-xs text-zinc-400">
+            <p className="mt-2 text-xs text-amber-200/60">
               Route visitors to specific destinations according to their device operating system.
             </p>
             <div className="mt-3 grid gap-3 sm:grid-cols-3 text-xs">
@@ -409,15 +409,15 @@ export default function CreateLink() {
           </details>
 
           {/* Configuration Summary Card */}
-          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-4 text-xs space-y-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 block mb-2">Configuration Summary</span>
-            <div className="flex justify-between"><span className="text-zinc-500">Destination:</span> <span className="font-mono text-zinc-200 truncate max-w-[260px]">{form.destinationUrl}</span></div>
-            <div className="flex justify-between"><span className="text-zinc-500">Short Code:</span> <span className="font-mono text-indigo-400">{form.alias.trim() || 'Auto-generated'}</span></div>
-            {form.campaignId && <div className="flex justify-between"><span className="text-zinc-500">Campaign:</span> <span className="text-zinc-200">{campaigns.find((c) => c.id === form.campaignId)?.name}</span></div>}
-            {form.folderId && <div className="flex justify-between"><span className="text-zinc-500">Folder:</span> <span className="text-zinc-200">{folders.find((f) => f.id === form.folderId)?.name}</span></div>}
-            {form.expiresAt && <div className="flex justify-between"><span className="text-zinc-500">Expires:</span> <span className="text-zinc-200">{form.expiresAt.replace('T', ' ')}</span></div>}
-            {form.maxClicks && <div className="flex justify-between"><span className="text-zinc-500">Click Cap:</span> <span className="text-zinc-200">{form.maxClicks} clicks</span></div>}
-            {form.password && <div className="flex justify-between"><span className="text-zinc-500">Protection:</span> <span className="text-amber-400 font-medium">Password Protected</span></div>}
+          <div className="rounded-xl border border-[#2a1800] bg-[#180c00] p-4 text-xs space-y-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60 block mb-2">Configuration Summary</span>
+            <div className="flex justify-between"><span className="text-amber-200/40">Destination:</span> <span className="font-mono text-[#FFE3B3] truncate max-w-[260px]">{form.destinationUrl}</span></div>
+            <div className="flex justify-between"><span className="text-amber-200/40">Short Code:</span> <span className="font-mono text-[#FBB931]">{form.alias.trim() || 'Auto-generated'}</span></div>
+            {form.campaignId && <div className="flex justify-between"><span className="text-amber-200/40">Campaign:</span> <span className="text-amber-200/80">{campaigns.find((c) => c.id === form.campaignId)?.name}</span></div>}
+            {form.folderId && <div className="flex justify-between"><span className="text-amber-200/40">Folder:</span> <span className="text-amber-200/80">{folders.find((f) => f.id === form.folderId)?.name}</span></div>}
+            {form.expiresAt && <div className="flex justify-between"><span className="text-amber-200/40">Expires:</span> <span className="text-amber-200/80">{form.expiresAt.replace('T', ' ')}</span></div>}
+            {form.maxClicks && <div className="flex justify-between"><span className="text-amber-200/40">Click Cap:</span> <span className="text-amber-200/80">{form.maxClicks} clicks</span></div>}
+            {form.password && <div className="flex justify-between"><span className="text-amber-200/40">Protection:</span> <span className="text-amber-400 font-medium">Password Protected</span></div>}
           </div>
 
           {warnings.length > 0 && (
