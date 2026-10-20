@@ -124,43 +124,111 @@ export function StatCard({ label, value, sub, icon, className = '' }) {
   );
 }
 
-const lineOpts = {
+const lineOpts = (color) => ({
   responsive: true,
   maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
-  scales: {
-    x: {
-      grid: { color: 'rgba(248, 143, 34, 0.05)' },
-      ticks: { color: '#a77242', font: { family: 'Inter', size: 10 } },
-      border: { display: false },
+  interaction: {
+    mode: 'index',
+    intersect: false,
+  },
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+      align: 'start',
+      labels: {
+        boxWidth: 16,
+        boxHeight: 2.5,
+        usePointStyle: false,
+        color: '#94a3b8',
+        font: { family: 'Inter, sans-serif', size: 11, weight: '500' },
+        padding: 14,
+      },
     },
-    y: {
-      grid: { color: 'rgba(248, 143, 34, 0.05)' },
-      beginAtZero: true,
-      ticks: { precision: 0, color: '#a77242', font: { family: 'Inter', size: 10 } },
-      border: { display: false },
+    tooltip: {
+      backgroundColor: '#18181b',
+      titleColor: '#e4e4e7',
+      titleFont: { family: 'Inter, sans-serif', size: 11, weight: '600' },
+      bodyColor: '#ffffff',
+      bodyFont: { family: 'Inter, sans-serif', size: 12, weight: '600' },
+      borderColor: 'rgba(255, 255, 255, 0.12)',
+      borderWidth: 1,
+      padding: { top: 8, bottom: 8, left: 12, right: 12 },
+      cornerRadius: 8,
+      displayColors: true,
+      boxWidth: 8,
+      boxHeight: 8,
+      usePointStyle: true,
+      callbacks: {
+        label: (context) => ` ${context.dataset.label || 'Clicks'}: ${Number(context.parsed.y || 0).toLocaleString()}`,
+      },
     },
   },
-};
+  scales: {
+    x: {
+      grid: {
+        display: false, // Clean look, no vertical grid lines
+      },
+      border: {
+        display: true,
+        color: 'rgba(255, 255, 255, 0.15)', // Clean baseline like reference
+        width: 1.5,
+      },
+      ticks: {
+        color: '#94a3b8',
+        font: { family: 'Inter, sans-serif', size: 10 },
+        maxRotation: 0,
+        autoSkip: true,
+        maxTicksLimit: 10,
+        padding: 6,
+      },
+    },
+    y: {
+      beginAtZero: true,
+      grid: {
+        color: 'rgba(255, 255, 255, 0.05)', // Subtle horizontal guidelines
+        drawTicks: false,
+      },
+      border: {
+        display: true,
+        color: 'rgba(255, 255, 255, 0.15)', // Clean vertical axis line on left
+        width: 1.5,
+      },
+      ticks: {
+        precision: 0,
+        color: '#94a3b8',
+        font: { family: 'Inter, sans-serif', size: 10 },
+        padding: 8,
+        callback: (v) => (v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v),
+      },
+    },
+  },
+});
 
-export function LineChart({ labels, data, label = 'Clicks', color = '#F88F22' }) {
+export function LineChart({ labels, data, label = 'Total Clicks', color = '#FFE3B3' }) {
   return (
     <div className="h-64">
       <Line
-        options={lineOpts}
+        options={lineOpts(color)}
         data={{
           labels,
           datasets: [{
             label,
             data,
             borderColor: color,
-            borderWidth: 2,
-            backgroundColor: `${color}18`,
+            borderWidth: 2.2,
+            cubicInterpolationMode: 'monotone', // Ultra-smooth organic curves matching reference
+            tension: 0.45,
+            borderCapStyle: 'round',
+            borderJoinStyle: 'round',
+            pointRadius: 0, // Clean continuous wave, points hidden by default
+            pointHoverRadius: 5.5, // Shows crisp circular point only on hover
+            pointHoverBackgroundColor: color,
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2,
+            pointHitRadius: 15,
             fill: true,
-            tension: 0.4,
-            pointRadius: labels.length > 30 ? 0 : 2,
-            pointHoverRadius: 5,
-            pointBackgroundColor: color,
+            backgroundColor: `${color}18`,
           }],
         }}
       />

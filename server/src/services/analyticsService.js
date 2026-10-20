@@ -78,8 +78,8 @@ export async function getAnalytics(ownerId, { from, to, linkId, campaignId, buck
   const period = inPeriod('clicked_at', from, to, cparams);
 
   const totals = await queryOne(
-    `SELECT COUNT(*) AS totalClicks,
-            COUNT(DISTINCT CASE WHEN is_unique = 1 THEN COALESCE(visitor_id, ip_hash) END) AS uniqueVisitors
+    `SELECT COUNT(*) AS "totalClicks",
+            COUNT(DISTINCT CASE WHEN is_unique = 1 THEN COALESCE(visitor_id, ip_hash) END) AS "uniqueVisitors"
      FROM click_events
      WHERE link_id IN (${inList}) AND is_bot = 0 AND ${period}`,
     [...ids, ...cparams],
@@ -97,8 +97,8 @@ export async function getAnalytics(ownerId, { from, to, linkId, campaignId, buck
   ]);
 
   return {
-    totalClicks: Number(totals?.totalClicks || 0),
-    uniqueVisitors: Number(totals?.uniqueVisitors || 0),
+    totalClicks: Number(totals?.totalClicks ?? totals?.totalclicks ?? 0),
+    uniqueVisitors: Number(totals?.uniqueVisitors ?? totals?.uniquevisitors ?? 0),
     totalLinks: ids.length,
     timeseries: timeseries.map((r) => ({ bucket: r.bucket, clicks: Number(r.clicks) })),
     referrers, devices, os, browsers, countries, cities, sources,

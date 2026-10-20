@@ -222,7 +222,7 @@ export default function Dashboard() {
   if (!data) return <DashboardSkeleton />;
 
   const tsLabels = data.timeseries.map((t) => (t.bucket.length > 10 ? `${t.bucket.slice(11)}:00` : t.bucket.slice(5)));
-  const hasData = data.totalClicks > 0;
+  const hasData = (data?.totalClicks || 0) > 0 || (data?.timeseries && data.timeseries.some((t) => Number(t.clicks) > 0));
   const urgent = alerts.filter((a) => a.severity === 'critical').length;
 
   return (
@@ -316,7 +316,7 @@ export default function Dashboard() {
             </div>
           </div>
           {hasData ? (
-            <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#F88F22" />
+            <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#FFE3B3" label="Total Clicks" />
           ) : (
             <EmptyState title="No traffic recorded" hint="Deploy your short links to begin capturing real-time telemetry." />
           )}

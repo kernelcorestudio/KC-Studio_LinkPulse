@@ -180,7 +180,7 @@ function Analytics({ linkId }) {
           <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Clicks Timeline</h3>
           <span className="font-mono text-[10px] text-amber-900/60">[ HISTORICAL ]</span>
         </div>
-        <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#F88F22" />
+        <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#FFE3B3" label="Total Clicks" />
       </div>
 
       {/* Breakdown Grid */}
