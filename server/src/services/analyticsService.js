@@ -108,36 +108,48 @@ export async function getAnalytics(ownerId, { from, to, linkId, campaignId, buck
 /** Dashboard summary: period metrics + top links for the owner. */
 export async function getDashboardSummary(ownerId, { from, to, campaignId }) {
   const ids = await scopeLinkIds(ownerId, { campaignId });
-  const stats = await getAnalytics(ownerId, { from, to, campaignId });
+  if (!ids.length) {
+    return {
+      totalClicks: 0,
+      uniqueVisitors: 0,
+      activeLinks: 0,
+      totalLinks: 0,
+      timeseries: [],
+      countries: [],
+      devices: [],
+      topLinks: [],
+    };
+  }
 
   const campClause = campaignId ? ' AND campaign_id = ?' : '';
   const campParams = campaignId ? [ownerId, campaignId] : [ownerId];
-  const activeLinks = await queryOne(
-    `SELECT COUNT(*) AS n FROM links WHERE owner_id = ? AND status = 'active'${campClause}`, campParams,
-  );
-  const totalLinks = await queryOne(
-    `SELECT COUNT(*) AS n FROM links WHERE owner_id = ?${campClause}`, campParams,
-  );
 
-  let topLinks = [];
-  if (ids.length) {
-    const params = [];
-    const period = inPeriod('clicked_at', from, to, params);
-    topLinks = await query(
-      `SELECT l.id, l.short_code, l.title, l.destination_url, l.status,
-              COUNT(c.id) AS clicks
-       FROM links l JOIN click_events c ON c.link_id = l.id
-       WHERE l.id IN (${ids.map(() => '?').join(',')}) AND c.is_bot = 0 AND ${period}
-       GROUP BY l.id ORDER BY clicks DESC LIMIT 8`,
-      [...ids, ...params],
-    );
-  }
+  const [stats, linksCounts, topLinks] = await Promise.all([
+    getAnalytics(ownerId, { from, to, campaignId }),
+    queryOne(
+      `SELECT COUNT(*) AS total_links, COUNT(CASE WHEN status = 'active' THEN 1 END) AS active_links FROM links WHERE owner_id = ?${campClause}`,
+      campParams,
+    ),
+    (async () => {
+      const params = [];
+      const period = inPeriod('clicked_at', from, to, params);
+      const inList = ids.map(() => '?').join(',');
+      return query(
+        `SELECT l.id, l.short_code, l.title, l.destination_url, l.status,
+                COUNT(c.id) AS clicks
+         FROM links l JOIN click_events c ON c.link_id = l.id
+         WHERE l.id IN (${inList}) AND c.is_bot = 0 AND ${period}
+         GROUP BY l.id ORDER BY clicks DESC LIMIT 8`,
+        [...ids, ...params],
+      );
+    })(),
+  ]);
 
   return {
     totalClicks: stats.totalClicks,
     uniqueVisitors: stats.uniqueVisitors,
-    activeLinks: Number(activeLinks?.n || 0),
-    totalLinks: Number(totalLinks?.n || 0),
+    activeLinks: Number(linksCounts?.active_links || 0),
+    totalLinks: Number(linksCounts?.total_links || 0),
     timeseries: stats.timeseries,
     countries: stats.countries.slice(0, 6),
     devices: stats.devices,
@@ -152,74 +164,44 @@ export async function getDashboardSummary(ownerId, { from, to, campaignId }) {
  * re-deriving the numbers. A spike = last-24h clicks >= 3x previous-24h and >= 10.
  */
 export async function getAlerts(ownerId) {
+  // Fast check: if the user has no links, there are zero alerts to evaluate.
+  const hasLinks = await queryOne('SELECT id FROM links WHERE owner_id = ? LIMIT 1', [ownerId]);
+  if (!hasLinks) return [];
+
   const now = new Date();
   const soon = new Date(now.getTime() + 3 * 864e5).toISOString();
   const from24 = new Date(now.getTime() - 864e5).toISOString();
   const from48 = new Date(now.getTime() - 2 * 864e5).toISOString();
   const alerts = [];
 
-  const expiring = await query(
-    `SELECT id, short_code, title, expires_at FROM links
-     WHERE owner_id = ? AND status = 'active' AND expires_at IS NOT NULL
-       AND expires_at > ? AND expires_at <= ? ORDER BY expires_at`,
-    [ownerId, now.toISOString(), soon],
-  );
-  for (const l of expiring) {
-    const hours = Math.max(1, Math.round((new Date(l.expires_at).getTime() - now.getTime()) / 36e5));
-    const when = hours < 24 ? `${hours}h` : `${Math.round(hours / 24)}d`;
-    alerts.push({
-      type: 'expiring_soon',
-      severity: hours <= 24 ? 'critical' : 'warn',
-      message: `Stops redirecting in ${when}`,
-      link: l,
-    });
-  }
-
-  const nearLimit = await query(
-    `SELECT id, short_code, title, max_clicks, click_count FROM links
-     WHERE owner_id = ? AND max_clicks IS NOT NULL AND click_count >= max_clicks * 0.8`,
-    [ownerId],
-  );
-  for (const l of nearLimit) {
-    const left = Math.max(0, Number(l.max_clicks) - Number(l.click_count));
-    alerts.push({
-      type: 'near_click_limit',
-      severity: left <= 0 ? 'critical' : 'warn',
-      message: left <= 0 ? 'Limit reached - redirects stopped' : `${left} of ${l.max_clicks} clicks left`,
-      link: l,
-    });
-  }
-
-  const down = await query(
-    `SELECT id, short_code, title, disabled_reason FROM links WHERE owner_id = ? AND status = 'disabled'`,
-    [ownerId],
-  );
-  down.forEach((l) => alerts.push({
-    type: 'disabled',
-    severity: 'critical',
-    message: l.disabled_reason ? `Disabled: ${l.disabled_reason}` : 'Disabled by an admin',
-    link: l,
-  }));
-
-  const expired = await query(
-    `SELECT id, short_code, title, expires_at FROM links WHERE owner_id = ? AND status = 'expired'`,
-    [ownerId],
-  );
-  expired.forEach((l) => alerts.push({
-    type: 'expired',
-    severity: 'info',
-    message: l.expires_at ? `Expired ${new Date(l.expires_at).toLocaleDateString('en-CA')}` : 'Expired',
-    link: l,
-  }));
-
-  // Spike detection across the owner's links.
-  const spikes = await query(
-    `SELECT l.id, l.short_code, l.title,
-            (SELECT COUNT(*) FROM click_events c WHERE c.link_id = l.id AND c.is_bot = 0 AND c.clicked_at >= ?) AS recent,
-            (SELECT COUNT(*) FROM click_events c WHERE c.link_id = l.id AND c.is_bot = 0 AND c.clicked_at >= ? AND c.clicked_at < ?) AS prev
-     FROM links l WHERE l.owner_id = ?`,
-    [from24, from48, from24, ownerId],
-  );
+  const [expiring, nearLimit, down, expired, spikes] = await Promise.all([
+    query(
+      `SELECT id, short_code, title, expires_at FROM links
+       WHERE owner_id = ? AND status = 'active' AND expires_at IS NOT NULL
+         AND expires_at > ? AND expires_at <= ? ORDER BY expires_at`,
+      [ownerId, now.toISOString(), soon],
+    ),
+    query(
+      `SELECT id, short_code, title, max_clicks, click_count FROM links
+       WHERE owner_id = ? AND max_clicks IS NOT NULL AND click_count >= max_clicks * 0.8`,
+      [ownerId],
+    ),
+    query(
+      `SELECT id, short_code, title, disabled_reason FROM links WHERE owner_id = ? AND status = 'disabled'`,
+      [ownerId],
+    ),
+    query(
+      `SELECT id, short_code, title, expires_at FROM links WHERE owner_id = ? AND status = 'expired'`,
+      [ownerId],
+    ),
+    query(
+      `SELECT l.id, l.short_code, l.title,
+              (SELECT COUNT(*) FROM click_events c WHERE c.link_id = l.id AND c.is_bot = 0 AND c.clicked_at >= ?) AS recent,
+              (SELECT COUNT(*) FROM click_events c WHERE c.link_id = l.id AND c.is_bot = 0 AND c.clicked_at >= ? AND c.clicked_at < ?) AS prev
+       FROM links l WHERE l.owner_id = ?`,
+      [from24, from48, from24, ownerId],
+    ),
+  ]);
   spikes.forEach((s) => {
     const recent = Number(s.recent);
     const prev = Math.max(1, Number(s.prev));

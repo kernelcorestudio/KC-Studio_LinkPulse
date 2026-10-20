@@ -88,21 +88,111 @@ function AlertsPanel({ alerts }) {
   );
 }
 
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      {/* Header and Controls Skeleton */}
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+        <div>
+          <div className="h-8 w-56 rounded-lg bg-[#2a1800]/60 mb-2"></div>
+          <div className="h-3.5 w-72 rounded bg-[#2a1800]/40"></div>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-20 rounded-lg bg-[#2a1800]/60"></div>
+          <div className="h-8 w-24 rounded-lg bg-[#2a1800]/60"></div>
+          <div className="h-8 w-24 rounded-lg bg-[#2a1800]/60"></div>
+        </div>
+      </div>
+
+      {/* 4 Stat Cards Skeleton */}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="card p-5 h-28 flex flex-col justify-between border border-[#2a1800]/60 bg-[#160b00]/60">
+            <div className="flex items-center justify-between">
+              <div className="h-3 w-24 rounded bg-[#2a1800]/60"></div>
+              <div className="h-6 w-6 rounded-md bg-[#2a1800]/40"></div>
+            </div>
+            <div className="h-7 w-20 rounded bg-[#2a1800]/80"></div>
+          </div>
+        ))}
+      </div>
+
+      {/* 2 Main Charts Skeleton */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="card p-5 lg:col-span-2 h-80 flex flex-col justify-between border border-[#2a1800]/60 bg-[#160b00]/60">
+          <div className="flex items-center justify-between">
+            <div className="h-4 w-36 rounded bg-[#2a1800]/60"></div>
+            <div className="h-4 w-20 rounded bg-[#2a1800]/40"></div>
+          </div>
+          <div className="h-56 w-full rounded-xl bg-[#2a1800]/20 flex items-center justify-center">
+            <div className="h-32 w-4/5 rounded-lg border border-dashed border-[#2a1800]/50 flex items-center justify-center">
+              <span className="text-xs font-mono text-amber-200/40 uppercase tracking-widest">Synthesizing stream…</span>
+            </div>
+          </div>
+        </div>
+        <div className="card p-5 h-80 flex flex-col justify-between border border-[#2a1800]/60 bg-[#160b00]/60">
+          <div className="h-4 w-32 rounded bg-[#2a1800]/60"></div>
+          <div className="h-44 w-44 mx-auto rounded-full border-4 border-[#2a1800]/40 flex items-center justify-center">
+            <div className="h-28 w-28 rounded-full border-2 border-dashed border-[#2a1800]/30"></div>
+          </div>
+          <div className="h-3 w-32 mx-auto rounded bg-[#2a1800]/40"></div>
+        </div>
+      </div>
+
+      {/* Tables Skeleton */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="card p-5 lg:col-span-2 h-64 border border-[#2a1800]/60 bg-[#160b00]/60">
+          <div className="h-4 w-40 rounded bg-[#2a1800]/60 mb-4"></div>
+          <div className="space-y-3">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="h-10 rounded-lg bg-[#2a1800]/30"></div>
+            ))}
+          </div>
+        </div>
+        <div className="card p-5 h-64 border border-[#2a1800]/60 bg-[#160b00]/60">
+          <div className="h-4 w-32 rounded bg-[#2a1800]/60 mb-4"></div>
+          <div className="space-y-3">
+            {[1, 2].map((n) => (
+              <div key={n} className="h-12 rounded-lg bg-[#2a1800]/30"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const [period, setPeriod] = useState('30d');
   const [campaignId, setCampaignId] = useState('');
   const [campaigns, setCampaigns] = useState([]);
-  const [data, setData] = useState(null);
-  const [alerts, setAlerts] = useState([]);
+  const [data, setData] = useState(() => {
+    try {
+      const cached = sessionStorage.getItem('lp_dash_cache_30d');
+      return cached ? JSON.parse(cached) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [alerts, setAlerts] = useState(() => {
+    try {
+      const cached = sessionStorage.getItem('lp_alerts_cache');
+      return cached ? JSON.parse(cached) : [];
+    } catch {
+      return [];
+    }
+  });
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !data);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     api.listCampaigns().then((r) => setCampaigns(r.campaigns)).catch(() => {});
   }, []);
 
   const load = useCallback(async () => {
-    setLoading(true);
+    if (!data) setLoading(true);
+    else setRefreshing(true);
     setError('');
     try {
       const qs = new URLSearchParams({ period });
@@ -113,17 +203,23 @@ export default function Dashboard() {
       ]);
       setData(d);
       setAlerts(a.alerts || []);
+      try {
+        sessionStorage.setItem(`lp_dash_cache_${period}`, JSON.stringify(d));
+        sessionStorage.setItem('lp_alerts_cache', JSON.stringify(a.alerts || []));
+      } catch {}
     } catch (e) {
-      setError(e.message);
+      if (!data) setError(e.message);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   }, [period, campaignId]);
 
   useEffect(() => { load(); }, [load]);
 
-  if (loading) return <Spinner label="Querying telemetry data…" />;
-  if (error) return <ErrorState message={error} onRetry={load} />;
+  if (loading && !data) return <DashboardSkeleton />;
+  if (error && !data) return <ErrorState message={error} onRetry={load} />;
+  if (!data) return <DashboardSkeleton />;
 
   const tsLabels = data.timeseries.map((t) => (t.bucket.length > 10 ? `${t.bucket.slice(11)}:00` : t.bucket.slice(5)));
   const hasData = data.totalClicks > 0;
@@ -148,6 +244,12 @@ export default function Dashboard() {
               <option value="">All Campaigns</option>
               {campaigns.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
+          )}
+          {refreshing && (
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-2.5 py-1 text-[10px] font-mono text-[#FBB931] animate-pulse">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#EA6113] animate-ping"></span>
+              <span>SYNCING…</span>
+            </div>
           )}
           {/* Segmented Period Tabs */}
           <div className="flex rounded-lg border border-[#2a1800] bg-[#1c1000]/80 p-0.5 text-xs shadow-inner">
