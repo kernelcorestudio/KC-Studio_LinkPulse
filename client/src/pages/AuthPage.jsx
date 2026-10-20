@@ -412,12 +412,70 @@ export default function AuthPage({ mode = 'login' }) {
             type="button"
             onClick={handleGoogleClick}
             disabled={busy || googleBusy}
-            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-lg bg-zinc-900/90 hover:bg-zinc-800/90 border border-white/15 hover:border-amber-500/40 text-sm font-medium text-white shadow-sm hover:shadow-[0_0_20px_rgba(248,143,34,0.15)] active:scale-[0.99] transition-all duration-200 disabled:opacity-50"
+            className={`btn-google-auth w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-lg font-medium text-sm shadow-sm active:scale-[0.99] transition-all duration-200 disabled:opacity-50 ${
+              isLight
+                ? 'bg-white hover:bg-[#FFFDF7] border border-[#EA6113]/25 hover:border-[#EA6113]/60 text-zinc-800 shadow-[0_2px_8px_rgba(234,97,19,0.08)] hover:shadow-[0_4px_16px_rgba(234,97,19,0.18)]'
+                : 'bg-zinc-900/90 hover:bg-zinc-800/90 border border-white/15 hover:border-amber-500/40 text-white hover:shadow-[0_0_20px_rgba(248,143,34,0.15)]'
+            }`}
           >
             <GoogleIcon className="h-4 w-4 shrink-0" />
-            <span>{googleBusy ? 'Connecting…' : 'Continue with Google'}</span>
+            <span className={isLight ? 'text-zinc-800 font-medium' : 'text-white'}>
+              {googleBusy ? 'Connecting…' : 'Continue with Google'}
+            </span>
           </button>
           <div ref={googleBtnContainerRef} className="hidden" aria-hidden="true" />
+
+          {/* Quick Demo Credentials Autofill */}
+          <div className="grid grid-cols-2 gap-2.5 pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                setForm((prev) => ({
+                  ...prev,
+                  name: isLogin ? prev.name : 'Ada Lovelace',
+                  email: 'ada@example.com',
+                  password: 'password123',
+                }));
+                setError('');
+              }}
+              title="Auto-fill User credentials (ada@example.com)"
+              className={`btn-demo-quick flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-medium transition-all duration-200 active:scale-95 shadow-sm group ${
+                isLight
+                  ? 'bg-white hover:bg-[#FFFDF7] border-[#EA6113]/20 hover:border-[#EA6113]/60 text-zinc-800 hover:text-[#EA6113] shadow-[0_2px_6px_rgba(234,97,19,0.06)]'
+                  : 'border-zinc-800 bg-[#101010] hover:bg-[#181818] hover:border-[#F88F22]/50 text-amber-200/90 hover:text-white'
+              }`}
+            >
+              <svg className={`h-3.5 w-3.5 transition-colors ${isLight ? 'text-[#EA6113]' : 'text-amber-400/80 group-hover:text-[#FBB931]'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <span className={isLight ? 'text-zinc-800 font-medium' : ''}>User Demo</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setForm((prev) => ({
+                  ...prev,
+                  name: isLogin ? prev.name : 'System Admin',
+                  email: 'admin@linkpulse.dev',
+                  password: 'admin1234',
+                }));
+                setError('');
+              }}
+              title="Auto-fill Admin credentials (admin@linkpulse.dev)"
+              className={`btn-demo-quick flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-medium transition-all duration-200 active:scale-95 shadow-sm group ${
+                isLight
+                  ? 'bg-white hover:bg-[#FFFDF7] border-[#EA6113]/20 hover:border-[#EA6113]/60 text-zinc-800 hover:text-[#EA6113] shadow-[0_2px_6px_rgba(234,97,19,0.06)]'
+                  : 'border-zinc-800 bg-[#101010] hover:bg-[#181818] hover:border-[#F88F22]/50 text-amber-200/90 hover:text-white'
+              }`}
+            >
+              <svg className={`h-3.5 w-3.5 text-[#EA6113] ${isLight ? '' : 'group-hover:text-[#F88F22]'} transition-colors`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <span className={isLight ? 'text-zinc-800 font-medium' : ''}>Admin Demo</span>
+            </button>
+          </div>
 
           <p className="text-center text-xs text-amber-200/60 pt-2">
             {isLogin ? (

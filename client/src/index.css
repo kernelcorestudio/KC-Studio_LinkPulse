@@ -199,6 +199,39 @@ html.light .crt-frame {
   border-color: rgba(234, 97, 19, 0.25) !important;
 }
 
+/* Google Auth & Quick Demo Buttons (Light Theme) */
+html.light .btn-google-auth {
+  background-color: #FFFFFF !important;
+  border-color: rgba(234, 97, 19, 0.25) !important;
+  color: #1F0E02 !important;
+  box-shadow: 0 2px 8px rgba(234, 97, 19, 0.08) !important;
+}
+html.light .btn-google-auth:hover {
+  background-color: #FFFDF7 !important;
+  border-color: rgba(234, 97, 19, 0.55) !important;
+  box-shadow: 0 4px 16px rgba(234, 97, 19, 0.16) !important;
+  color: #000000 !important;
+}
+html.light .btn-google-auth span {
+  color: #1F0E02 !important;
+}
+
+html.light .btn-demo-quick {
+  background-color: #FFFFFF !important;
+  border-color: rgba(234, 97, 19, 0.25) !important;
+  color: #1F0E02 !important;
+  box-shadow: 0 2px 6px rgba(234, 97, 19, 0.06) !important;
+}
+html.light .btn-demo-quick:hover {
+  background-color: #FFFDF7 !important;
+  border-color: rgba(234, 97, 19, 0.55) !important;
+  box-shadow: 0 4px 14px rgba(234, 97, 19, 0.14) !important;
+}
+html.light .btn-demo-quick span {
+  color: #1F0E02 !important;
+}
+
+
 html.light .divide-zinc-800\/60 > * + * {
   border-color: rgba(234, 97, 19, 0.16) !important;
 }
