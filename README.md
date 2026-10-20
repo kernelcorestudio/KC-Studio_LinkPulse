@@ -31,190 +31,25 @@
 
 ---
 
-<!-- Visual Index Title -->
-<h3 align="center" style="border: none; margin-bottom: 5px;">📋 TABLE OF CONTENTS</h3>
-<p align="center" style="color: #A1A1AA; font-size: 13px; font-family: 'JetBrains Mono', monospace; margin-top: 0; margin-bottom: 25px;">NAVIGATION INDEX</p>
+<div align="center">
 
-<!-- Double-Column Flex Grid -->
-<table width="100%" cellpadding="0" cellspacing="12" border="0" style="border-collapse: separate; border-spacing: 12px; background: transparent;">
-  <tr>
-    
-    <!-- LEFT COLUMN: Architecture & Foundations -->
-    <td width="50%" valign="top">
-      
-      <!-- Box 01: Executive Overview -->
-      <a href="#executive-overview" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px; transition: border-color 0.2s;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">01</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Executive Overview</td>
-            <td align="right"><span style="background-color: #3b2314; color: #f97316; font-size: 10px; font-family: monospace; padding: 2px 6px; border-radius: 4px; border: 1px solid #7c2d12;">OVERVIEW</span></td>
-          </tr></table>
-        </div>
-      </a>
+### 📋 TABLE OF CONTENTS
+**NAVIGATION MATRIX · QUICK JUMP INDEX**
 
-      <!-- Box 02: Key Features & Capabilities -->
-      <a href="#key-features--capabilities" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">02</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Key Features & Capabilities ➔</td>
-            <td align="right" style="color: #10b981;">✔️</td>
-          </tr></table>
-        </div>
-      </a>
+</div>
 
-      <!-- Box 03: Tech Stack Matrix -->
-      <a href="#tech-stack--architecture-matrix" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">03</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Tech Stack & Architecture Matrix</td>
-            <td align="right">
-              <img src="https://img.shields.io/badge/JS-ES6-yellow?style=flat" height="15" style="vertical-align: middle; border-radius: 2px;">
-              <img src="https://img.shields.io/badge/React-18-blue?style=flat" height="15" style="vertical-align: middle; border-radius: 2px;">
-            </td>
-          </tr></table>
-        </div>
-      </a>
+| 🏛️ Architecture & Foundations | ⚙️ Operations, Engine & QA |
+| :--- | :--- |
+| `01` &nbsp; [**Executive Overview**](#executive-overview) &nbsp; ![Overview](https://img.shields.io/badge/OVERVIEW-f97316?style=flat-square) <br> Sub-millisecond edge redirect engine, LRU caching & async micro-batch logging | `06` &nbsp; [**Core Workflow Flowcharts**](#core-workflow-flowcharts) ➔ &nbsp; ⚙️ <br> • [1. 8-Step Redirect Decision Pipeline](#1-8-step-redirect-decision-pipeline) ➔ <br> • [2. Google OAuth 2.0 & GIS Pipeline](#2-google-oauth-20--gis-pipeline) ➔ <br> • [3. Asynchronous Click Batch Queue](#3-asynchronous-click-batch-queue) ➔ |
+| `02` &nbsp; [**Key Features & Capabilities**](#key-features--capabilities) ➔ &nbsp; ✔️ <br> Device routing (iOS/Android), bcrypt protection, click limits & QR synthesis | `07` &nbsp; [**Database Architecture & ER Diagram**](#database-architecture--er-diagram) ➔ &nbsp; 🔗 <br> Dual-adapter schema (PostgreSQL / SQLite) with foreign-key cascades & indexes |
+| `03` &nbsp; [**Tech Stack & Architecture Matrix**](#tech-stack--architecture-matrix) &nbsp; ![JS](https://img.shields.io/badge/JS-ES6-yellow?style=flat-square) ![React](https://img.shields.io/badge/React-18-blue?style=flat-square) <br> Node.js 24 LTS, React 18, Vite 6, Supabase PostgreSQL, Tailwind CSS | `08` &nbsp; [**Telemetry & Analytics Visualization Engine**](#telemetry--analytics-visualization-engine) ➔ &nbsp; 📈 <br> Real-time cubic spline wave charts (`#FFE3B3`), timelines & geo metrics |
+| `04` &nbsp; [**System Architecture**](#system-architecture) ➔ &nbsp; 🌐 <br> Multi-tier decoupled edge redirect gateway, async workers & cloud database | `09` &nbsp; [**Security, Privacy & Edge Performance**](#security-privacy--edge-performance) ➔ &nbsp; 🛡️ <br> Bcrypt password hashing, signed HTTP cookies, CAS limits & domain blocklist |
+| `05` &nbsp; [**Data Flow Diagrams (DFD)**](#data-flow-diagrams-dfd) ➔ &nbsp; 📊 <br> ├─ [Level 0: Context Diagram](#level-0-context-diagram) 🔍 <br> └─ [Level 1: Functional Decomposition](#level-1-functional-decomposition) 🧭 | `10` &nbsp; [**API Reference**](#api-reference) ➔ &nbsp; ![API](https://img.shields.io/badge/API-REST-f43f5e?style=flat-square) <br> Standardized RESTful endpoints for Auth, Links, Analytics & Bios |
+| `11` &nbsp; [**Local Development & Quickstart**](#local-development--quickstart) ➔ &nbsp; 🚀 <br> • [Local Setup & Seed Accounts](#local-development--quickstart) <br> • [Production Deployment (Vercel + Supabase)](#production-deployment-vercel--supabase) | `12` &nbsp; [**Testing & Quality Assurance**](#testing--quality-assurance) ➔ &nbsp; 🧪 <br> 73/73 Passing tests (unit, integration & edge-case test suites) |
 
-      <!-- Box 04: System Architecture -->
-      <a href="#system-architecture" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">04</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• System Architecture ➔</td>
-            <td align="right" style="color: #a1a1aa;">🌐</td>
-          </tr></table>
-        </div>
-      </a>
-
-      <!-- Box 05: DFD Diagrams (Indented Sub-items) -->
-      <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-        <table width="100%">
-          <tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">05</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Data Flow Diagrams (DFD) ➔</td>
-            <td align="right" style="color: #a1a1aa;">📊</td>
-          </tr>
-        </table>
-        <!-- Inline Nested Directory connects -->
-        <div style="margin-left: 28px; padding-left: 10px; border-left: 2px dotted #27272a; margin-top: 8px;">
-          <a href="#level-0-context-diagram" style="text-decoration: none; display: block; padding: 3px 0; font-size: 12px; color: #f89020;">
-            <span style="color:#71717a;">├─</span> Level 0: Context Diagram 🔍
-          </a>
-          <a href="#level-1-functional-decomposition" style="text-decoration: none; display: block; padding: 3px 0; font-size: 12px; color: #f89020;">
-            <span style="color:#71717a;">└─</span> Level 1: Functional Decomposition 🧭
-          </a>
-        </div>
-      </div>
-
-    </td>
-    
-    <!-- RIGHT COLUMN: Operations & Workflows -->
-    <td width="50%" valign="top">
-      
-      <!-- Box 06: Core Workflows (Indented Steps) -->
-      <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-        <table width="100%">
-          <tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">06</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Core Workflow Flowcharts ➔</td>
-            <td align="right" style="color: #a1a1aa;">⚙️</td>
-          </tr>
-        </table>
-        <!-- Interactive Inline Step Node Capsules -->
-        <div style="margin-left: 28px; padding-left: 10px; border-left: 2px dotted #27272a; margin-top: 8px;">
-          <a href="#1-8-step-redirect-decision-pipeline" style="text-decoration: none; display: block; margin-bottom: 4px;">
-            <span style="display: inline-block; background: #27160c; border: 1px solid #7c2d12; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #f97316;">
-              1. 8-Step Redirect Decision Pipeline ➔
-            </span>
-          </a>
-          <a href="#2-google-oauth-20--gis-pipeline" style="text-decoration: none; display: block; margin-bottom: 4px;">
-            <span style="display: inline-block; background: #27160c; border: 1px solid #7c2d12; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #f97316;">
-              2. Google OAuth 2.0 & GIS Pipeline ➔
-            </span>
-          </a>
-          <a href="#3-asynchronous-click-batch-queue" style="text-decoration: none; display: block;">
-            <span style="display: inline-block; background: #27160c; border: 1px solid #7c2d12; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #f97316;">
-              3. Asynchronous Click Batch Queue ➔
-            </span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Box 07: Database & ER Diagram -->
-      <a href="#database-architecture--er-diagram" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">07</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Database Architecture & ER Diagram ➔</td>
-            <td align="right" style="color: #a1a1aa;">🔗</td>
-          </tr></table>
-        </div>
-      </a>
-
-      <!-- Box 08: Telemetry Engine -->
-      <a href="#telemetry--analytics-visualization-engine" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">08</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Telemetry & Analytics Visualization Engine ➔</td>
-            <td align="right" style="color: #a1a1aa;">📈</td>
-          </tr></table>
-        </div>
-      </a>
-
-      <!-- Box 09: Security & Edge Performance -->
-      <a href="#security-privacy--edge-performance" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">09</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Security, Privacy & Edge Performance ➔</td>
-            <td align="right" style="color: #a1a1aa;">🛡️</td>
-          </tr></table>
-        </div>
-      </a>
-
-      <!-- Box 10: API Reference -->
-      <a href="#api-reference" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">10</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• API Reference ➔</td>
-            <td align="right"><span style="background-color: #2e100f; color: #f43f5e; font-size: 10px; font-family: monospace; padding: 2px 6px; border-radius: 4px; border: 1px solid #991b1b;">API</span></td>
-          </tr></table>
-        </div>
-      </a>
-
-      <!-- Box 11: Development & Deployment -->
-      <a href="#local-development--quickstart" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">11</td>
-            <td style="color: #e4e4e7; font-weight: 500; font-size: 13.5px;">• Local Development & Quickstart<br><span style="color:#71717a; font-size:11px;">• Production Deployment (Vercel + Supabase)</span></td>
-            <td align="right" style="color: #a1a1aa;">🚀</td>
-          </tr></table>
-        </div>
-      </a>
-
-      <!-- Box 12: Testing & QA -->
-      <a href="#testing--quality-assurance" style="text-decoration: none;">
-        <div style="background-color: #0c0c0f; border: 1px solid #1f1f2e; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
-          <table width="100%"><tr>
-            <td style="color: #71717a; font-family: monospace; font-size: 13px; width: 24px;">12</td>
-            <td style="color: #f4f4f5; font-weight: 600; font-size: 14px;">• Testing & Quality Assurance ➔</td>
-            <td align="right" style="color: #a1a1aa;">🧪</td>
-          </tr></table>
-        </div>
-      </a>
-
-    </td>
-    
-  </tr>
-</table>
-
-<p align="center" style="color: #3f3f46; font-size: 10px; font-family: monospace; margin-top: 15px;">POWERED BY KC STUDIO • COPYRIGHT © 2026</p>
+<div align="center">
+  <sub>POWERED BY KC STUDIO • COPYRIGHT © 2026</sub>
+</div>
 
 ---
 
