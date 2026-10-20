@@ -48,11 +48,11 @@ export default function Landing() {
         {/* Navigation Bar */}
         <header className="flex items-center justify-between py-6">
           <Link to="/" className="group flex items-center gap-3 transition">
-            <div className="relative w-9 h-9 rounded-xl bg-[#100800] border border-[#F88F22]/30 p-1 flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(234,97,19,0.28)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_25px_rgba(251,185,49,0.4)] transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/10 before:to-[#FBB931]/15 before:opacity-80">
+            <div className="relative w-10 h-10 rounded-xl bg-[#100800] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_22px_rgba(234,97,19,0.32)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_30px_rgba(251,185,49,0.5)] transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/20 before:opacity-80">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse Logo"
-                className="relative z-10 w-full h-full object-contain rounded-lg select-none group-hover:scale-105 transition-transform duration-300 mix-blend-screen"
+                className="relative z-10 w-full h-full object-contain rounded-lg select-none scale-105 group-hover:scale-115 transition-transform duration-300 mix-blend-screen drop-shadow-[0_0_10px_rgba(251,185,49,0.45)]"
               />
             </div>
             <span className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
@@ -194,8 +194,8 @@ export default function Landing() {
         {/* Footer */}
         <footer className="mt-20 border-t border-[#2a1800]/80 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-amber-900/70">
           <div className="flex items-center gap-2.5">
-            <div className="relative w-6 h-6 rounded-lg bg-[#100800] border border-[#F88F22]/30 p-0.5 flex items-center justify-center overflow-hidden">
-              <img src="/logo.jpg" alt="LinkPulse logo" className="w-full h-full object-contain mix-blend-screen" />
+            <div className="relative w-7 h-7 rounded-lg bg-[#100800] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(234,97,19,0.25)]">
+              <img src="/logo.jpg" alt="LinkPulse logo" className="w-full h-full object-contain mix-blend-screen scale-105" />
             </div>
             <span className="font-semibold text-amber-200/80">LinkPulse</span>
           </div>

@@ -36,11 +36,11 @@ export default function AuthPage({ mode = 'login' }) {
       <div className="relative w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link to="/" className="inline-block group transition">
-            <div className="relative w-14 h-14 rounded-2xl bg-[#100800] border border-[#F88F22]/30 p-2 flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(234,97,19,0.35)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_35px_rgba(251,185,49,0.45)] transition-all duration-300 mx-auto mb-4 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/10 before:to-[#FBB931]/15 before:opacity-80">
+            <div className="relative w-16 h-16 rounded-2xl bg-[#100800] border border-[#F88F22]/35 p-1 flex items-center justify-center overflow-hidden shadow-[0_0_35px_rgba(234,97,19,0.38)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_45px_rgba(251,185,49,0.55)] transition-all duration-300 mx-auto mb-4 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/25 before:opacity-80">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse logo"
-                className="relative z-10 w-full h-full object-contain rounded-xl select-none group-hover:scale-105 transition-transform duration-300 mix-blend-screen"
+                className="relative z-10 w-full h-full object-contain rounded-xl select-none scale-105 group-hover:scale-115 transition-transform duration-300 mix-blend-screen drop-shadow-[0_0_12px_rgba(251,185,49,0.5)]"
               />
             </div>
           </Link>

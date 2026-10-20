@@ -44,11 +44,11 @@ export default function Layout() {
 
           {/* Logo */}
           <Link to="/app" className="group flex items-center gap-2.5 shrink-0 mr-2 transition">
-            <div className="relative w-8 h-8 shrink-0 rounded-xl bg-[#100800] border border-[#F88F22]/30 p-1 flex items-center justify-center overflow-hidden shadow-[0_0_16px_rgba(234,97,19,0.25)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_22px_rgba(251,185,49,0.38)] transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/10 before:to-[#FBB931]/15">
+            <div className="relative w-9 h-9 shrink-0 rounded-xl bg-[#100800] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_18px_rgba(234,97,19,0.3)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_24px_rgba(251,185,49,0.45)] transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/20">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse Logo"
-                className="relative z-10 w-full h-full object-contain rounded-lg select-none group-hover:scale-105 transition-transform duration-300 mix-blend-screen"
+                className="relative z-10 w-full h-full object-contain rounded-lg select-none scale-105 group-hover:scale-110 transition-transform duration-300 mix-blend-screen drop-shadow-[0_0_8px_rgba(251,185,49,0.4)]"
               />
             </div>
             <div className="hidden sm:block">
