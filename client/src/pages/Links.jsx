@@ -116,7 +116,7 @@ function QrModal({ link, onClose }) {
   );
 }
 
-function DeleteModal({ link, onConfirm, onCancel, deleting }) {
+function DeleteModal({ link, onConfirm, onCancel, deleting, error }) {
   return createPortal(
     <div
       className="fixed inset-0 z-[9999] flex min-h-screen w-screen items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in"
@@ -126,19 +126,39 @@ function DeleteModal({ link, onConfirm, onCancel, deleting }) {
         className="relative m-auto w-full max-w-sm rounded-2xl border border-rose-500/30 bg-gradient-to-b from-[#180c00] to-[#100800] p-6 shadow-2xl space-y-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400">
+        {/* Circular close cross button at top right corner */}
+        <button
+          type="button"
+          onClick={onCancel}
+          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-[#2a1800] bg-[#1c1000]/90 text-amber-200/70 shadow-md hover:border-rose-500/40 hover:bg-rose-500/20 hover:text-white hover:scale-105 active:scale-95 transition-all duration-150 z-10"
+          aria-label="Close"
+          title="Close"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        <div className="flex items-center gap-3 pr-10">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400">
             <TrashIcon className="h-5 w-5" />
           </div>
           <div>
             <h3 className="text-base font-semibold text-white">Delete Short Link?</h3>
-            <p className="text-xs text-amber-200/60 font-mono">/{link.short_code}</p>
+            <p className="text-xs text-amber-200/60 font-mono">/{link?.short_code}</p>
           </div>
         </div>
 
         <p className="text-xs text-amber-200/70 leading-relaxed">
           Are you sure you want to delete this short link? All click analytics, QR codes, and routing rules will be permanently removed.
         </p>
+
+        {error && (
+          <div className="rounded-lg border border-rose-500/40 bg-rose-950/50 p-2.5 text-xs text-rose-300 leading-relaxed">
+            {error}
+          </div>
+        )}
 
         <div className="flex gap-2 pt-2">
           <button
@@ -151,11 +171,18 @@ function DeleteModal({ link, onConfirm, onCancel, deleting }) {
           </button>
           <button
             type="button"
-            className="flex-1 rounded-lg border border-rose-500/40 bg-gradient-to-r from-rose-600 to-rose-500 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-rose-900/30 hover:from-rose-500 hover:to-rose-400 disabled:opacity-50 transition"
+            className="flex-1 rounded-lg border border-rose-500/40 bg-gradient-to-r from-rose-600 to-rose-500 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-rose-900/30 hover:from-rose-500 hover:to-rose-400 disabled:opacity-50 transition flex items-center justify-center gap-2"
             onClick={onConfirm}
             disabled={deleting}
           >
-            {deleting ? 'Deleting…' : 'Delete'}
+            {deleting ? (
+              <>
+                <span className="h-3 w-3 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                <span>Deleting…</span>
+              </>
+            ) : (
+              'Delete'
+            )}
           </button>
         </div>
       </div>
@@ -332,6 +359,7 @@ export default function Links() {
   const [qrLink, setQrLink] = useState(null);
   const [deleteLink, setDeleteLink] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -370,6 +398,7 @@ export default function Links() {
   async function handleConfirmDelete() {
     if (!deleteLink) return;
     setDeleting(true);
+    setDeleteError('');
     try {
       await api.deleteLink(deleteLink.id);
       setData((prev) => {
@@ -382,7 +411,8 @@ export default function Links() {
       });
       setDeleteLink(null);
     } catch (err) {
-      alert(err.message || 'Failed to delete link');
+      console.error('Delete failed:', err);
+      setDeleteError(err.message || 'Failed to delete link');
     } finally {
       setDeleting(false);
     }
@@ -553,7 +583,10 @@ export default function Links() {
                           link={l}
                           onToggleStatus={handleToggleStatus}
                           onOpenQr={setQrLink}
-                          onRequestDelete={setDeleteLink}
+                          onRequestDelete={(item) => {
+                            setDeleteError('');
+                            setDeleteLink(item);
+                          }}
                         />
                       </td>
                     </tr>
@@ -585,8 +618,12 @@ export default function Links() {
         <DeleteModal
           link={deleteLink}
           onConfirm={handleConfirmDelete}
-          onCancel={() => setDeleteLink(null)}
+          onCancel={() => {
+            setDeleteLink(null);
+            setDeleteError('');
+          }}
           deleting={deleting}
+          error={deleteError}
         />
       )}
     </div>

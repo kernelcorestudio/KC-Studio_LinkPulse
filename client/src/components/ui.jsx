@@ -5,6 +5,7 @@ import {
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { EmptyIcon, AlertIcon } from './Icons';
+import { PieChart3D } from './PieChart3D';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Tooltip, Legend, Filler);
 
@@ -276,43 +277,17 @@ export function BarChart({ labels, data, label = 'Count', color = '#EA6113', hor
   );
 }
 
+export { PieChart3D };
+
 export function DoughnutChart({
   labels,
   data,
-  colors = ['#EA6113', '#F88F22', '#FBB931', '#FFE3B3', '#D97706', '#9A3412'],
+  colors,
 }) {
   return (
-    <div className="h-64">
-      <Doughnut
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '70%',
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                color: '#d4a373',
-                boxWidth: 10,
-                boxHeight: 10,
-                borderRadius: 2,
-                font: { family: 'Inter', size: 11 },
-                padding: 12,
-              },
-            },
-          },
-        }}
-        data={{
-          labels,
-          datasets: [{
-            data,
-            backgroundColor: colors,
-            borderColor: '#100800',
-            borderWidth: 3,
-            hoverOffset: 4,
-          }],
-        }}
-      />
+    <div className="w-full flex items-center justify-center">
+      <PieChart3D labels={labels} data={data} colors={colors} />
     </div>
   );
 }
+

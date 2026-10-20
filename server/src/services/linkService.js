@@ -272,12 +272,16 @@ export function invalidateCode(code) {
   linkCache.delete(code);
 }
 
-export async function deleteLink(id, ownerId) {
-  const link = await getLinkById(id, ownerId);
-  await run('DELETE FROM link_tags WHERE link_id = ?', [id]);
-  await run('DELETE FROM click_events WHERE link_id = ?', [id]);
-  await run('DELETE FROM bio_page_links WHERE link_id = ?', [id]);
-  await run('DELETE FROM links WHERE id = ? AND owner_id = ?', [id, ownerId]);
+export async function deleteLink(id, ownerId, role = 'user') {
+  const link = await queryOne('SELECT * FROM links WHERE id = ?', [id]);
+  if (!link) throw new HttpError(404, 'Link not found');
+  if (role !== 'admin' && link.owner_id !== ownerId) {
+    throw new HttpError(403, 'You do not own this link');
+  }
+  try { await run('DELETE FROM link_tags WHERE link_id = ?', [id]); } catch {}
+  try { await run('DELETE FROM click_events WHERE link_id = ?', [id]); } catch {}
+  try { await run('DELETE FROM bio_page_links WHERE link_id = ?', [id]); } catch {}
+  await run('DELETE FROM links WHERE id = ?', [id]);
   linkCache.delete(link.short_code);
   return { ok: true };
 }

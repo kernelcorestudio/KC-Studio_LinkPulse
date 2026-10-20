@@ -141,11 +141,11 @@ linkRoutes.patch(
   }),
 );
 
-// DELETE /api/links/:id  -> owner can delete a link
+// DELETE /api/links/:id  -> owner or admin can delete a link
 linkRoutes.delete(
   '/:id',
   asyncHandler(async (req, res) => {
-    res.json(await deleteLink(req.params.id, req.user.id));
+    res.json(await deleteLink(req.params.id, req.user.id, req.user?.role));
   }),
 );
 
