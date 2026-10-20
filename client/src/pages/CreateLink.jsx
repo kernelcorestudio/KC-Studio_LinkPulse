@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { api, shortUrl } from '../lib/api';
 import {
   LockIcon, ClockIcon, ChartIcon, DeviceIcon,
-  SparkleIcon, CheckIcon,
+  SparkleIcon, CheckIcon, EyeIcon, EyeOffIcon,
 } from '../components/Icons';
 
 const EMPTY_FORM = {
@@ -28,6 +28,7 @@ export default function CreateLink() {
   const nav = useNavigate();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [showPassword, setShowPassword] = useState(false);
   const [aliasState, setAliasState] = useState({ status: 'idle', message: '' });
   const [warnings, setWarnings] = useState([]);
   const [busy, setBusy] = useState(false);
@@ -363,14 +364,25 @@ export default function CreateLink() {
 
           <div>
             <label className="label">Passcode Protection (Optional)</label>
-            <input
-              type="password"
-              className="input text-xs"
-              placeholder="Require visitors to enter a password"
-              value={form.password}
-              onChange={set('password')}
-              autoComplete="new-password"
-            />
+            <div className="relative flex items-center">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                className="input text-xs pr-10"
+                placeholder="Require visitors to enter a password"
+                value={form.password}
+                onChange={set('password')}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((p) => !p)}
+                className="absolute right-2.5 flex h-7 w-7 items-center justify-center rounded-md text-amber-200/40 hover:text-[#FBB931] hover:bg-[#F88F22]/10 transition-all duration-150 active:scale-90"
+                title={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
 
           {/* Device Targeting Section */}

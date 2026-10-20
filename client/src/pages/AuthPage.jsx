@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
+import { EyeIcon, EyeOffIcon } from '../components/Icons';
 
 export default function AuthPage({ mode = 'login' }) {
   const isLogin = mode === 'login';
   const { login, register } = useAuth();
   const nav = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -80,15 +82,30 @@ export default function AuthPage({ mode = 'login' }) {
             <div className="flex items-center justify-between mb-1.5">
               <label className="text-xs font-medium text-amber-200/60">Password</label>
             </div>
-            <input
-              className="input"
-              type="password"
-              value={form.password}
-              onChange={set('password')}
-              placeholder="••••••••"
-              required
-              minLength={isLogin ? 1 : 8}
-            />
+            <div className="relative flex items-center">
+              <input
+                className="input pr-10"
+                type={showPassword ? 'text' : 'password'}
+                value={form.password}
+                onChange={set('password')}
+                placeholder="••••••••"
+                required
+                minLength={isLogin ? 1 : 8}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-2.5 flex h-7 w-7 items-center justify-center rounded-md text-amber-200/40 hover:text-[#FBB931] hover:bg-[#F88F22]/10 transition-all duration-150 active:scale-90 focus:outline-none"
+                title={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <EyeOffIcon className="h-4 w-4" />
+                ) : (
+                  <EyeIcon className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {!isLogin && <p className="mt-1.5 text-[11px] text-amber-900/60">Must be at least 8 characters.</p>}
           </div>
 
