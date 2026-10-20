@@ -412,13 +412,6 @@ export default function AuthPage({ mode = 'login' }) {
               </>
             )}
           </p>
-
-          {isLogin && (
-            <div className="mt-4 rounded-lg border border-[#2a1800]/80 bg-[#1c1000]/60 p-3 text-center text-xs font-mono text-amber-200/60">
-              <div className="text-[10px] uppercase font-sans text-amber-900/60 mb-1">Demo Account Credentials</div>
-              <div><span className="text-[#FFE3B3]">ada@example.com</span> / <span className="text-[#FFE3B3]">password123</span></div>
-            </div>
-          )}
         </form>
       </div>
 
