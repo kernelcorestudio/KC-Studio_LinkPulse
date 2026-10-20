@@ -1,4 +1,4 @@
-// App navigation shell (Top Horizontal Navbar — pill-style active)
+// App navigation shell (Sleek Floating Dock Navbar with Neon Aura & Tactile Micro-Interactions)
 import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import {
@@ -13,7 +13,7 @@ const NAV = [
   { to: '/tags', label: 'Tags', Icon: TagIcon },
   { to: '/create', label: 'Create', Icon: CreateIcon },
   { to: '/import', label: 'Import', Icon: ImportIcon },
-  { to: '/bio', label: 'Bio Pages', Icon: BioIcon },
+  { to: '/bio', label: 'Bio', Icon: BioIcon },
   { to: '/admin', label: 'Admin', Icon: AdminIcon, adminOnly: true },
 ];
 
@@ -27,104 +27,117 @@ export default function Layout() {
     nav('/login');
   }
 
-  const linkClass = ({ isActive }) =>
-    `relative flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 whitespace-nowrap ${isActive
-      ? 'bg-[#1c1000] border border-[#3d2200]/80 text-white shadow-[0_0_12px_rgba(248,143,34,0.15)]'
-      : 'text-amber-200/50 hover:text-amber-100 hover:bg-[#1c1000]/50'
-    }`;
+  function isTabActive(item) {
+    const path = location.pathname;
+    if (item.end) {
+      return path === item.to || path === '/dashboard' || path === '/app/';
+    }
+    return path.startsWith(item.to) || (item.to !== '/app' && path.startsWith(`/app${item.to}`));
+  }
 
   return (
     <div className="relative flex min-h-screen flex-col bg-[#100800]">
       {/* Subtle background grid */}
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-30" aria-hidden="true" />
 
-      {/* ── TOP NAVBAR ── */}
-      <header className="relative z-20 border-b border-[#2a1800]/80 bg-[#0e0600]/95 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2">
+      {/* ── TOP FLOATING NAVBAR ── */}
+      <header className="relative z-30 border-b border-[#241202]/70 bg-[#0c0500]/90 backdrop-blur-2xl">
+        {/* Ambient top spotlight spreading downwards */}
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-24 bg-gradient-to-b from-[#EA6113]/15 via-[#F88F22]/10 to-transparent blur-2xl -z-10" />
 
-          {/* Logo */}
-          <Link to="/app" className="group flex items-center gap-2.5 shrink-0 mr-2 transition">
-            <div className="relative w-9 h-9 shrink-0 rounded-xl bg-[#100800] border border-[#F88F22]/35 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_18px_rgba(234,97,19,0.3)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_24px_rgba(251,185,49,0.45)] transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/15 before:to-[#FBB931]/20">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+
+          {/* ── LEFT: Logo & Brand ── */}
+          <Link
+            to="/app"
+            className="group flex items-center gap-3 shrink-0 transition-transform active:scale-95 duration-200"
+          >
+            <div className="relative w-10 h-10 rounded-2xl bg-[#120700] border border-[#F88F22]/40 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_22px_rgba(234,97,19,0.35)] group-hover:border-[#FBB931]/80 group-hover:shadow-[0_0_30px_rgba(251,185,49,0.6)] group-hover:scale-105 transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/20 before:to-[#FBB931]/25">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse Logo"
-                className="relative z-10 w-full h-full object-contain rounded-lg select-none scale-105 group-hover:scale-110 transition-transform duration-300 mix-blend-screen drop-shadow-[0_0_8px_rgba(251,185,49,0.4)]"
+                className="relative z-10 w-full h-full object-contain rounded-xl select-none scale-105 group-hover:scale-115 transition-transform duration-300 mix-blend-screen drop-shadow-[0_0_10px_rgba(251,185,49,0.5)]"
               />
             </div>
-            <div className="hidden sm:block">
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm font-bold tracking-tight text-white leading-tight">LinkPulse</span>
-                <span className="rounded bg-[#F88F22]/15 text-[#FFE3B3] border border-[#F88F22]/30 text-[10px] font-mono px-1.5 py-0.5">PRO</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <span className="text-base font-bold tracking-tight text-white group-hover:text-amber-100 transition-colors leading-tight">
+                LinkPulse
+              </span>
+              <span className="rounded-md bg-[#F88F22]/15 text-[#FFE3B3] border border-[#F88F22]/40 text-[10px] font-mono font-semibold px-1.5 py-0.5 shadow-[0_0_8px_rgba(234,97,19,0.25)]">
+                PRO
+              </span>
             </div>
           </Link>
 
-          {/* ── Nav pill container — dark rounded strip ── */}
-          <nav
-            className="flex items-center gap-1 rounded-full border border-[#2a1800]/70 bg-[#0a0400]/80 px-2 py-1.5 overflow-x-auto"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {NAV.filter((n) => !n.adminOnly || user?.role === 'admin').map((n) => {
-              const Icon = n.Icon;
-              return (
-                <NavLink key={n.to} to={n.to} end={n.end} className={linkClass}>
-                  {({ isActive }) => (
-                    <>
-                      <Icon
-                        className={`h-3.5 w-3.5 shrink-0 transition-colors duration-200 ${isActive ? 'text-[#FBB931]' : 'text-amber-200/40'
-                          }`}
-                      />
-                      <span>{n.label}</span>
-                    </>
-                  )}
-                </NavLink>
-              );
-            })}
-          </nav>
+          {/* ── CENTER: Floating Dock ── */}
+          <div className="relative flex items-center justify-center shrink-0">
+            {/* Radiant neon underglow behind the dock */}
+            <div className="pointer-events-none absolute -inset-2 rounded-3xl bg-gradient-to-r from-[#EA6113]/25 via-[#F88F22]/45 to-[#EA6113]/25 blur-xl opacity-75 animate-dock-glow -z-10" />
 
-          {/* Spacer */}
-          <div className="flex-1" />
+            {/* Dock bar */}
+            <nav
+              className="relative flex items-center gap-1.5 rounded-2xl border border-[#F88F22]/40 bg-[#120700]/95 backdrop-blur-2xl p-1.5 shadow-[0_0_35px_-5px_rgba(234,97,19,0.4),0_15px_30px_-10px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(251,185,49,0.3)] no-scrollbar overflow-x-auto max-w-full"
+            >
+              {NAV.filter((n) => !n.adminOnly || user?.role === 'admin').map((n) => {
+                const Icon = n.Icon;
+                const active = isTabActive(n);
 
-          {/* Status pill */}
-          <div className="hidden md:flex items-center gap-1.5 rounded-full border border-[#2a1800]/80 bg-[#1c1000]/60 px-3 py-1 font-mono text-[10px] text-amber-200/60">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.9)]"></span>
-            </span>
-            <span className="font-semibold tracking-wider text-emerald-400/90">LIVE</span>
+                return (
+                  <NavLink
+                    key={n.to}
+                    to={n.to}
+                    end={n.end}
+                    className={`group relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap cursor-pointer select-none ${
+                      active
+                        ? 'bg-gradient-to-b from-[#2e1302] via-[#240e01] to-[#1a0a00] border border-[#F88F22]/90 text-white font-semibold shadow-[0_0_20px_rgba(234,97,19,0.45),inset_0_1px_1px_rgba(251,185,49,0.35)] active:scale-95'
+                        : 'text-amber-200/60 border border-transparent hover:text-white hover:bg-[#200d00]/75 hover:border-[#F88F22]/40 hover:shadow-[0_0_16px_rgba(234,97,19,0.25)] hover:-translate-y-0.5 active:scale-95 active:translate-y-0'
+                    }`}
+                  >
+                    <Icon
+                      className={`h-4 w-4 shrink-0 transition-all duration-200 ${
+                        active
+                          ? 'text-[#FBB931] drop-shadow-[0_0_8px_rgba(251,185,49,0.7)]'
+                          : 'text-amber-200/50 group-hover:text-[#FBB931] group-hover:scale-110'
+                      }`}
+                    />
+                    <span className="tracking-wide">{n.label}</span>
+                  </NavLink>
+                );
+              })}
+            </nav>
           </div>
 
-          {/* User + actions */}
-          <div className="flex items-center gap-2 shrink-0">
-            {/* User pill */}
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-[#2a1800]/80 bg-[#1c1000]/60 px-3 py-1 text-xs text-amber-200/70">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#F88F22]/20 text-[10px] font-semibold text-[#FBB931] border border-[#F88F22]/30">
+          {/* ── RIGHT: User Profile Pill + Create CTA + Logout ── */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* User profile pill */}
+            <div className="hidden sm:flex items-center gap-2.5 rounded-xl border border-[#2a1201] bg-[#140700]/90 px-3 py-1.5 shadow-[0_2px_10px_rgba(0,0,0,0.6)] hover:border-[#F88F22]/40 hover:shadow-[0_0_16px_rgba(234,97,19,0.2)] transition-all duration-200 group">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#EA6113] to-[#F88F22] text-[11px] font-bold text-white shadow-[0_0_10px_rgba(234,97,19,0.5)] group-hover:scale-105 transition-transform duration-200">
                 {user?.email?.charAt(0).toUpperCase() || 'U'}
               </span>
-              <span className="font-medium text-amber-100 max-w-[120px] truncate">{user?.email}</span>
+              <span className="text-xs font-medium text-amber-100/90 max-w-[130px] truncate">{user?.email}</span>
               {user?.role === 'admin' && (
-                <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-400 border border-amber-500/20">
+                <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-amber-400 border border-amber-500/25">
                   ADMIN
                 </span>
               )}
             </div>
 
-            {/* Create Link CTA */}
+            {/* "+ Create" Action Button */}
             <Link
               to="/create"
-              className="group inline-flex items-center gap-1.5 rounded-full border border-[#F88F22]/30 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-3.5 py-1.5 text-xs font-semibold text-white shadow-[0_0_16px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_24px_rgba(234,97,19,0.55)] active:scale-[0.98]"
+              className="group inline-flex items-center gap-1.5 rounded-xl border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] via-[#F88F22] to-[#F88F22] px-4 py-2 text-xs font-bold text-white shadow-[0_0_22px_rgba(234,97,19,0.45)] hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_32px_rgba(251,185,49,0.7)] hover:-translate-y-0.5 active:scale-95 transition-all duration-200 cursor-pointer"
             >
-              <span className="text-sm leading-none transition-transform duration-200 group-hover:rotate-90">+</span>
-              <span className="hidden sm:inline">Create</span>
+              <span className="text-sm font-bold leading-none transition-transform duration-300 group-hover:rotate-90">+</span>
+              <span>Create</span>
             </Link>
 
-            {/* Logout */}
+            {/* Logout Button */}
             <button
-              className="inline-flex items-center justify-center rounded-full border border-[#2a1800]/80 bg-[#1c1000]/60 p-2 text-amber-200/50 transition hover:border-[#3d2200] hover:bg-[#2a1800] hover:text-white"
               onClick={handleLogout}
               title="Disconnect session"
+              className="group inline-flex items-center justify-center rounded-xl border border-[#2a1201] bg-[#140700]/90 p-2 text-amber-200/60 transition-all duration-200 hover:border-[#F88F22]/50 hover:bg-[#220d00] hover:text-white hover:shadow-[0_0_16px_rgba(234,97,19,0.3)] hover:-translate-y-0.5 active:scale-90 cursor-pointer"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" />

@@ -160,4 +160,29 @@ html {
   background: #F88F22;
 }
 
+/* Floating Navbar Dock Glow Animation */
+@keyframes dockGlowPulse {
+  0%, 100% {
+    opacity: 0.65;
+    filter: blur(20px);
+  }
+  50% {
+    opacity: 0.95;
+    filter: blur(26px);
+  }
+}
+
+.animate-dock-glow {
+  animation: dockGlowPulse 4s ease-in-out infinite;
+}
+
+/* Hide scrollbar for clean horizontal dock dragging */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 
