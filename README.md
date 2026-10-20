@@ -21,12 +21,14 @@
 
 <p align="center">
   <a href="https://kcstudio-linkpluse.vercel.app"><strong>🌐 Launch Live Production App</strong></a> ·
+  <a href="#platform-preview--visual-tour"><strong>🖼️ Screenshots</strong></a> ·
+  <a href="#interactive-demo-access--test-credentials"><strong>🔑 Demo Access</strong></a> ·
   <a href="#system-architecture"><strong>🏛️ Architecture</strong></a> ·
   <a href="#data-flow-diagrams-dfd"><strong>🔄 Data Flow (DFD)</strong></a> ·
   <a href="#redirect-engine-flowchart"><strong>⚡ Redirect Engine</strong></a> ·
   <a href="#database-architecture--er-diagram"><strong>🗄️ Database ER</strong></a> ·
   <a href="#api-reference"><strong>📡 API Reference</strong></a> ·
-  <a href="#local-development"><strong>💻 Quickstart</strong></a>
+  <a href="#local-development--quickstart"><strong>💻 Quickstart</strong></a>
 </p>
 
 ---
@@ -41,11 +43,12 @@
 | 🏛️ Architecture & Foundations | ⚙️ Operations, Engine & QA |
 | :--- | :--- |
 | `01` &nbsp; [**Executive Overview**](#executive-overview) &nbsp; ![Overview](https://img.shields.io/badge/OVERVIEW-f97316?style=flat-square) <br> Sub-millisecond edge redirect engine, LRU caching & async micro-batch logging | `06` &nbsp; [**Core Workflow Flowcharts**](#core-workflow-flowcharts) ➔ &nbsp; ⚙️ <br> • [1. 8-Step Redirect Decision Pipeline](#1-8-step-redirect-decision-pipeline) ➔ <br> • [2. Google OAuth 2.0 & GIS Pipeline](#2-google-oauth-20--gis-pipeline) ➔ <br> • [3. Asynchronous Click Batch Queue](#3-asynchronous-click-batch-queue) ➔ |
-| `02` &nbsp; [**Key Features & Capabilities**](#key-features--capabilities) ➔ &nbsp; ✔️ <br> Device routing (iOS/Android), bcrypt protection, click limits & QR synthesis | `07` &nbsp; [**Database Architecture & ER Diagram**](#database-architecture--er-diagram) ➔ &nbsp; 🔗 <br> Dual-adapter schema (PostgreSQL / SQLite) with foreign-key cascades & indexes |
-| `03` &nbsp; [**Tech Stack & Architecture Matrix**](#tech-stack--architecture-matrix) &nbsp; ![JS](https://img.shields.io/badge/JS-ES6-yellow?style=flat-square) ![React](https://img.shields.io/badge/React-18-blue?style=flat-square) <br> Node.js 24 LTS, React 18, Vite 6, Supabase PostgreSQL, Tailwind CSS | `08` &nbsp; [**Telemetry & Analytics Visualization Engine**](#telemetry--analytics-visualization-engine) ➔ &nbsp; 📈 <br> Real-time cubic spline wave charts (`#FFE3B3`), timelines & geo metrics |
-| `04` &nbsp; [**System Architecture**](#system-architecture) ➔ &nbsp; 🌐 <br> Multi-tier decoupled edge redirect gateway, async workers & cloud database | `09` &nbsp; [**Security, Privacy & Edge Performance**](#security-privacy--edge-performance) ➔ &nbsp; 🛡️ <br> Bcrypt password hashing, signed HTTP cookies, CAS limits & domain blocklist |
-| `05` &nbsp; [**Data Flow Diagrams (DFD)**](#data-flow-diagrams-dfd) ➔ &nbsp; 📊 <br> ├─ [Level 0: Context Diagram](#level-0-context-diagram) 🔍 <br> └─ [Level 1: Functional Decomposition](#level-1-functional-decomposition) 🧭 | `10` &nbsp; [**API Reference**](#api-reference) ➔ &nbsp; ![API](https://img.shields.io/badge/API-REST-f43f5e?style=flat-square) <br> Standardized RESTful endpoints for Auth, Links, Analytics & Bios |
-| `11` &nbsp; [**Local Development & Quickstart**](#local-development--quickstart) ➔ &nbsp; 🚀 <br> • [Local Setup & Seed Accounts](#local-development--quickstart) <br> • [Production Deployment (Vercel + Supabase)](#production-deployment-vercel--supabase) | `12` &nbsp; [**Testing & Quality Assurance**](#testing--quality-assurance) ➔ &nbsp; 🧪 <br> 73/73 Passing tests (unit, integration & edge-case test suites) |
+| `02` &nbsp; [**Platform Preview & Visual Tour**](#platform-preview--visual-tour) ➔ &nbsp; 🖼️ <br> Full UI showcase: Glassmorphic landing page & real-time telemetry dashboard | `07` &nbsp; [**Database Architecture & ER Diagram**](#database-architecture--er-diagram) ➔ &nbsp; 🔗 <br> Dual-adapter schema (PostgreSQL / SQLite) with foreign-key cascades & indexes |
+| `03` &nbsp; [**Interactive Demo Access & Credentials**](#interactive-demo-access--test-credentials) ➔ &nbsp; 🔑 <br> Pre-configured Admin & User test accounts with 1-click autofill & role matrix | `08` &nbsp; [**Telemetry & Analytics Visualization Engine**](#telemetry--analytics-visualization-engine) ➔ &nbsp; 📈 <br> Real-time cubic spline wave charts (`#FFE3B3`), timelines & geo metrics |
+| `04` &nbsp; [**Key Features & Capabilities**](#key-features--capabilities) ➔ &nbsp; ✔️ <br> Device routing (iOS/Android), bcrypt protection, click limits & QR synthesis | `09` &nbsp; [**Security, Privacy & Edge Performance**](#security-privacy--edge-performance) ➔ &nbsp; 🛡️ <br> Bcrypt password hashing, signed HTTP cookies, CAS limits & domain blocklist |
+| `05` &nbsp; [**Tech Stack & Architecture Matrix**](#tech-stack--architecture-matrix) &nbsp; ![JS](https://img.shields.io/badge/JS-ES6-yellow?style=flat-square) ![React](https://img.shields.io/badge/React-18-blue?style=flat-square) <br> Node.js 24 LTS, React 18, Vite 6, Supabase PostgreSQL, Tailwind CSS | `10` &nbsp; [**API Reference**](#api-reference) ➔ &nbsp; ![API](https://img.shields.io/badge/API-REST-f43f5e?style=flat-square) <br> Standardized RESTful endpoints for Auth, Links, Analytics & Bios |
+| `06` &nbsp; [**System Architecture & Data Flow**](#system-architecture) ➔ &nbsp; 🌐 <br> Multi-tier decoupled edge redirect gateway, DFD Level 0 & Level 1 models | `11` &nbsp; [**Local Development & Quickstart**](#local-development--quickstart) ➔ &nbsp; 🚀 <br> • [Local Setup & Seed Accounts](#local-development--quickstart) <br> • [Production Deployment (Vercel + Supabase)](#production-deployment-vercel--supabase) |
+| | `12` &nbsp; [**Testing & Quality Assurance**](#testing--quality-assurance) ➔ &nbsp; 🧪 <br> 73/73 Passing tests (unit, integration & edge-case test suites) |
 
 <div align="center">
   <sub>POWERED BY KC STUDIO • COPYRIGHT © 2026</sub>
@@ -69,6 +72,96 @@ Unlike traditional URL shorteners that block visitor redirects while synchronous
                                                 [ PostgreSQL / Supabase ]
                                                 (Telemetry, Geolocation, Aggregations)
 ```
+
+---
+
+## 🖼️ Platform Preview & Visual Tour
+
+<div align="center">
+  <p>
+    <a href="https://kcstudio-linkpluse.vercel.app">
+      <img src="https://img.shields.io/badge/Live%20Demo-Explore%20LinkPulse-EA6113?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Live Demo" />
+    </a>
+    <a href="#interactive-demo-access--test-credentials">
+      <img src="https://img.shields.io/badge/Instant%20Access-Demo%20Credentials-F88F22?style=for-the-badge&logo=1password&logoColor=white" alt="Demo Credentials" />
+    </a>
+  </p>
+</div>
+
+### 1. 🌐 Modern SaaS Landing Page & Instant Link Shortener
+The LinkPulse landing page combines a glassmorphic cyber-amber aesthetic with a live interactive shortening engine, real-time URL validation, and animated micro-interactions.
+
+<p align="center">
+  <a href="client/public/readme_landingpage.png" target="_blank">
+    <img src="client/public/readme_landingpage.png" alt="LinkPulse - Modern SaaS Landing Page" width="100%" style="border-radius: 12px; border: 1px solid rgba(251, 185, 49, 0.25); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);" />
+  </a>
+</p>
+
+*Key Highlights:*
+- **Instant Edge Shortener**: Paste any destination URL with instant protocol verification and real-time custom alias availability check.
+- **Glassmorphic Feature Cards**: High-contrast, theme-adaptive cards showcasing sub-millisecond redirection, deep telemetry, and smart device routing.
+- **Dynamic Quick Action Bar**: Direct access to link generation, documentation, and the secure authentication gateway.
+
+---
+
+### 2. 📊 Real-Time Telemetry & Analytics Mission Control
+The LinkPulse operations dashboard equips creators and enterprise teams with sub-second click stream data, cubic spline trend curves, and interactive geographic traffic mapping.
+
+<p align="center">
+  <a href="client/public/readme_dashboard.png" target="_blank">
+    <img src="client/public/readme_dashboard.png" alt="LinkPulse - Real-Time Telemetry & Analytics Dashboard" width="100%" style="border-radius: 12px; border: 1px solid rgba(251, 185, 49, 0.25); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);" />
+  </a>
+</p>
+
+*Key Highlights:*
+- **Cubic Spline Wave Telemetry (`#FFE3B3`)**: Non-blocking real-time traffic chart with smooth monotone interpolation and responsive hover triggers.
+- **Interactive 3D Geo Distribution Donut**: Multi-segment global traffic visualization with exploded slice physics and glowing focal state on hover.
+- **Device & Platform Intelligence**: Granular breakdown of operating systems (iOS, Android, Windows, macOS) and browser user agents.
+- **High-Velocity Metric Cards**: Real-time counter metrics for Total Clicks, Unique Human Visitors, Active Links, and Top Performing Endpoints.
+
+---
+
+## 🔑 Interactive Demo Access & Test Credentials
+
+LinkPulse provides pre-configured sandbox accounts for evaluating both **creator workflows** and **system-wide administrative controls**. You can test the platform live on the production deployment or in your local development environment without registering a new email.
+
+<div align="center">
+
+| Account Type | Identity / Email | Password | Access Level | Primary Evaluation Features |
+| :--- | :--- | :--- | :---: | :--- |
+| <img src="https://img.shields.io/badge/ROLE-ADMIN-red?style=flat-square&logo=shield" alt="Admin" /> <br> **System Administrator** | `admin@linkpulse.dev` | `admin1234` | **Superuser** <br> (Full Platform) | • System-wide telemetry & click stream <br> • Global malicious domain blocklist <br> • Moderate & disable links (with 410 reason) <br> • User directory & audit inspection |
+| <img src="https://img.shields.io/badge/ROLE-CREATOR-amber?style=flat-square&logo=user" alt="User" /> <br> **Standard User** | `ada@example.com` | `password123` | **Member** <br> (Workspace Level) | • Create short links & custom aliases <br> • Smart device rules (iOS / Android / Desktop) <br> • Password gating (bcrypt) & click quotas <br> • Link-in-Bio multi-theme builder <br> • Real-time QR code generation (PNG/SVG) |
+| <img src="https://img.shields.io/badge/ROLE-ANALYST-blue?style=flat-square&logo=databricks" alt="Secondary User" /> <br> **Secondary User** | `grace@example.com` | `password123` | **Member** <br> (Independent) | • Multi-tenant workspace isolation testing <br> • Independent campaign tracking & tagging <br> • CSV bulk link import testing |
+
+</div>
+
+> [!TIP]
+> ### ⚡ 1-Click Instant Autofill
+> On the **Login / Register Page** (`/login`), click either the **`User Demo`** or **`Admin Demo`** quick-fill button below the social login options to instantly populate the credentials and test the platform with zero typing.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       DEMO ACCOUNT PERMISSIONS MATRIX                       │
+├──────────────────────────────────────┬──────────────────┬───────────────────┤
+│ FEATURE CAPABILITY                   │ USER (ADA)       │ ADMIN (SUPERUSER) │
+├──────────────────────────────────────┼──────────────────┼───────────────────┤
+│ Short Link Creation & Custom Alias   │ ✅ Yes           │ ✅ Yes            │
+│ Real-Time Click Telemetry & Graphs   │ ✅ Own Links     │ ✅ Platform-Wide  │
+│ Device Smart Routing (iOS / Android) │ ✅ Yes           │ ✅ Yes            │
+│ Password Protection (Bcrypt Gating)  │ ✅ Yes           │ ✅ Yes            │
+│ Atomic Max Clicks & Link Expiry      │ ✅ Yes           │ ✅ Yes            │
+│ Dynamic Link-in-Bio Page Builder     │ ✅ Yes           │ ✅ Yes            │
+│ High-Res QR Code Export (PNG / SVG)  │ ✅ Yes           │ ✅ Yes            │
+│ CSV Bulk Link Import & Validation    │ ✅ Yes           │ ✅ Yes            │
+│ Emergency Link Killswitch & 410 Gone │ ❌ Own Only      │ ✅ ANY User Link  │
+│ Phishing / Domain Blocklist Engine   │ ❌ Restricted    │ ✅ Full Access    │
+│ Platform User Directory & Moderation │ ❌ Restricted    │ ✅ Full Access    │
+│ System Health & Bot Traffic Audits   │ ❌ Restricted    │ ✅ Full Access    │
+└──────────────────────────────────────┴──────────────────┴───────────────────┘
+```
+
+> [!NOTE]
+> **Sandbox Safety**: All test credentials run in isolated, safe environments. The database includes automated sanitization and rate limits to prevent abuse while allowing full inspection of all features.
 
 ---
 
@@ -673,11 +766,13 @@ npm run dev      # Starts Vite dev server at http://localhost:5173
 Open **`http://localhost:5173`** in your browser.
 
 #### Pre-Configured Seed Logins:
-| Role | Email | Password |
-|:---|:---|:---|
-| **Admin** | `admin@linkpulse.dev` | `admin1234` |
-| **User** | `ada@example.com` | `password123` |
-| **User** | `grace@example.com` | `password123` |
+*(For full capability comparison and 1-click login guides, refer to [Interactive Demo Access & Test Credentials](#interactive-demo-access--test-credentials))*
+
+| Role | Email | Password | Primary Purpose |
+|:---|:---|:---|:---|
+| **Admin** | `admin@linkpulse.dev` | `admin1234` | Full platform control, domain blocklist & link moderation |
+| **User** | `ada@example.com` | `password123` | Link creation, device routing, bio pages & telemetry |
+| **User** | `grace@example.com` | `password123` | Secondary user for multi-tenant isolation testing |
 
 ---
 
