@@ -272,6 +272,16 @@ export function invalidateCode(code) {
   linkCache.delete(code);
 }
 
+export async function deleteLink(id, ownerId) {
+  const link = await getLinkById(id, ownerId);
+  await run('DELETE FROM link_tags WHERE link_id = ?', [id]);
+  await run('DELETE FROM click_events WHERE link_id = ?', [id]);
+  await run('DELETE FROM bio_page_links WHERE link_id = ?', [id]);
+  await run('DELETE FROM links WHERE id = ? AND owner_id = ?', [id, ownerId]);
+  linkCache.delete(link.short_code);
+  return { ok: true };
+}
+
 function isUniqueViolation(err) {
   const msg = String(err?.message || err?.code || '');
   return /UNIQUE constraint failed|duplicate key value|unique/i.test(msg);

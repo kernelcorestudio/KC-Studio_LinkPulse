@@ -61,6 +61,7 @@ export const api = {
   getLink: (id) => request(`/api/links/${id}`),
   createLink: (p) => request('/api/links', { method: 'POST', body: p }),
   updateLink: (id, p) => request(`/api/links/${id}`, { method: 'PATCH', body: p }),
+  deleteLink: (id) => request(`/api/links/${id}`, { method: 'DELETE' }),
   checkAlias: (code) => request(`/api/links/available?code=${encodeURIComponent(code)}`),
   validateLink: (p) => request(`/api/links/validate`, { method: 'POST', body: p }),
   // campaigns / tags / folders

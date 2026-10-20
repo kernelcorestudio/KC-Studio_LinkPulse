@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit';
 import { asyncHandler, HttpError } from '../middleware/errors.js';
 import { requireAuth } from '../middleware/auth.js';
 import { createLinkSchema, updateLinkSchema, importRowsSchema, validateAlias, validateDestinationUrl } from '../utils/validation.js';
-import { createLink, updateLink, getLinkById, listLinks, isCodeTaken } from '../services/linkService.js';
+import { createLink, updateLink, deleteLink, getLinkById, listLinks, isCodeTaken } from '../services/linkService.js';
 import { validateImportRows, runImport } from '../services/importService.js';
 import { generateUniqueCode } from '../utils/shortCode.js';
 
@@ -140,3 +140,12 @@ linkRoutes.patch(
     res.json({ link });
   }),
 );
+
+// DELETE /api/links/:id  -> owner can delete a link
+linkRoutes.delete(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    res.json(await deleteLink(req.params.id, req.user.id));
+  }),
+);
+
