@@ -1,4 +1,4 @@
-﻿// Link detail: Overview + Analytics + Settings tabs (Sleek Dark SaaS).
+// Link detail: Overview + Analytics + Settings tabs (Sleek Dark SaaS).
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, shortUrl, qrUrl } from '../lib/api';
@@ -16,7 +16,7 @@ function QrPanel({ code }) {
         <p className="text-xs text-zinc-400 mt-0.5">High-resolution scannable QR code. Scans are tracked automatically.</p>
       </div>
       <div className="flex flex-wrap items-center gap-6">
-        <div className="rounded-xl border border-[#2a1800] bg-white p-2.5 shadow-md">
+        <div className="rounded-xl border border-zinc-800 bg-white p-2.5 shadow-md">
           <img
             src={qrUrl(code, { format: 'png', size })}
             width={140}
@@ -27,9 +27,9 @@ function QrPanel({ code }) {
         </div>
         <div className="space-y-3 text-xs">
           <div className="flex items-center gap-2">
-            <label className="text-xs text-zinc-400 font-medium">Resolution:</label>
+            <label className="text-xs text-amber-200/60 font-medium">Resolution:</label>
             <select
-              className="rounded-lg border border-[#2a1800] bg-zinc-900 px-2.5 py-1 text-xs text-zinc-200 outline-none focus:border-[#F88F22]"
+              className="rounded-lg border border-[#2a1800] bg-[#1c1000] px-2.5 py-1 text-xs text-amber-200/80 outline-none focus:border-[#F88F22]"
               value={size}
               onChange={(e) => setSize(Number(e.target.value))}
             >
@@ -61,7 +61,7 @@ function Overview({ link }) {
       {/* Short URL Banner */}
       <div className="card flex flex-wrap items-center justify-between gap-4">
         <div>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Short Link URL</span>
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">Short Link URL</span>
           <div className="mt-1 flex items-center gap-3">
             <a
               href={url}
@@ -89,8 +89,8 @@ function Overview({ link }) {
 
       <div className="grid gap-5 md:grid-cols-2">
         <div className="card space-y-2">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Destination Target</span>
-          <p className="break-all font-mono text-xs text-zinc-300 leading-relaxed pt-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">Destination Target</span>
+          <p className="break-all font-mono text-xs text-amber-200/80 leading-relaxed pt-1">
             <a href={link.destination_url} target="_blank" rel="noreferrer" className="hover:text-[#FBB931] hover:underline">
               {link.destination_url}
             </a>
@@ -155,8 +155,8 @@ function Analytics({ linkId }) {
               onClick={() => setPeriod(val)}
               className={`rounded-md px-3 py-1 font-semibold text-[11px] tracking-wide transition duration-150 ${
                 period === val
-                  ? 'bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white shadow-sm'
+                  : 'text-amber-200/50 hover:text-amber-100'
               }`}
             >
               {label}
@@ -177,44 +177,44 @@ function Analytics({ linkId }) {
       {/* Main Clicks Chart */}
       <div className="card">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-300">Clicks Timeline</h3>
-          <span className="font-mono text-[10px] text-zinc-500">[ HISTORICAL ]</span>
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Clicks Timeline</h3>
+          <span className="font-mono text-[10px] text-amber-900/60">[ HISTORICAL ]</span>
         </div>
-        <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#6366f1" />
+        <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#F88F22" />
       </div>
 
       {/* Breakdown Grid */}
       <div className="grid gap-5 lg:grid-cols-2">
         <div className="card">
-          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-300">Top Referrers</h3>
+          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-amber-200/80">Top Referrers</h3>
           {data.referrers.length ? (
-            <BarChart horizontal labels={top(data.referrers).map((r) => r.label)} data={top(data.referrers).map((r) => Number(r.clicks))} color="#6366f1" />
+            <BarChart horizontal labels={top(data.referrers).map((r) => r.label)} data={top(data.referrers).map((r) => Number(r.clicks))} color="#EA6113" />
           ) : (
-            <p className="py-12 text-center text-xs text-zinc-500">No referrer data recorded yet</p>
+            <p className="py-12 text-center text-xs text-amber-900/60">No referrer data recorded yet</p>
           )}
         </div>
         <div className="card">
-          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-300">Device Breakdown</h3>
+          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-amber-200/80">Device Breakdown</h3>
           {data.devices.length ? (
             <DoughnutChart labels={data.devices.map((d) => d.label)} data={data.devices.map((d) => Number(d.clicks))} />
           ) : (
-            <p className="py-12 text-center text-xs text-zinc-500">No device data recorded yet</p>
+            <p className="py-12 text-center text-xs text-amber-900/60">No device data recorded yet</p>
           )}
         </div>
         <div className="card">
-          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-300">Top Browsers</h3>
+          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-amber-200/80">Top Browsers</h3>
           {data.browsers.length ? (
-            <BarChart horizontal color="#8b5cf6" labels={top(data.browsers).map((b) => b.label)} data={top(data.browsers).map((b) => Number(b.clicks))} />
+            <BarChart horizontal color="#FBB931" labels={top(data.browsers).map((b) => b.label)} data={top(data.browsers).map((b) => Number(b.clicks))} />
           ) : (
-            <p className="py-12 text-center text-xs text-zinc-500">No browser data recorded yet</p>
+            <p className="py-12 text-center text-xs text-amber-900/60">No browser data recorded yet</p>
           )}
         </div>
         <div className="card">
-          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-300">Geographic Regions</h3>
+          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-amber-200/80">Geographic Regions</h3>
           {data.countries.length ? (
-            <BarChart horizontal color="#10b981" labels={top(data.countries).map((c) => c.label)} data={top(data.countries).map((c) => Number(c.clicks))} />
+            <BarChart horizontal color="#F88F22" labels={top(data.countries).map((c) => c.label)} data={top(data.countries).map((c) => Number(c.clicks))} />
           ) : (
-            <p className="py-12 text-center text-xs text-zinc-500">No geographic data recorded yet</p>
+            <p className="py-12 text-center text-xs text-amber-900/60">No geographic data recorded yet</p>
           )}
         </div>
       </div>
@@ -385,12 +385,12 @@ function Settings({ link, onSaved }) {
       </div>
 
       {/* Device Targeting Box */}
-      <div className="rounded-xl border border-[#2a1800] bg-zinc-900/50 p-4 space-y-3">
+      <div className="rounded-xl border border-[#2a1800] bg-[#150900]/80 p-4 space-y-3">
         <div className="flex items-center gap-2">
           <DeviceIcon className="h-4 w-4 text-[#FBB931]" />
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-200">Device Targeting Rules</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Device Targeting Rules</h4>
         </div>
-        <p className="text-[11px] text-zinc-400">Route visitors to dedicated platform targets based on their user agent.</p>
+        <p className="text-[11px] text-amber-200/60">Route visitors to dedicated platform targets based on their user agent.</p>
         <div className="grid gap-3 sm:grid-cols-3 pt-1">
           <div>
             <label className="label">iOS (iPhone/iPad)</label>
@@ -439,12 +439,12 @@ export default function LinkDetail() {
     <div className="space-y-6">
       {/* Top Breadcrumb & Link Header */}
       <div>
-        <Link to="/links" className="text-xs font-medium text-zinc-400 hover:text-white transition flex items-center gap-1 mb-2">
+        <Link to="/links" className="text-xs font-medium text-amber-200/60 hover:text-white transition flex items-center gap-1 mb-2">
           <span>← Back to Links</span>
         </Link>
         <div className="flex flex-wrap items-baseline gap-3">
           <h1 className="font-mono text-2xl font-bold text-white">/{link.short_code}</h1>
-          {link.title && <span className="text-sm text-zinc-400 font-normal">· {link.title}</span>}
+          {link.title && <span className="text-sm text-amber-200/60 font-normal">· {link.title}</span>}
         </div>
       </div>
 
@@ -456,8 +456,8 @@ export default function LinkDetail() {
             onClick={() => setTab(key)}
             className={`border-b-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition ${
               tab === key
-                ? 'border-[#F88F22] text-white'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                ? 'border-[#F88F22] text-[#FFE3B3]'
+                : 'border-transparent text-amber-200/50 hover:text-amber-100'
             }`}
           >
             {label}

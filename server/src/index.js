@@ -4,10 +4,15 @@ import { initDb, closeDb } from './db/index.js';
 import { createApp } from './app.js';
 import { startClickQueue, shutdownClickQueue } from './services/clickQueue.js';
 
-async function main() {
-  await initDb();
+await initDb();
+
+if (!process.env.VERCEL) {
   startClickQueue();
-  const app = createApp();
+}
+
+const app = createApp();
+
+if (!process.env.VERCEL) {
   const server = app.listen(config.port, () => {
     console.log(`[linkpulse] API listening on ${config.baseUrl} (port ${config.port})`);
   });
@@ -34,7 +39,4 @@ async function main() {
   });
 }
 
-main().catch((e) => {
-  console.error('[linkpulse] failed to start:', e);
-  process.exit(1);
-});
+export default app;

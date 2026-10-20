@@ -1,4 +1,4 @@
-﻿// Organize: manage tags and folders. Both list the matching links in one click (Sleek Dark SaaS).
+// Organize: manage tags and folders. Both list the matching links in one click (Sleek Dark SaaS).
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -88,7 +88,7 @@ export default function Organize() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-[#2a1800]/80 pb-5">
+      <div className="border-b border-zinc-800/80 pb-5">
         <h1 className="text-2xl font-bold tracking-tight text-white">Tags & Folders</h1>
         <p className="text-xs text-zinc-400 mt-1">
           Structure and categorize your link collection with flexible tags and folders.
@@ -99,11 +99,11 @@ export default function Organize() {
         {/* Tags Card */}
         <div className="card space-y-4">
           <div className="flex items-center justify-between border-b border-[#2a1800]/80 pb-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-200 flex items-center gap-2">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80 flex items-center gap-2">
               <TagIcon className="h-4 w-4 text-[#FBB931]" />
               <span>Tags</span>
             </h2>
-            <span className="text-xs font-mono text-zinc-400">{tagList.length} tags</span>
+            <span className="text-xs font-mono text-amber-200/60">{tagList.length} tags</span>
           </div>
 
           {tagList.length === 0 && (
@@ -116,17 +116,17 @@ export default function Organize() {
             {tagList.map((t) => (
               <div
                 key={t.id}
-                className="flex items-center justify-between gap-3 rounded-lg border border-[#2a1800]/80 bg-zinc-900/50 p-3 text-xs transition hover:border-[#3d2200]"
+                className="flex items-center justify-between gap-3 rounded-lg border border-[#2a1800] bg-[#1c1000]/60 p-3 text-xs transition hover:border-[#3d2200]"
               >
                 {editing?.kind === 'tag' && editing.id === t.id ? (
                   <RenameRow item={t} onSave={saveRename} onCancel={() => setEditing(null)} />
                 ) : (
                   <>
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="inline-flex items-center rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-2.5 py-0.5 text-[11px] font-semibold text-[#FFE3B3]">
+                      <span className="inline-flex items-center rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-2.5 py-0.5 text-[11px] font-semibold text-[#FBB931]">
                         #{t.name}
                       </span>
-                      <span className="text-[11px] font-mono text-zinc-500">{t.link_count} links</span>
+                      <span className="text-[11px] font-mono text-amber-900/60">{t.link_count} links</span>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
                       <Link className="btn-ghost text-xs py-1 px-2.5" to={`/links?tagId=${t.id}`}>
@@ -157,11 +157,11 @@ export default function Organize() {
         {/* Folders Card */}
         <div className="card space-y-4">
           <div className="flex items-center justify-between border-b border-[#2a1800]/80 pb-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-200 flex items-center gap-2">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80 flex items-center gap-2">
               <FolderIcon className="h-4 w-4 text-[#FBB931]" />
               <span>Folders</span>
             </h2>
-            <span className="text-xs font-mono text-zinc-400">{folderList.length} folders</span>
+            <span className="text-xs font-mono text-amber-200/60">{folderList.length} folders</span>
           </div>
 
           <form className="flex gap-2" onSubmit={createFolder}>
@@ -186,7 +186,7 @@ export default function Organize() {
             {folderList.map((f) => (
               <div
                 key={f.id}
-                className="flex items-center justify-between gap-3 rounded-lg border border-[#2a1800]/80 bg-zinc-900/50 p-3 text-xs transition hover:border-[#3d2200]"
+                className="flex items-center justify-between gap-3 rounded-lg border border-[#2a1800] bg-[#1c1000]/60 p-3 text-xs transition hover:border-[#3d2200]"
               >
                 {editing?.kind === 'folder' && editing.id === f.id ? (
                   <RenameRow item={f} onSave={saveRename} onCancel={() => setEditing(null)} />

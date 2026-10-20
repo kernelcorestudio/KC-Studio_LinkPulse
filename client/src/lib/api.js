@@ -1,6 +1,6 @@
 // Single API client. In dev, Vite proxies /api to the backend; in production
 // VITE_API_BASE points at the deployed backend (Render/Railway).
-export const API_BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
+export const API_BASE = (import.meta.env.VITE_SERVER_URL || import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
 
 // The host that serves short links (redirect engine). Resolution order:
 // explicit VITE_SHORT_BASE -> VITE_API_BASE -> current page origin, so the

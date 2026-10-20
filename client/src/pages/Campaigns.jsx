@@ -1,4 +1,4 @@
-﻿// Campaigns: list with live stats, inline create/rename/delete, and an
+// Campaigns: list with live stats, inline create/rename/delete, and an
 // expandable analytics panel (Sleek Dark SaaS).
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
@@ -97,7 +97,7 @@ export default function Campaigns() {
             <CampaignIcon className="h-6 w-6 text-[#FBB931]" />
             <span>Campaigns</span>
           </h1>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className="text-xs text-amber-200/60 mt-1">
             Group links into initiatives and track cross-channel marketing performance.
           </p>
         </div>
@@ -153,15 +153,15 @@ export default function Campaigns() {
 
                 <div className="mt-4 grid grid-cols-3 gap-2 rounded-lg border border-[#2a1800] bg-[#1c1000]/60 p-2.5 text-center">
                   <div>
-                    <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Links</span>
+                    <span className="text-[10px] uppercase font-semibold text-amber-900/60 block">Links</span>
                     <span className="text-sm font-bold text-white font-mono">{c.link_count}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Clicks</span>
+                    <span className="text-[10px] uppercase font-semibold text-amber-900/60 block">Clicks</span>
                     <span className="text-sm font-bold text-[#FBB931] font-mono">{c.clicks}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Uniques</span>
+                    <span className="text-[10px] uppercase font-semibold text-amber-900/60 block">Uniques</span>
                     <span className="text-sm font-bold text-emerald-400 font-mono">{c.uniques}</span>
                   </div>
                 </div>
@@ -199,15 +199,15 @@ export default function Campaigns() {
               </div>
 
               {openId === c.id && (
-                <div className="rounded-xl border border-[#2a1800] bg-zinc-900/40 p-4 space-y-3">
+                <div className="rounded-xl border border-[#2a1800] bg-[#140800]/70 p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-zinc-300">Campaign Timeline</span>
-                    <div className="flex gap-1 rounded-md border border-[#2a1800] bg-zinc-900 p-0.5 text-xs">
+                    <span className="text-xs font-semibold text-amber-200/80">Campaign Timeline</span>
+                    <div className="flex gap-1 rounded-md border border-[#2a1800] bg-[#1c1000] p-0.5 text-xs">
                       {['7d', '30d', '90d'].map((p) => (
                         <button
                           key={p}
                           onClick={() => { setStatsPeriod(p); loadStats(c.id, p); }}
-                          className={`rounded px-2 py-0.5 text-[10px] font-semibold uppercase ${statsPeriod === p ? 'bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white' : 'text-zinc-400 hover:text-white'}`}
+                          className={`rounded px-2 py-0.5 text-[10px] font-semibold uppercase ${statsPeriod === p ? 'border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white' : 'text-amber-200/50 hover:text-white'}`}
                         >
                           {p}
                         </button>
@@ -219,9 +219,9 @@ export default function Campaigns() {
                     <Spinner label="Loading campaign metrics…" />
                   ) : stats && (
                     <>
-                      <LineChart labels={stats.timeseries.map((t) => t.bucket)} data={stats.timeseries.map((t) => t.clicks)} color="#6366f1" />
+                      <LineChart labels={stats.timeseries.map((t) => t.bucket)} data={stats.timeseries.map((t) => t.clicks)} color="#F88F22" />
                       {stats.countries?.length > 0 && (
-                        <p className="text-[11px] text-zinc-400 pt-1">
+                        <p className="text-[11px] text-amber-200/60 pt-1">
                           Top regions: {stats.countries.slice(0, 3).map((x) => `${x.label} (${x.clicks})`).join(' · ')}
                         </p>
                       )}

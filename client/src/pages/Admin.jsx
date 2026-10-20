@@ -1,4 +1,4 @@
-﻿// Admin panel: platform overview + abuse alerts, link moderation
+// Admin panel: platform overview + abuse alerts, link moderation
 // (disable with reason / enable), users, and the destination blocklist.
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -99,15 +99,15 @@ function Overview() {
             <h2 className="text-sm font-semibold text-zinc-100">Top Links (Platform-Wide)</h2>
             <span className="text-[11px] text-zinc-400 font-mono">By Engagement</span>
           </div>
-          <div className="divide-y divide-white/[0.06]">
+          <div className="divide-y divide-[#2a1800]/60">
             {stats.topLinks.map((l) => (
               <div key={l.id} className="flex items-center gap-3 py-2.5 text-xs">
                 <Link className="truncate font-mono font-medium text-[#FBB931] hover:text-[#FFE3B3] hover:underline" to={`/links/${l.id}`}>
                   {shortUrl(l.short_code)}
                 </Link>
                 <div className="ml-auto flex items-center gap-2 text-right">
-                  <span className="font-semibold text-zinc-200">{l.click_count.toLocaleString()} clicks</span>
-                  <span className="text-zinc-400 truncate max-w-[140px]">· {l.owner_email}</span>
+                  <span className="font-semibold text-[#FFE3B3]">{l.click_count.toLocaleString()} clicks</span>
+                  <span className="text-amber-200/60 truncate max-w-[140px]">· {l.owner_email}</span>
                 </div>
               </div>
             ))}
@@ -166,8 +166,8 @@ function LinksTab() {
   const badge = (s) => ({
     active: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
     disabled: 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
-    expired: 'bg-[#2a1800] text-zinc-400 border border-white/[0.06]',
-  }[s] || 'bg-[#2a1800] text-zinc-400 border border-white/[0.06]');
+    expired: 'bg-zinc-800 text-zinc-400 border border-white/[0.06]',
+  }[s] || 'bg-zinc-800 text-zinc-400 border border-white/[0.06]');
 
   return (
     <div className="space-y-4">
@@ -215,9 +215,9 @@ function LinksTab() {
               </thead>
               <tbody className="divide-y divide-white/[0.06]">
                 {data.links.map((l) => (
-                  <tr key={l.id} className="hover:bg-[#2a1800]/30 transition">
+                  <tr key={l.id} className="hover:bg-zinc-800/30 transition">
                     <td className="py-3 px-4 font-mono font-medium">
-                      <Link className="text-[#FBB931] hover:text-[#FFE3B3] hover:underline" to={`/links/${l.id}`}>
+                      <Link className="text-indigo-400 hover:text-indigo-300 hover:underline" to={`/links/${l.id}`}>
                         {l.short_code}
                       </Link>
                     </td>
@@ -311,16 +311,16 @@ function UsersTab() {
               </thead>
               <tbody className="divide-y divide-white/[0.06]">
                 {data.users.map((u) => (
-                  <tr key={u.id} className="hover:bg-[#2a1800]/30 transition">
+                  <tr key={u.id} className="hover:bg-zinc-800/30 transition">
                     <td className="py-3 px-4 font-mono font-medium text-zinc-200">{u.email}</td>
                     <td className="py-3 px-4 text-zinc-300">{u.name}</td>
                     <td className="py-3 px-4">
                       {u.role === 'admin' ? (
-                        <span className="inline-flex items-center rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-[#F88F22]/10 text-[#FBB931] border border-[#F88F22]/20">
+                        <span className="inline-flex items-center rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
                           admin
                         </span>
                       ) : (
-                        <span className="inline-flex items-center rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-[#2a1800] text-zinc-400 border border-white/[0.06]">
+                        <span className="inline-flex items-center rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-zinc-800 text-zinc-400 border border-white/[0.06]">
                           user
                         </span>
                       )}
@@ -413,7 +413,7 @@ function BlocklistTab() {
           ) : (
             <div className="divide-y divide-white/[0.06]">
               {rows.map((b) => (
-                <div key={b.id} className="flex items-center gap-3 px-4 py-3 text-xs hover:bg-[#2a1800]/30 transition">
+                <div key={b.id} className="flex items-center gap-3 px-4 py-3 text-xs hover:bg-zinc-800/30 transition">
                   <span className="font-mono font-medium text-rose-400">{b.domain}</span>
                   {b.reason && <span className="text-zinc-400 text-xs">— {b.reason}</span>}
                   <span className="ml-auto text-[11px] text-zinc-500 font-mono">
@@ -446,12 +446,12 @@ export default function Admin() {
           </span>
           <span>Security & Moderation</span>
         </h1>
-        <p className="mt-1 text-xs text-zinc-400">
+        <p className="mt-1 text-xs text-amber-200/60">
           Platform-wide telemetry, threat monitoring, and global domain enforcement.
         </p>
       </div>
 
-      <div className="inline-flex rounded-xl border border-white/[0.08] bg-[#0c0d0e]/60 p-1 backdrop-blur gap-1">
+      <div className="inline-flex rounded-xl border border-[#2a1800] bg-[#100800]/80 p-1 backdrop-blur gap-1">
         {TABS.map(([id, label, Icon]) => {
           const active = tab === id;
           return (
@@ -459,12 +459,12 @@ export default function Admin() {
               key={id}
               className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition ${
                 active
-                  ? 'bg-[#2a1800] text-white shadow-sm border border-white/[0.08]'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#2a1800]/40'
+                  ? 'bg-[#1c1000] text-white shadow-sm border border-[#3d2200]'
+                  : 'text-amber-200/50 hover:text-amber-100 hover:bg-[#1c1000]/40'
               }`}
               onClick={() => setTab(id)}
             >
-              <Icon className={`h-3.5 w-3.5 ${active ? 'text-[#FBB931]' : 'text-zinc-500'}`} />
+              <Icon className={`h-3.5 w-3.5 ${active ? 'text-[#FBB931]' : 'text-amber-200/40'}`} />
               <span>{label}</span>
             </button>
           );

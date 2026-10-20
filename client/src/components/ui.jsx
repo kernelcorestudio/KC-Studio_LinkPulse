@@ -14,10 +14,10 @@ ChartJS.defaults.font.family = 'Inter, -apple-system, BlinkMacSystemFont, sans-s
 ChartJS.defaults.font.size = 11;
 ChartJS.defaults.plugins.tooltip = {
   ...ChartJS.defaults.plugins.tooltip,
-  backgroundColor: '#1c1004',
-  titleColor: '#FFE3B3',
+  backgroundColor: '#18181b',
+  titleColor: '#f4f4f5',
   bodyColor: '#a1a1aa',
-  borderColor: 'rgba(251, 185, 49, 0.15)',
+  borderColor: 'rgba(255, 255, 255, 0.1)',
   borderWidth: 1,
   padding: 10,
   cornerRadius: 8,
@@ -27,7 +27,7 @@ ChartJS.defaults.plugins.tooltip = {
 export function Spinner({ label = 'Loading…', inline = false, className = '' }) {
   if (inline) {
     return (
-      <div className={`flex items-center gap-2 text-xs text-zinc-400 ${className}`}>
+      <div className={`flex items-center gap-2 text-xs text-amber-200/60 ${className}`}>
         <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[#2a1800] border-t-[#F88F22]" />
         <span className="font-medium tracking-wide">{label}</span>
       </div>
@@ -36,27 +36,27 @@ export function Spinner({ label = 'Loading…', inline = false, className = '' }
   return (
     <div className={`flex min-h-[280px] w-full flex-col items-center justify-center gap-3.5 py-16 text-center animate-fade-in-up ${className}`}>
       <div className="relative flex h-8 w-8 items-center justify-center">
-        <span className="absolute h-8 w-8 animate-ping rounded-full bg-[#F88F22]/15" />
+        <span className="absolute h-8 w-8 animate-ping rounded-full bg-[#F88F22]/20" />
         <span className="h-6 w-6 animate-spin rounded-full border-2 border-[#2a1800] border-t-[#F88F22] shadow-sm" />
       </div>
-      <span className="font-mono text-[11px] font-medium tracking-wider uppercase text-zinc-400">{label}</span>
+      <span className="font-mono text-[11px] font-medium tracking-wider uppercase text-amber-200/60">{label}</span>
     </div>
   );
 }
 
 export function EmptyState({ title, hint, action, icon }) {
   return (
-    <div className="group relative overflow-hidden flex flex-col items-center justify-center gap-3.5 rounded-xl border border-dashed border-[#2a1800]/90 bg-gradient-to-b from-[#1c1004]/80 to-[#140c00]/90 py-12 px-6 text-center shadow-inner">
+    <div className="group relative overflow-hidden flex flex-col items-center justify-center gap-3.5 rounded-xl border border-dashed border-[#2a1800]/90 bg-gradient-to-b from-[#180c00]/80 to-[#100800]/90 py-12 px-6 text-center shadow-inner">
       {/* Subtle animated telemetry pulse wave grid background */}
       <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true">
         <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="telemetry-grid" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(251, 185, 49, 0.20)" strokeWidth="0.8" />
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(248, 143, 34, 0.35)" strokeWidth="0.8" />
             </pattern>
             <linearGradient id="shimmer-grad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="transparent" />
-              <stop offset="50%" stopColor="rgba(248, 143, 34, 0.12)" />
+              <stop offset="50%" stopColor="rgba(248, 143, 34, 0.15)" />
               <stop offset="100%" stopColor="transparent" />
             </linearGradient>
           </defs>
@@ -66,13 +66,13 @@ export function EmptyState({ title, hint, action, icon }) {
       </div>
 
       {/* Glowing frosted-glass icon container */}
-      <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F88F22]/25 bg-[#F88F22]/10 text-[#FBB931] shadow-[0_0_25px_rgba(234,97,19,0.25)] transition duration-300 group-hover:scale-105">
+      <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F88F22]/30 bg-[#F88F22]/10 text-[#FBB931] shadow-[0_0_25px_rgba(234,97,19,0.25)] transition duration-300 group-hover:scale-105">
         {icon || <EmptyIcon className="h-6 w-6" />}
       </div>
 
       <div className="relative z-10 max-w-sm space-y-1">
-        <h3 className="text-sm font-semibold text-zinc-100">{title}</h3>
-        {hint && <p className="text-xs text-zinc-400 leading-relaxed">{hint}</p>}
+        <h3 className="text-sm font-semibold text-[#FFE3B3]">{title}</h3>
+        {hint && <p className="text-xs text-amber-200/60 leading-relaxed">{hint}</p>}
       </div>
 
       {action && <div className="relative z-10 mt-1">{action}</div>}
@@ -99,11 +99,11 @@ export function ErrorState({ message, onRetry }) {
 export function StatCard({ label, value, sub, icon, className = '' }) {
   const isPositive = typeof sub === 'string' && sub.startsWith('+');
   return (
-    <div className={`group relative overflow-hidden rounded-xl border border-orange-900/20 bg-gradient-to-b from-[#1c1004] to-[#140c00] p-5 shadow-[inset_0_1px_0_0_rgba(251,185,49,0.07),0_8px_30px_rgba(0,0,0,0.4)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[inset_0_1px_0_0_rgba(251,185,49,0.12),0_12px_35px_-10px_rgba(234,97,19,0.22)] ${className}`}>
+    <div className={`group relative overflow-hidden rounded-xl border border-[#2a1800]/80 bg-gradient-to-b from-[#180c00] to-[#100800] p-5 shadow-[inset_0_1px_0_0_rgba(248,143,34,0.08),0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[inset_0_1px_0_0_rgba(251,185,49,0.15),0_12px_35px_-10px_rgba(234,97,19,0.25)] ${className}`}>
       <div className="flex items-center justify-between">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">{label}</p>
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">{label}</p>
         {icon && (
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#F88F22]/20 bg-[#F88F22]/10 text-[#FBB931] shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:border-[#F88F22]/40 group-hover:bg-[#F88F22]/20 group-hover:text-[#FFE3B3]">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#F88F22]/20 bg-[#F88F22]/10 text-[#FBB931] shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:border-[#F88F22]/40 group-hover:bg-[#F88F22]/20 group-hover:text-amber-200">
             {icon}
           </div>
         )}
@@ -114,7 +114,7 @@ export function StatCard({ label, value, sub, icon, className = '' }) {
           <span className={`inline-flex items-center rounded px-2 py-0.5 text-[11px] font-medium ${
             isPositive
               ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm'
-              : 'bg-zinc-800/80 text-zinc-400 border border-white/[0.06]'
+              : 'bg-[#1c1000] text-amber-200/50 border border-[#2a1800]'
           }`}>
             {sub}
           </span>
@@ -130,14 +130,14 @@ const lineOpts = {
   plugins: { legend: { display: false } },
   scales: {
     x: {
-      grid: { color: SAAS_GRID },
-      ticks: { color: '#71717a', font: { family: 'Inter', size: 10 } },
+      grid: { color: 'rgba(248, 143, 34, 0.05)' },
+      ticks: { color: '#a77242', font: { family: 'Inter', size: 10 } },
       border: { display: false },
     },
     y: {
-      grid: { color: SAAS_GRID },
+      grid: { color: 'rgba(248, 143, 34, 0.05)' },
       beginAtZero: true,
-      ticks: { precision: 0, color: '#71717a', font: { family: 'Inter', size: 10 } },
+      ticks: { precision: 0, color: '#a77242', font: { family: 'Inter', size: 10 } },
       border: { display: false },
     },
   },
@@ -175,20 +175,20 @@ const barOpts = (horizontal = false) => ({
   plugins: { legend: { display: false } },
   scales: {
     x: {
-      grid: { color: SAAS_GRID },
+      grid: { color: 'rgba(248, 143, 34, 0.05)' },
       beginAtZero: true,
-      ticks: { precision: 0, color: '#71717a', font: { family: 'Inter', size: 10 } },
+      ticks: { precision: 0, color: '#a77242', font: { family: 'Inter', size: 10 } },
       border: { display: false },
     },
     y: {
       grid: { display: false },
-      ticks: { color: '#a1a1aa', font: { family: 'Inter', size: 10 } },
+      ticks: { color: '#d4a373', font: { family: 'Inter', size: 10 } },
       border: { display: false },
     },
   },
 });
 
-export function BarChart({ labels, data, label = 'Count', color = '#F88F22', horizontal = false }) {
+export function BarChart({ labels, data, label = 'Count', color = '#EA6113', horizontal = false }) {
   return (
     <div className="h-64">
       <Bar
@@ -211,7 +211,7 @@ export function BarChart({ labels, data, label = 'Count', color = '#F88F22', hor
 export function DoughnutChart({
   labels,
   data,
-  colors = ['#EA6113', '#FBB931', '#F88F22', '#FFE3B3', '#c4500e', '#10b981'],
+  colors = ['#EA6113', '#F88F22', '#FBB931', '#FFE3B3', '#D97706', '#9A3412'],
 }) {
   return (
     <div className="h-64">
@@ -224,7 +224,7 @@ export function DoughnutChart({
             legend: {
               position: 'bottom',
               labels: {
-                color: '#a1a1aa',
+                color: '#d4a373',
                 boxWidth: 10,
                 boxHeight: 10,
                 borderRadius: 2,

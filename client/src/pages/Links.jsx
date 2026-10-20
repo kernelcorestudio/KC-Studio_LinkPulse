@@ -1,4 +1,4 @@
-﻿// Links list: search, status filter, pagination, copy-short-url (Sleek Dark SaaS).
+// Links list: search, status filter, pagination, copy-short-url (Sleek Dark SaaS).
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api, shortUrl } from '../lib/api';
@@ -26,7 +26,7 @@ function CopyButton({ url }) {
       className={`rounded-md border px-2 py-0.5 text-[11px] font-medium transition duration-150 ${
         done
           ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300'
-          : 'border-[#2a1800] bg-[#1c1000]/80 text-zinc-400 hover:border-[#3d2200] hover:bg-[#2a1800] hover:text-zinc-200'
+          : 'border-[#2a1800] bg-[#1c1000]/80 text-amber-200/60 hover:border-[#3d2200] hover:bg-[#2a1800] hover:text-white'
       }`}
       title="Copy short link"
     >
@@ -109,7 +109,7 @@ export default function Links() {
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Links Directory</h1>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className="text-xs text-amber-200/60 mt-1">
             {data ? `${data.total} total short links tracked` : 'Manage your short links and routing'}
           </p>
         </div>
@@ -123,12 +123,12 @@ export default function Links() {
       <form onSubmit={applyFilters} className="flex flex-wrap items-center gap-2.5">
         <div className="relative flex-1 min-w-[240px] max-w-md">
           <input
-            className="w-full rounded-lg border border-[#2a1800] bg-zinc-900/90 pl-9 pr-3.5 py-2 text-xs text-zinc-100 placeholder-zinc-500 outline-none transition focus:border-[#F88F22]"
+            className="w-full rounded-lg border border-[#2a1800] bg-[#1c1000]/90 pl-9 pr-3.5 py-2 text-xs text-[#FFE3B3] placeholder-amber-900/50 outline-none transition focus:border-[#F88F22]"
             placeholder="Search by code, title, or destination target…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
-          <span className="pointer-events-none absolute left-3 top-2.5 text-zinc-500">
+          <span className="pointer-events-none absolute left-3 top-2.5 text-amber-900/50">
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -136,7 +136,7 @@ export default function Links() {
           </span>
         </div>
         <select
-          className="rounded-lg border border-[#2a1800] bg-zinc-900/90 px-3 py-2 text-xs text-zinc-300 outline-none transition focus:border-[#F88F22]"
+          className="rounded-lg border border-[#2a1800] bg-[#1c1000]/90 px-3 py-2 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         >
@@ -155,7 +155,7 @@ export default function Links() {
           {orgChips.map(([key, label]) => (
             <button
               key={key}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-3 py-1 text-[11px] font-medium text-[#FFE3B3] hover:border-rose-500/40 hover:text-rose-300 transition"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-3 py-1 text-[11px] font-medium text-[#FBB931] hover:border-rose-500/40 hover:text-rose-300 transition"
               onClick={() => clearOrgFilter(key)}
               title="Remove filter"
             >
@@ -178,11 +178,11 @@ export default function Links() {
         />
       ) : (
         <>
-          <div className="overflow-hidden rounded-xl border border-white/[0.08] bg-[#0e0f12] shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-[#2a1800]/80 bg-[#150900]/80 shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-[#2a1800]/80 bg-zinc-900/40 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                  <tr className="border-b border-[#2a1800] bg-[#1c1000]/50 text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">
                     <th className="px-5 py-3.5">Short Link</th>
                     <th className="px-5 py-3.5">Destination URL</th>
                     <th className="px-5 py-3.5">Status</th>
@@ -190,9 +190,9 @@ export default function Links() {
                     <th className="px-5 py-3.5">Created</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/60 font-mono">
+                <tbody className="divide-y divide-[#2a1800]/60 font-mono">
                   {data.links.map((l) => (
-                    <tr key={l.id} className="hover:bg-[#2a1800]/30 transition">
+                    <tr key={l.id} className="hover:bg-[#1c1000]/60 transition">
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2">
                           <Link to={`/links/${l.id}`} className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
@@ -200,12 +200,12 @@ export default function Links() {
                           </Link>
                           <CopyButton url={shortUrl(l.short_code)} />
                         </div>
-                        {l.title && <p className="mt-1 max-w-56 truncate font-sans text-xs text-zinc-400 font-normal">{l.title}</p>}
+                        {l.title && <p className="mt-1 max-w-56 truncate font-sans text-xs text-amber-200/60 font-normal">{l.title}</p>}
                       </td>
-                      <td className="max-w-64 truncate px-5 py-3.5 text-zinc-400">{l.destination_url}</td>
+                      <td className="max-w-64 truncate px-5 py-3.5 text-amber-200/70">{l.destination_url}</td>
                       <td className="px-5 py-3.5 font-sans">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${STATUS_STYLES[l.status] || 'border-[#2a1800] text-zinc-300'}`}>
+                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${STATUS_STYLES[l.status] || 'border-[#2a1800] text-amber-200/70'}`}>
                             {l.status}
                           </span>
                           {l.password_hash && (
@@ -221,10 +221,10 @@ export default function Links() {
                           )}
                         </div>
                       </td>
-                      <td className="px-5 py-3.5 text-right font-semibold text-zinc-200">
+                      <td className="px-5 py-3.5 text-right font-semibold text-[#FFE3B3]">
                         {Number(l.click_count).toLocaleString()}
                       </td>
-                      <td className="px-5 py-3.5 font-sans text-xs text-zinc-500">
+                      <td className="px-5 py-3.5 font-sans text-xs text-amber-900/60">
                         {new Date(l.created_at).toLocaleDateString()}
                       </td>
                     </tr>
@@ -239,7 +239,7 @@ export default function Links() {
               <button className="btn-ghost px-3 py-1.5" disabled={page <= 1} onClick={() => goPage(page - 1)}>
                 Previous
               </button>
-              <span className="text-zinc-400 font-mono text-xs">Page {page} of {totalPages}</span>
+              <span className="text-amber-200/60 font-mono text-xs">Page {page} of {totalPages}</span>
               <button className="btn-ghost px-3 py-1.5" disabled={page >= totalPages} onClick={() => goPage(page + 1)}>
                 Next
               </button>

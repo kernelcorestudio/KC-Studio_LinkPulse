@@ -1,4 +1,4 @@
-﻿// Bulk CSV import: choose/paste a CSV -> preview rows with errors ->
+// Bulk CSV import: choose/paste a CSV -> preview rows with errors ->
 // import only the valid rows -> download error report (Sleek Dark SaaS).
 import { useMemo, useState } from 'react';
 import Papa from 'papaparse';
@@ -100,7 +100,7 @@ export default function Import() {
           <ImportIcon className="h-6 w-6 text-[#FBB931]" />
           <span>Bulk Import</span>
         </h1>
-        <p className="text-xs text-zinc-400 mt-1">
+        <p className="text-xs text-amber-200/60 mt-1">
           Upload a CSV file or paste raw rows with a <code className="text-[#FBB931] font-mono">url</code> column (optional: <code className="text-[#FBB931] font-mono">alias</code>, <code className="text-[#FBB931] font-mono">title</code>). Up to 500 links per batch.
         </p>
       </div>
@@ -133,7 +133,7 @@ export default function Import() {
 
       {rows && !result && (
         <div className="card space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#2a1800]/80 pb-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800/80 pb-3">
             <div className="flex items-center gap-3">
               <span className="text-sm font-semibold text-white">{rows.length} rows parsed</span>
               <button
@@ -170,11 +170,11 @@ export default function Import() {
           )}
 
           {preview && (
-            <div className="overflow-hidden rounded-xl border border-[#2a1800] bg-zinc-900/40">
+            <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/40">
               <div className="overflow-x-auto">
                 <table className="w-full text-xs text-left">
                   <thead>
-                    <tr className="border-b border-[#2a1800] bg-[#1c1000]/60 text-[11px] font-semibold uppercase text-zinc-400">
+                    <tr className="border-b border-zinc-800 bg-zinc-900/60 text-[11px] font-semibold uppercase text-zinc-400">
                       <th className="py-2.5 px-3">Row</th>
                       <th className="px-3">Destination</th>
                       <th className="px-3">Alias</th>
@@ -185,11 +185,11 @@ export default function Import() {
                   </thead>
                   <tbody className="divide-y divide-zinc-800/60 font-mono text-xs">
                     {preview.results.map((r) => (
-                      <tr key={r.line} className="hover:bg-[#2a1800]/30">
-                        <td className="py-2 px-3 text-zinc-500">{r.line}</td>
-                        <td className="max-w-[240px] truncate px-3 text-zinc-300">{r.url || '—'}</td>
+                      <tr key={r.line} className="hover:bg-[#1c1000]/60">
+                        <td className="py-2 px-3 text-amber-900/60">{r.line}</td>
+                        <td className="max-w-[240px] truncate px-3 text-amber-200/80">{r.url || '—'}</td>
                         <td className="px-3 text-[#FBB931]">{r.alias || 'auto'}</td>
-                        <td className="max-w-[160px] truncate px-3 text-zinc-400">{r.title || ''}</td>
+                        <td className="max-w-[160px] truncate px-3 text-amber-200/60">{r.title || ''}</td>
                         <td className="px-3 font-sans">
                           <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${r.valid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}`}>
                             {r.valid ? 'Valid' : 'Invalid'}
@@ -201,7 +201,7 @@ export default function Import() {
                   </tbody>
                 </table>
               </div>
-              <div className="border-t border-[#2a1800] p-3 text-xs text-zinc-400 bg-[#1c1000]/60 flex justify-between">
+              <div className="border-t border-zinc-800 p-3 text-xs text-zinc-400 bg-zinc-900/60 flex justify-between">
                 <span>Summary: {preview.summary.valid} valid links, {preview.summary.invalid} rejected.</span>
                 <span>Only valid links will be committed.</span>
               </div>
@@ -221,14 +221,14 @@ export default function Import() {
           </div>
 
           {result.imported.length > 0 && (
-            <ul className="max-h-52 space-y-1.5 overflow-y-auto rounded-lg border border-[#2a1800] bg-[#1c1000]/60 p-3 text-xs font-mono">
+            <ul className="max-h-52 space-y-1.5 overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-900/60 p-3 text-xs font-mono">
               {result.imported.map((l) => (
                 <li key={l.id} className="flex items-center gap-2">
                   <Link className="font-semibold text-[#FBB931] hover:underline" to={`/links/${l.id}`}>
                     {shortUrl(l.short_code)}
                   </Link>
-                  <span className="text-zinc-500">→</span>
-                  <span className="truncate text-zinc-400 max-w-sm">{l.destination_url}</span>
+                  <span className="text-amber-900/60">→</span>
+                  <span className="truncate text-amber-200/70 max-w-sm">{l.destination_url}</span>
                 </li>
               ))}
             </ul>
