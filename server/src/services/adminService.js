@@ -176,7 +176,7 @@ export async function getAbuseAlerts() {
            COUNT(*) AS total,
            SUM(CASE WHEN c.is_bot = 1 THEN 1 ELSE 0 END) AS bots
     FROM click_events c JOIN links l ON l.id = c.link_id JOIN users u ON u.id = l.owner_id
-    GROUP BY l.id HAVING COUNT(*) >= 20 AND SUM(CASE WHEN c.is_bot = 1 THEN 1 ELSE 0 END) * 2 > COUNT(*)
+    GROUP BY l.id, l.short_code, l.destination_url, u.email HAVING COUNT(*) >= 20 AND SUM(CASE WHEN c.is_bot = 1 THEN 1 ELSE 0 END) * 2 > COUNT(*)
     ORDER BY bots DESC LIMIT 10
   `);
   botHeavy.forEach((l) => alerts.push({ type: 'bot_heavy', link: l }));

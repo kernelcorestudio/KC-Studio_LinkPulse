@@ -1,4 +1,27 @@
-// Central env-based config. No secrets in code; see ../.env.example
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Auto-load root .env if process.loadEnvFile is available (Node 20.12+)
+if (process.env.NODE_ENV !== 'test' && !process.execArgv.includes('--test') && typeof process.loadEnvFile === 'function') {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const candidatePaths = [
+    path.resolve(__dirname, '../../.env'), // repo root .env
+    path.resolve(process.cwd(), '.env'),
+    path.resolve(__dirname, '../.env'),
+  ];
+  for (const envPath of candidatePaths) {
+    if (fs.existsSync(envPath)) {
+      try {
+        process.loadEnvFile(envPath);
+        break;
+      } catch {
+        // ignore parsing error
+      }
+    }
+  }
+}
+
 const env = process.env;
 
 if (!env.JWT_SECRET) {
@@ -32,7 +55,10 @@ export const config = {
       ...(env.CLIENT_ORIGIN ? env.CLIENT_ORIGIN.split(',').map((s) => s.trim()).filter(Boolean) : []),
     ]),
   ),
-  databaseUrl: env.DATABASE_URL || null, // absent => local SQLite fallback
+  databaseUrl: (env.NODE_ENV === 'test' || process.execArgv.includes('--test')) ? null : (env.DATABASE_URL || null), // absent => local SQLite fallback
+  supabaseUrl: env.SUPABASE_URL || null,
+  supabaseAnonKey: env.SUPABASE_ANON_KEY || null,
+  supabaseServiceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY || null,
   sqliteFile: env.SQLITE_FILE || (env.VERCEL ? '/tmp/linkpulse.db' : 'linkpulse.db'),
   jwtSecret: env.JWT_SECRET || 'dev-insecure-secret-change-me',
   // Salt used when hashing client IPs so raw IPs are never stored

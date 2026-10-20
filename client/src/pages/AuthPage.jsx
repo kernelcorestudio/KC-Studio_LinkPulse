@@ -140,7 +140,7 @@ function GoogleModal({ isOpen, onClose, onSelect, busy, error }) {
 
         {/* Device Accounts Explanatory Note */}
         <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-2.5 text-[11px] text-amber-200/70 leading-relaxed text-center">
-          💡 <span className="font-medium text-amber-200">Device Google Accounts:</span> To open the native browser popup with your device's logged-in Google accounts, add <code className="text-[#FBB931] font-mono">VITE_GOOGLE_CLIENT_ID</code> in <code className="text-[#FBB931] font-mono">client/.env</code>.
+          💡 <span className="font-medium text-amber-200">Device Google Accounts:</span> To open the native browser popup with your device's logged-in Google accounts, add <code className="text-[#FBB931] font-mono">VITE_GOOGLE_CLIENT_ID</code> in <code className="text-[#FBB931] font-mono">.env</code>.
         </div>
       </div>
     </div>
@@ -222,11 +222,37 @@ export default function AuthPage({ mode = 'login' }) {
     }
   }
 
+  // Handle returning from Google OAuth full-page redirect (#access_token=...)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token=')) {
+      const params = new URLSearchParams(hash.replace(/^#/, ''));
+      const accessToken = params.get('access_token');
+      const err = params.get('error') || params.get('error_description');
+
+      if (err) {
+        setError(`Google login error: ${err}`);
+        window.history.replaceState(null, '', window.location.pathname);
+        return;
+      }
+
+      if (accessToken) {
+        setGoogleBusy(true);
+        window.history.replaceState(null, '', window.location.pathname);
+        loginWithGoogle({ access_token: accessToken })
+          .then(() => nav('/app'))
+          .catch((loginErr) => setError(loginErr.message || 'Google authentication failed'))
+          .finally(() => setGoogleBusy(false));
+      }
+    }
+  }, [nav, loginWithGoogle]);
+
   async function handleGoogleClick() {
     setError('');
 
     if (googleClientId && typeof window !== 'undefined') {
-      // 1. Modern Google OAuth2 Token Client (opens real Google account chooser popup with device accounts)
+      // 1. Try native Google OAuth popup client if available
       if (window.google?.accounts?.oauth2?.initTokenClient) {
         try {
           const tokenClient = window.google.accounts.oauth2.initTokenClient({
@@ -255,18 +281,28 @@ export default function AuthPage({ mode = 'login' }) {
           tokenClient.requestAccessToken({ prompt: 'select_account' });
           return;
         } catch (e) {
-          console.warn('OAuth2 token client error, falling back to ID client:', e);
+          console.warn('OAuth2 popup client error, falling back to direct redirect:', e);
         }
       }
 
-      // 2. Fallback to GIS ID prompt
-      if (window.google?.accounts?.id) {
-        window.google.accounts.id.prompt();
-        return;
-      }
+      // 2. Direct full-page Google OAuth redirect (works even when Brave Shields or adblockers block GIS script)
+      setGoogleBusy(true);
+      const redirectUri = window.location.origin + window.location.pathname;
+      const googleAuthUrl =
+        'https://accounts.google.com/o/oauth2/v2/auth?' +
+        new URLSearchParams({
+          client_id: googleClientId,
+          redirect_uri: redirectUri,
+          response_type: 'token',
+          scope: 'email profile openid',
+          prompt: 'select_account',
+        }).toString();
+
+      window.location.href = googleAuthUrl;
+      return;
     }
 
-    // Zero-config fallback modal
+    // Fallback if client ID is completely missing
     setGoogleModalError('');
     setShowGoogleModal(true);
   }

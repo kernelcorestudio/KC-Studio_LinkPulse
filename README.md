@@ -740,9 +740,8 @@ git clone https://github.com/kernelcorestudio/KCSTUDIO-LINKPLUSE.git
 cd KCSTUDIO-LINKPLUSE
 ```
 
-### 2. Configure Backend (`server/.env`)
+### 2. Configure Environment (`.env`)
 ```bash
-cd server
 cp .env.example .env
 ```
 *(Default settings automatically use the built-in SQLite engine with no external database required).*
@@ -814,7 +813,9 @@ LinkPulse is built for zero-configuration, single-project full-stack deployment 
 
 ## ⚙️ Environment Variables Guide
 
-### Server Environment (`server/.env`)
+All configuration is managed from a single unified `.env` file at the repository root.
+
+### Server Environment
 | Variable | Required | Default | Purpose |
 |:---|:---:|:---|:---|
 | `PORT` | No | `3001` | Local API and redirect engine listen port. |
@@ -822,11 +823,11 @@ LinkPulse is built for zero-configuration, single-project full-stack deployment 
 | `CLIENT_ORIGIN` | No | `http://localhost:5173` | Comma-separated CORS allowed origins. |
 | `JWT_SECRET` | Yes (Prod) | Dev fallback | Secret key for signing authorization and password cookies. |
 | `IP_HASH_SALT` | Yes (Prod) | Falls back to JWT | Cryptographic salt for salted SHA-256 IP address hashing. |
-| `DATABASE_URL` | No | `null` (SQLite fallback) | PostgreSQL connection URI. If omitted, uses local `node:sqlite`. |
+| `DATABASE_URL` | No | `null` (SQLite fallback) | PostgreSQL connection URI (e.g. Supabase / Neon). If omitted, uses local `node:sqlite`. |
 | `SQLITE_FILE` | No | `linkpulse.db` | Path to SQLite file when PostgreSQL is not configured. |
 | `COOKIE_SECURE` | No | `false` | Sets `Secure` flag on visitor cookies (`true` on HTTPS). |
 
-### Client Environment (`client/.env`)
+### Client Environment (Vite)
 | Variable | Required | Default | Purpose |
 |:---|:---:|:---|:---|
 | `VITE_API_BASE` | No | `""` (Relative proxy) | Backend URL for standalone deployments. Leave empty for Vercel unified deploy. |

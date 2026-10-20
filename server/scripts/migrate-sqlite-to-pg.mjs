@@ -7,6 +7,13 @@ import { DatabaseSync } from 'node:sqlite';
 import pg from 'pg';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+if (!process.env.DATABASE_URL && typeof process.loadEnvFile === 'function') {
+  const rootEnv = path.resolve(__dirname, '../../.env');
+  const serverEnv = path.resolve(__dirname, '../.env');
+  if (fs.existsSync(rootEnv)) try { process.loadEnvFile(rootEnv); } catch {}
+  else if (fs.existsSync(serverEnv)) try { process.loadEnvFile(serverEnv); } catch {}
+}
+
 const sqlitePath = path.resolve(__dirname, '../linkpulse.db');
 const pgUrl = process.env.DATABASE_URL;
 
@@ -15,7 +22,7 @@ if (!fs.existsSync(sqlitePath)) {
   process.exit(1);
 }
 if (!pgUrl) {
-  console.error('[migrate] DATABASE_URL is not set in environment or server/.env');
+  console.error('[migrate] DATABASE_URL is not set in environment or root .env');
   process.exit(1);
 }
 

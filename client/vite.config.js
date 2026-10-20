@@ -1,5 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const SPA_EXACT = new Set([
   '',
@@ -50,6 +54,7 @@ const BACKEND_URL = process.env.SERVER_URL || process.env.VITE_DEV_BACKEND || 'h
 
 // Dev proxy lets the SPA call /api and follow short links on the same origin (localhost:5173).
 export default defineConfig({
+  envDir: path.resolve(__dirname, '..'),
   plugins: [react()],
   server: {
     port: 5173,

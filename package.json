@@ -5,8 +5,12 @@
   "type": "module",
   "scripts": {
     "build": "npm --prefix client install && npm --prefix client run build",
-    "start": "node --env-file-if-exists=server/.env server/src/index.js",
-    "dev": "node --watch --env-file-if-exists=server/.env server/src/index.js"
+    "start": "node --env-file-if-exists=.env server/src/index.js",
+    "dev": "node --watch --env-file-if-exists=.env server/src/index.js",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "node --watch --env-file-if-exists=.env server/src/index.js",
+    "seed": "node --env-file-if-exists=.env server/src/seed.js",
+    "clear": "node --env-file-if-exists=.env server/scripts/clear.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
