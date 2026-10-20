@@ -1,0 +1,18 @@
+# deps & builds
+node_modules/
+dist/
+*.db
+*.db-*
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+
+# noise
+.DS_Store
+*.log
+coverage/
+# local artifacts (test screenshots & recordings at repo root)
+/*.png
+/*.mp4

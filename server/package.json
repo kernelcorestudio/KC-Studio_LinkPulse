@@ -1,0 +1,31 @@
+{
+  "name": "linkpulse-server",
+  "version": "1.0.0",
+  "description": "LinkPulse backend: URL shortener + analytics API",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/index.js",
+    "dev": "node --watch --env-file-if-exists=.env src/index.js",
+    "seed": "node --env-file-if-exists=.env src/seed.js",
+    "clear": "node --env-file-if-exists=.env scripts/clear.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=20.0.0" },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "geoip-lite": "^1.4.1",
+    "helmet": "^8.1.0",
+    "isbot": "^5.1.26",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.1.5",
+    "pg": "^8.14.1",
+    "qrcode": "^1.5.4",
+    "ua-parser-js": "^1.0.40",
+    "zod": "^3.24.2"
+  }
+}
