@@ -14,10 +14,10 @@ ChartJS.defaults.font.family = 'Inter, -apple-system, BlinkMacSystemFont, sans-s
 ChartJS.defaults.font.size = 11;
 ChartJS.defaults.plugins.tooltip = {
   ...ChartJS.defaults.plugins.tooltip,
-  backgroundColor: '#1c1004',
-  titleColor: '#FFE3B3',
+  backgroundColor: '#18181b',
+  titleColor: '#f4f4f5',
   bodyColor: '#a1a1aa',
-  borderColor: 'rgba(251, 185, 49, 0.15)',
+  borderColor: 'rgba(255, 255, 255, 0.1)',
   borderWidth: 1,
   padding: 10,
   cornerRadius: 8,
@@ -28,7 +28,7 @@ export function Spinner({ label = 'Loading…', inline = false, className = '' }
   if (inline) {
     return (
       <div className={`flex items-center gap-2 text-xs text-zinc-400 ${className}`}>
-        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[#2a1800] border-t-[#F88F22]" />
+        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-zinc-700 border-t-indigo-500" />
         <span className="font-medium tracking-wide">{label}</span>
       </div>
     );
@@ -36,8 +36,8 @@ export function Spinner({ label = 'Loading…', inline = false, className = '' }
   return (
     <div className={`flex min-h-[280px] w-full flex-col items-center justify-center gap-3.5 py-16 text-center animate-fade-in-up ${className}`}>
       <div className="relative flex h-8 w-8 items-center justify-center">
-        <span className="absolute h-8 w-8 animate-ping rounded-full bg-[#F88F22]/15" />
-        <span className="h-6 w-6 animate-spin rounded-full border-2 border-[#2a1800] border-t-[#F88F22] shadow-sm" />
+        <span className="absolute h-8 w-8 animate-ping rounded-full bg-indigo-500/15" />
+        <span className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-800 border-t-indigo-500 shadow-sm" />
       </div>
       <span className="font-mono text-[11px] font-medium tracking-wider uppercase text-zinc-400">{label}</span>
     </div>
@@ -46,17 +46,17 @@ export function Spinner({ label = 'Loading…', inline = false, className = '' }
 
 export function EmptyState({ title, hint, action, icon }) {
   return (
-    <div className="group relative overflow-hidden flex flex-col items-center justify-center gap-3.5 rounded-xl border border-dashed border-[#2a1800]/90 bg-gradient-to-b from-[#1c1004]/80 to-[#140c00]/90 py-12 px-6 text-center shadow-inner">
+    <div className="group relative overflow-hidden flex flex-col items-center justify-center gap-3.5 rounded-xl border border-dashed border-zinc-800/90 bg-gradient-to-b from-[#13131a]/80 to-[#0c0d12]/90 py-12 px-6 text-center shadow-inner">
       {/* Subtle animated telemetry pulse wave grid background */}
       <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true">
         <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="telemetry-grid" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(251, 185, 49, 0.20)" strokeWidth="0.8" />
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(99, 102, 241, 0.35)" strokeWidth="0.8" />
             </pattern>
             <linearGradient id="shimmer-grad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="transparent" />
-              <stop offset="50%" stopColor="rgba(248, 143, 34, 0.12)" />
+              <stop offset="50%" stopColor="rgba(99, 102, 241, 0.15)" />
               <stop offset="100%" stopColor="transparent" />
             </linearGradient>
           </defs>
@@ -66,7 +66,7 @@ export function EmptyState({ title, hint, action, icon }) {
       </div>
 
       {/* Glowing frosted-glass icon container */}
-      <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F88F22]/25 bg-[#F88F22]/10 text-[#FBB931] shadow-[0_0_25px_rgba(234,97,19,0.25)] transition duration-300 group-hover:scale-105">
+      <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border border-indigo-500/25 bg-indigo-500/10 text-indigo-400 shadow-[0_0_25px_rgba(99,102,241,0.25)] transition duration-300 group-hover:scale-105">
         {icon || <EmptyIcon className="h-6 w-6" />}
       </div>
 
@@ -99,11 +99,11 @@ export function ErrorState({ message, onRetry }) {
 export function StatCard({ label, value, sub, icon, className = '' }) {
   const isPositive = typeof sub === 'string' && sub.startsWith('+');
   return (
-    <div className={`group relative overflow-hidden rounded-xl border border-orange-900/20 bg-gradient-to-b from-[#1c1004] to-[#140c00] p-5 shadow-[inset_0_1px_0_0_rgba(251,185,49,0.07),0_8px_30px_rgba(0,0,0,0.4)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[inset_0_1px_0_0_rgba(251,185,49,0.12),0_12px_35px_-10px_rgba(234,97,19,0.22)] ${className}`}>
+    <div className={`group relative overflow-hidden rounded-xl border border-white/[0.08] bg-gradient-to-b from-[#16161D] to-[#101014] p-5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.09),0_8px_30px_rgba(0,0,0,0.4)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-indigo-500/40 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15),0_12px_35px_-10px_rgba(99,102,241,0.22)] ${className}`}>
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">{label}</p>
         {icon && (
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#F88F22]/20 bg-[#F88F22]/10 text-[#FBB931] shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:border-[#F88F22]/40 group-hover:bg-[#F88F22]/20 group-hover:text-[#FFE3B3]">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/10 text-indigo-400 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:border-indigo-500/40 group-hover:bg-indigo-500/20 group-hover:text-indigo-300">
             {icon}
           </div>
         )}
@@ -143,7 +143,7 @@ const lineOpts = {
   },
 };
 
-export function LineChart({ labels, data, label = 'Clicks', color = '#F88F22' }) {
+export function LineChart({ labels, data, label = 'Clicks', color = '#6366f1' }) {
   return (
     <div className="h-64">
       <Line
@@ -188,7 +188,7 @@ const barOpts = (horizontal = false) => ({
   },
 });
 
-export function BarChart({ labels, data, label = 'Count', color = '#F88F22', horizontal = false }) {
+export function BarChart({ labels, data, label = 'Count', color = '#6366f1', horizontal = false }) {
   return (
     <div className="h-64">
       <Bar
@@ -211,7 +211,7 @@ export function BarChart({ labels, data, label = 'Count', color = '#F88F22', hor
 export function DoughnutChart({
   labels,
   data,
-  colors = ['#EA6113', '#FBB931', '#F88F22', '#FFE3B3', '#c4500e', '#10b981'],
+  colors = ['#6366f1', '#ec4899', '#06b6d4', '#a855f7', '#f59e0b', '#10b981'],
 }) {
   return (
     <div className="h-64">
@@ -239,7 +239,7 @@ export function DoughnutChart({
           datasets: [{
             data,
             backgroundColor: colors,
-            borderColor: '#100800',
+            borderColor: '#0e0f12',
             borderWidth: 3,
             hoverOffset: 4,
           }],

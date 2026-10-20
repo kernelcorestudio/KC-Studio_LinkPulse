@@ -1,4 +1,4 @@
-﻿// Login + Register pages (shared modern SaaS form shell).
+// Login + Register pages (shared modern SaaS form shell).
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
@@ -29,14 +29,14 @@ export default function AuthPage({ mode = 'login' }) {
   }
 
   return (
-    <div className="relative grid min-h-screen place-items-center bg-[#100800] p-4 text-zinc-100">
+    <div className="relative grid min-h-screen place-items-center bg-[#09090b] p-4 text-zinc-100">
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-30" aria-hidden="true" />
-      <div className="pointer-events-none absolute h-[400px] w-[500px] rounded-full bg-[#EA6113]/10 blur-[100px]" />
+      <div className="pointer-events-none absolute h-[400px] w-[500px] rounded-full bg-indigo-600/10 blur-[100px]" />
 
       <div className="relative w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link to="/" className="inline-block group transition">
-            <div className="relative w-14 h-14 rounded-2xl bg-[#100800] border border-[#F88F22]/30 p-2 flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(234,97,19,0.35)] group-hover:border-[#FBB931]/60 group-hover:shadow-[0_0_35px_rgba(251,185,49,0.45)] transition-all duration-300 mx-auto mb-4 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/10 before:to-[#FBB931]/15 before:opacity-80">
+            <div className="relative w-14 h-14 rounded-2xl bg-[#09090B] border border-indigo-500/30 p-2 flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.35)] group-hover:border-indigo-400/60 group-hover:shadow-[0_0_35px_rgba(56,189,248,0.45)] transition-all duration-300 mx-auto mb-4 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-cyan-500/10 before:to-violet-500/15 before:opacity-80">
               <img
                 src="/logo.jpg"
                 alt="LinkPulse logo"
@@ -52,7 +52,7 @@ export default function AuthPage({ mode = 'login' }) {
           </p>
         </div>
 
-        <form onSubmit={submit} className="rounded-2xl border border-orange-900/20 bg-[#130800]/95 p-7 shadow-2xl backdrop-blur-xl space-y-4">
+        <form onSubmit={submit} className="rounded-2xl border border-white/[0.08] bg-[#0e0f12]/95 p-7 shadow-2xl backdrop-blur-xl space-y-4">
           {!isLogin && (
             <div>
               <label className="label">Full Name</label>
@@ -78,7 +78,7 @@ export default function AuthPage({ mode = 'login' }) {
           </div>
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-medium text-amber-200/60">Password</label>
+              <label className="text-xs font-medium text-zinc-400">Password</label>
             </div>
             <input
               className="input"
@@ -100,7 +100,7 @@ export default function AuthPage({ mode = 'login' }) {
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-gradient-to-r from-[#EA6113] to-[#F88F22] py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-md shadow-orange-500/25 transition hover:from-[#F88F22] hover:to-[#FBB931] active:opacity-80 disabled:opacity-50"
+            className="w-full rounded-lg bg-indigo-600 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-md shadow-indigo-500/25 transition hover:bg-indigo-500 active:bg-indigo-700 disabled:opacity-50"
             disabled={busy}
           >
             {busy ? 'Authenticating…' : isLogin ? 'Sign In' : 'Create Account'}
@@ -110,14 +110,14 @@ export default function AuthPage({ mode = 'login' }) {
             {isLogin ? (
               <>
                 Don't have an account?{' '}
-                <Link to="/register" className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
+                <Link to="/register" className="font-semibold text-indigo-400 hover:text-indigo-300 hover:underline">
                   Sign up
                 </Link>
               </>
             ) : (
               <>
                 Already have an account?{' '}
-                <Link to="/login" className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
+                <Link to="/login" className="font-semibold text-indigo-400 hover:text-indigo-300 hover:underline">
                   Sign in
                 </Link>
               </>
@@ -125,8 +125,8 @@ export default function AuthPage({ mode = 'login' }) {
           </p>
 
           {isLogin && (
-            <div className="mt-4 rounded-lg border border-[#2a1800]/80 bg-[#1c1000]/60 p-3 text-center text-xs font-mono text-amber-200/50">
-              <div className="text-[10px] uppercase font-sans text-amber-900/60 mb-1">Demo Account Credentials</div>
+            <div className="mt-4 rounded-lg border border-zinc-800/80 bg-zinc-900/60 p-3 text-center text-xs font-mono text-zinc-400">
+              <div className="text-[10px] uppercase font-sans text-zinc-500 mb-1">Demo Account Credentials</div>
               <div><span className="text-zinc-200">ada@example.com</span> / <span className="text-zinc-200">password123</span></div>
             </div>
           )}

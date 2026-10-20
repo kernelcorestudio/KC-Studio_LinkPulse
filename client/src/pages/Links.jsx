@@ -1,4 +1,4 @@
-﻿// Links list: search, status filter, pagination, copy-short-url (Sleek Dark SaaS).
+// Links list: search, status filter, pagination, copy-short-url (Sleek Dark SaaS).
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api, shortUrl } from '../lib/api';
@@ -26,7 +26,7 @@ function CopyButton({ url }) {
       className={`rounded-md border px-2 py-0.5 text-[11px] font-medium transition duration-150 ${
         done
           ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300'
-          : 'border-[#2a1800] bg-[#1c1000]/80 text-zinc-400 hover:border-[#3d2200] hover:bg-[#2a1800] hover:text-zinc-200'
+          : 'border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-200'
       }`}
       title="Copy short link"
     >
@@ -106,7 +106,7 @@ export default function Links() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Links Directory</h1>
           <p className="text-xs text-zinc-400 mt-1">
@@ -123,7 +123,7 @@ export default function Links() {
       <form onSubmit={applyFilters} className="flex flex-wrap items-center gap-2.5">
         <div className="relative flex-1 min-w-[240px] max-w-md">
           <input
-            className="w-full rounded-lg border border-[#2a1800] bg-zinc-900/90 pl-9 pr-3.5 py-2 text-xs text-zinc-100 placeholder-zinc-500 outline-none transition focus:border-[#F88F22]"
+            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/90 pl-9 pr-3.5 py-2 text-xs text-zinc-100 placeholder-zinc-500 outline-none transition focus:border-indigo-500"
             placeholder="Search by code, title, or destination target…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -136,7 +136,7 @@ export default function Links() {
           </span>
         </div>
         <select
-          className="rounded-lg border border-[#2a1800] bg-zinc-900/90 px-3 py-2 text-xs text-zinc-300 outline-none transition focus:border-[#F88F22]"
+          className="rounded-lg border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-xs text-zinc-300 outline-none transition focus:border-indigo-500"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         >
@@ -155,7 +155,7 @@ export default function Links() {
           {orgChips.map(([key, label]) => (
             <button
               key={key}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#F88F22]/30 bg-[#F88F22]/10 px-3 py-1 text-[11px] font-medium text-[#FFE3B3] hover:border-rose-500/40 hover:text-rose-300 transition"
+              className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-[11px] font-medium text-indigo-300 hover:border-rose-500/40 hover:text-rose-300 transition"
               onClick={() => clearOrgFilter(key)}
               title="Remove filter"
             >
@@ -182,7 +182,7 @@ export default function Links() {
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-[#2a1800]/80 bg-zinc-900/40 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                  <tr className="border-b border-zinc-800/80 bg-zinc-900/40 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                     <th className="px-5 py-3.5">Short Link</th>
                     <th className="px-5 py-3.5">Destination URL</th>
                     <th className="px-5 py-3.5">Status</th>
@@ -192,10 +192,10 @@ export default function Links() {
                 </thead>
                 <tbody className="divide-y divide-zinc-800/60 font-mono">
                   {data.links.map((l) => (
-                    <tr key={l.id} className="hover:bg-[#2a1800]/30 transition">
+                    <tr key={l.id} className="hover:bg-zinc-800/30 transition">
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2">
-                          <Link to={`/links/${l.id}`} className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
+                          <Link to={`/links/${l.id}`} className="font-semibold text-indigo-400 hover:text-indigo-300 hover:underline">
                             /{l.short_code}
                           </Link>
                           <CopyButton url={shortUrl(l.short_code)} />
@@ -205,7 +205,7 @@ export default function Links() {
                       <td className="max-w-64 truncate px-5 py-3.5 text-zinc-400">{l.destination_url}</td>
                       <td className="px-5 py-3.5 font-sans">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${STATUS_STYLES[l.status] || 'border-[#2a1800] text-zinc-300'}`}>
+                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${STATUS_STYLES[l.status] || 'border-zinc-800 text-zinc-300'}`}>
                             {l.status}
                           </span>
                           {l.password_hash && (

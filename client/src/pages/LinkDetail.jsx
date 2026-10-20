@@ -1,4 +1,4 @@
-﻿// Link detail: Overview + Analytics + Settings tabs (Sleek Dark SaaS).
+// Link detail: Overview + Analytics + Settings tabs (Sleek Dark SaaS).
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, shortUrl, qrUrl } from '../lib/api';
@@ -16,7 +16,7 @@ function QrPanel({ code }) {
         <p className="text-xs text-zinc-400 mt-0.5">High-resolution scannable QR code. Scans are tracked automatically.</p>
       </div>
       <div className="flex flex-wrap items-center gap-6">
-        <div className="rounded-xl border border-[#2a1800] bg-white p-2.5 shadow-md">
+        <div className="rounded-xl border border-zinc-800 bg-white p-2.5 shadow-md">
           <img
             src={qrUrl(code, { format: 'png', size })}
             width={140}
@@ -29,7 +29,7 @@ function QrPanel({ code }) {
           <div className="flex items-center gap-2">
             <label className="text-xs text-zinc-400 font-medium">Resolution:</label>
             <select
-              className="rounded-lg border border-[#2a1800] bg-zinc-900 px-2.5 py-1 text-xs text-zinc-200 outline-none focus:border-[#F88F22]"
+              className="rounded-lg border border-zinc-800 bg-zinc-900 px-2.5 py-1 text-xs text-zinc-200 outline-none focus:border-indigo-500"
               value={size}
               onChange={(e) => setSize(Number(e.target.value))}
             >
@@ -67,7 +67,7 @@ function Overview({ link }) {
               href={url}
               target="_blank"
               rel="noreferrer"
-              className="font-mono text-base sm:text-lg font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline"
+              className="font-mono text-base sm:text-lg font-semibold text-indigo-400 hover:text-indigo-300 hover:underline"
             >
               {url}
             </a>
@@ -91,7 +91,7 @@ function Overview({ link }) {
         <div className="card space-y-2">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Destination Target</span>
           <p className="break-all font-mono text-xs text-zinc-300 leading-relaxed pt-1">
-            <a href={link.destination_url} target="_blank" rel="noreferrer" className="hover:text-[#FBB931] hover:underline">
+            <a href={link.destination_url} target="_blank" rel="noreferrer" className="hover:text-indigo-400 hover:underline">
               {link.destination_url}
             </a>
           </p>
@@ -148,14 +148,14 @@ function Analytics({ linkId }) {
     <div className="space-y-6">
       {/* Period Selector & Refresh */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex rounded-lg border border-[#2a1800] bg-[#1c1000]/80 p-0.5 text-xs shadow-inner">
+        <div className="flex rounded-lg border border-zinc-800 bg-zinc-900/80 p-0.5 text-xs shadow-inner">
           {PERIODS.map(([val, label]) => (
             <button
               key={val}
               onClick={() => setPeriod(val)}
               className={`rounded-md px-3 py-1 font-semibold text-[11px] tracking-wide transition duration-150 ${
                 period === val
-                  ? 'bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white shadow-sm'
+                  ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -385,9 +385,9 @@ function Settings({ link, onSaved }) {
       </div>
 
       {/* Device Targeting Box */}
-      <div className="rounded-xl border border-[#2a1800] bg-zinc-900/50 p-4 space-y-3">
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 space-y-3">
         <div className="flex items-center gap-2">
-          <DeviceIcon className="h-4 w-4 text-[#FBB931]" />
+          <DeviceIcon className="h-4 w-4 text-indigo-400" />
           <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-200">Device Targeting Rules</h4>
         </div>
         <p className="text-[11px] text-zinc-400">Route visitors to dedicated platform targets based on their user agent.</p>
@@ -449,14 +449,14 @@ export default function LinkDetail() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-[#2a1800]">
+      <div className="flex border-b border-zinc-800">
         {tabs.map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}
             className={`border-b-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition ${
               tab === key
-                ? 'border-[#F88F22] text-white'
+                ? 'border-indigo-500 text-white'
                 : 'border-transparent text-zinc-400 hover:text-zinc-200'
             }`}
           >

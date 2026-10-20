@@ -1,4 +1,4 @@
-﻿// Dashboard: live metrics from DB, period filter, charts, top links, alerts (Sleek Dark SaaS)
+// Dashboard: live metrics from DB, period filter, charts, top links, alerts (Sleek Dark SaaS)
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -14,14 +14,14 @@ const ALERT_LABEL = {
   expiring_soon: [ClockIcon, 'Expiring soon', 'border-amber-500/30 text-amber-400 bg-amber-500/10'],
   near_click_limit: [ChartIcon, 'Near click limit', 'border-cyan-500/30 text-cyan-400 bg-cyan-500/10'],
   disabled: [BlockIcon, 'Disabled', 'border-rose-500/30 text-rose-400 bg-rose-500/10'],
-  expired: [ClockIcon, 'Expired', 'border-[#2a1800] text-zinc-400 bg-[#1c1000]/60'],
+  expired: [ClockIcon, 'Expired', 'border-zinc-800 text-zinc-400 bg-zinc-900/60'],
   spike: [ZapIcon, 'Click spike', 'border-purple-500/30 text-purple-400 bg-purple-500/10'],
 };
 
 const SEVERITY_RING = {
   critical: 'border-rose-500/40 bg-rose-950/10',
   warn: 'border-amber-500/40 bg-amber-950/10',
-  info: 'border-[#2a1800] bg-[#1c1000]/60',
+  info: 'border-zinc-800 bg-zinc-900/60',
 };
 
 function AlertsPanel({ alerts }) {
@@ -33,8 +33,8 @@ function AlertsPanel({ alerts }) {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-300">System Alerts</h2>
           <div className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-zinc-900/90 px-2.5 py-1 text-[11px] font-mono text-zinc-300 shadow-sm">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F88F22] opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#F88F22]"></span>
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
             </span>
             <span>REAL-TIME</span>
           </div>
@@ -62,13 +62,13 @@ function AlertsPanel({ alerts }) {
       </div>
       <ul className="space-y-2">
         {shown.map((a, i) => {
-          const [IconComponent, label, cls] = ALERT_LABEL[a.type] || [AlertIcon, a.type, 'border-[#2a1800] text-zinc-300'];
+          const [IconComponent, label, cls] = ALERT_LABEL[a.type] || [AlertIcon, a.type, 'border-zinc-800 text-zinc-300'];
           return (
-            <li key={i} className={`rounded-lg border ${SEVERITY_RING[a.severity] || 'border-[#2a1800]'} p-3 transition`}>
+            <li key={i} className={`rounded-lg border ${SEVERITY_RING[a.severity] || 'border-zinc-800'} p-3 transition`}>
               <div className="flex items-center gap-2">
                 <IconComponent className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
                 <span className={`badge ${cls}`}>{label}</span>
-                <Link to={`/links/${a.link.id}`} className="ml-auto truncate font-mono text-xs text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
+                <Link to={`/links/${a.link.id}`} className="ml-auto truncate font-mono text-xs text-indigo-400 hover:text-indigo-300 hover:underline">
                   /{a.link.short_code}
                 </Link>
               </div>
@@ -80,7 +80,7 @@ function AlertsPanel({ alerts }) {
         })}
       </ul>
       {alerts.length > 5 && (
-        <button className="mt-3 text-xs font-medium text-[#FBB931] hover:text-[#FFE3B3] hover:underline" onClick={() => setShowAll((v) => !v)}>
+        <button className="mt-3 text-xs font-medium text-indigo-400 hover:text-indigo-300 hover:underline" onClick={() => setShowAll((v) => !v)}>
           {showAll ? 'Show less' : `Show all ${alerts.length} alerts`}
         </button>
       )}
@@ -132,7 +132,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header and Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">System Dashboard</h1>
           <p className="text-xs text-zinc-400 mt-1">Real-Time Traffic & Performance Telemetry</p>
@@ -140,7 +140,7 @@ export default function Dashboard() {
         <div className="flex flex-wrap items-center gap-2.5">
           {campaigns.length > 0 && (
             <select
-              className="rounded-lg border border-[#2a1800] bg-[#1c1000]/90 px-3 py-1.5 text-xs text-amber-200/70 outline-none transition focus:border-[#F88F22]"
+              className="rounded-lg border border-zinc-800 bg-zinc-900/90 px-3 py-1.5 text-xs text-zinc-300 outline-none transition focus:border-indigo-500"
               value={campaignId}
               onChange={(e) => setCampaignId(e.target.value)}
               title="Filter by campaign"
@@ -150,15 +150,15 @@ export default function Dashboard() {
             </select>
           )}
           {/* Segmented Period Tabs */}
-          <div className="flex rounded-lg border border-[#2a1800] bg-[#1c1000]/80 p-0.5 text-xs shadow-inner">
+          <div className="flex rounded-lg border border-zinc-800 bg-zinc-900/80 p-0.5 text-xs shadow-inner">
             {PERIODS.map(([val, label]) => (
               <button
                 key={val}
                 onClick={() => setPeriod(val)}
                 className={`rounded-md px-3 py-1 font-semibold text-[11px] tracking-wide transition duration-150 ${
                   period === val
-                    ? 'bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white shadow-sm'
-                    : 'text-amber-200/50 hover:text-amber-100'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
                 {label}
@@ -207,14 +207,14 @@ export default function Dashboard() {
             <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-300">Clicks Timeline</h2>
             <div className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-zinc-900/90 px-2.5 py-1 text-[11px] font-mono text-zinc-300 shadow-sm">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F88F22] opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#F88F22]"></span>
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
               </span>
               <span>LIVE STREAM</span>
             </div>
           </div>
           {hasData ? (
-            <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#F88F22" />
+            <LineChart labels={tsLabels} data={data.timeseries.map((t) => t.clicks)} color="#6366f1" />
           ) : (
             <EmptyState title="No traffic recorded" hint="Deploy your short links to begin capturing real-time telemetry." />
           )}
@@ -225,7 +225,7 @@ export default function Dashboard() {
             <div className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-zinc-900/90 px-2.5 py-1 text-[11px] font-mono text-zinc-300 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#F88F22]"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
               </span>
               <span>REGIONS</span>
             </div>
@@ -238,16 +238,16 @@ export default function Dashboard() {
           ) : (
             <div className="relative flex flex-col items-center justify-center py-10 px-4 text-center">
               <div className="relative flex items-center justify-center h-28 w-28">
-                <div className="absolute inset-0 rounded-full border border-[#F88F22]/15" />
-                <div className="absolute inset-3 rounded-full border border-[#F88F22]/20" />
-                <div className="absolute inset-7 rounded-full border border-dashed border-[#FBB931]/30 animate-[spin_14s_linear_infinite]" />
-                <div className="absolute inset-11 rounded-full border border-[#FBB931]/40" />
+                <div className="absolute inset-0 rounded-full border border-indigo-500/15" />
+                <div className="absolute inset-3 rounded-full border border-indigo-500/20" />
+                <div className="absolute inset-7 rounded-full border border-dashed border-indigo-500/30 animate-[spin_14s_linear_infinite]" />
+                <div className="absolute inset-11 rounded-full border border-indigo-500/40" />
                 <span className="relative flex h-3 w-3">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F88F22] opacity-75"></span>
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-[#F88F22] shadow-[0_0_12px_rgba(248,143,34,0.8)]"></span>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]"></span>
                 </span>
               </div>
-              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-[#1c1000]/80 px-2.5 py-1 text-[11px] font-mono text-zinc-400">
+              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-zinc-900/80 px-2.5 py-1 text-[11px] font-mono text-zinc-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
                 Awaiting Geo Signal
               </span>
@@ -267,7 +267,7 @@ export default function Dashboard() {
             <div className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-zinc-900/90 px-2.5 py-1 text-[11px] font-mono text-zinc-300 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#F88F22]"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
               </span>
               <span>LEADERBOARD</span>
             </div>
@@ -276,7 +276,7 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-[#2a1800] text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+                  <tr className="border-b border-zinc-800 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
                     <th className="pb-3">Short Code</th>
                     <th className="pb-3">Destination Target</th>
                     <th className="pb-3 text-right">Hits</th>
@@ -284,9 +284,9 @@ export default function Dashboard() {
                 </thead>
                 <tbody className="divide-y divide-zinc-800/60 font-mono">
                   {data.topLinks.map((l) => (
-                    <tr key={l.id} className="hover:bg-[#2a1800]/30 transition">
+                    <tr key={l.id} className="hover:bg-zinc-800/30 transition">
                       <td className="py-3">
-                        <Link to={`/links/${l.id}`} className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
+                        <Link to={`/links/${l.id}`} className="font-semibold text-indigo-400 hover:text-indigo-300 hover:underline">
                           /{l.short_code}
                         </Link>
                         {l.title && <span className="ml-2 font-sans text-xs text-zinc-400 font-normal">· {l.title}</span>}
@@ -303,7 +303,7 @@ export default function Dashboard() {
               title="No active links"
               hint="Create your first short link to begin collecting analytics."
               action={
-                <Link to="/create" className="group inline-flex items-center gap-2 rounded-lg border border-[#F88F22]/30 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-4 py-2 text-xs font-semibold text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(234,97,19,0.55)]">
+                <Link to="/create" className="group inline-flex items-center gap-2 rounded-lg border border-indigo-400/30 bg-gradient-to-r from-indigo-500 to-violet-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all duration-200 hover:from-indigo-400 hover:to-violet-500 hover:shadow-[0_0_28px_rgba(99,102,241,0.55)]">
                   <span>+ Create First Short Link</span>
                   <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
                 </Link>

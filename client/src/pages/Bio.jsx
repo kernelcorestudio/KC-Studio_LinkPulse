@@ -1,4 +1,4 @@
-﻿// Bio pages: manage public link-in-bio landing pages (/bio/<slug>) (Sleek Dark SaaS).
+// Bio pages: manage public link-in-bio landing pages (/bio/<slug>) (Sleek Dark SaaS).
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api, bioUrl, shortUrl } from '../lib/api';
 import { Spinner, ErrorState, EmptyState } from '../components/ui';
@@ -83,10 +83,10 @@ export default function Bio() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2a1800]/80 pb-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <BioIcon className="h-6 w-6 text-[#FBB931]" />
+            <BioIcon className="h-6 w-6 text-indigo-400" />
             <span>Link-in-Bio Pages</span>
           </h1>
           <p className="text-xs text-zinc-400 mt-1">
@@ -109,7 +109,7 @@ export default function Bio() {
 
       {creating && (
         <div className="card space-y-4">
-          <div className="border-b border-[#2a1800] pb-2">
+          <div className="border-b border-zinc-800 pb-2">
             <h3 className="text-sm font-semibold text-white">Create New Bio Profile</h3>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -156,14 +156,14 @@ export default function Bio() {
               key={p.id}
               className={`rounded-xl border p-4 transition cursor-pointer ${
                 selectedId === p.id
-                  ? 'border-[#F88F22]/50 bg-[#14141c] shadow-lg shadow-indigo-500/10'
+                  ? 'border-indigo-500/50 bg-[#14141c] shadow-lg shadow-indigo-500/10'
                   : 'border-white/[0.08] bg-[#0e0f12] hover:border-white/[0.16]'
               }`}
               onClick={() => setSelectedId(p.id)}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="truncate font-semibold text-sm text-[#FBB931]">/{p.slug}</p>
+                  <p className="truncate font-semibold text-sm text-indigo-400">/{p.slug}</p>
                   <p className="truncate text-xs text-zinc-400 mt-0.5">{p.title || 'Untitled Bio'}</p>
                 </div>
                 <a
@@ -176,7 +176,7 @@ export default function Bio() {
                   View ↗
                 </a>
               </div>
-              <div className="mt-3 flex items-center gap-3 text-[11px] font-mono text-zinc-400 border-t border-[#2a1800]/80 pt-2">
+              <div className="mt-3 flex items-center gap-3 text-[11px] font-mono text-zinc-400 border-t border-zinc-800/80 pt-2">
                 <span>{p.link_count} links</span>
                 <span>·</span>
                 <span>{Number(p.clicks).toLocaleString()} link clicks</span>
@@ -289,10 +289,10 @@ function Editor({ pageId, onSaved }) {
 
   return (
     <div className="card space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#2a1800] pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-3">
         <h3 className="text-sm font-semibold text-white">Edit Profile /{page.slug}</h3>
         <a
-          className="text-xs text-[#FBB931] hover:text-[#FFE3B3] font-medium hover:underline"
+          className="text-xs text-indigo-400 hover:text-indigo-300 font-medium hover:underline"
           href={bioUrl(page.slug)}
           target="_blank"
           rel="noreferrer"
@@ -329,13 +329,13 @@ function Editor({ pageId, onSaved }) {
       <div className="space-y-3 pt-2">
         <label className="label">Featured Links (Ordered Top to Bottom)</label>
         {!rows.length && (
-          <p className="text-xs text-zinc-500 py-3 text-center border border-dashed border-[#2a1800] rounded-lg">
+          <p className="text-xs text-zinc-500 py-3 text-center border border-dashed border-zinc-800 rounded-lg">
             No links added to this bio yet. Add links using the search bar below.
           </p>
         )}
         <ul className="space-y-2">
           {rows.map((r, i) => (
-            <li key={r.id} className="flex items-center gap-3 rounded-lg border border-[#2a1800] bg-[#1c1000]/60 p-3">
+            <li key={r.id} className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/60 p-3">
               <div className="flex flex-col gap-1">
                 <button
                   className="text-xs text-zinc-400 hover:text-white disabled:opacity-30"
@@ -362,7 +362,7 @@ function Editor({ pageId, onSaved }) {
                   onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))}
                 />
                 <p className="mt-1 truncate text-[11px] text-zinc-500 font-mono">
-                  <span className="text-[#FBB931] font-medium">{shortUrl(r.short_code).replace(/^https?:\/\//, '')}</span> · {r.destination_url}
+                  <span className="text-indigo-400 font-medium">{shortUrl(r.short_code).replace(/^https?:\/\//, '')}</span> · {r.destination_url}
                 </p>
               </div>
               <button className="text-xs text-rose-400 hover:text-rose-300 ml-2" onClick={() => removeAt(i)}>
@@ -373,7 +373,7 @@ function Editor({ pageId, onSaved }) {
         </ul>
       </div>
 
-      <div className="space-y-2 pt-2 border-t border-[#2a1800]">
+      <div className="space-y-2 pt-2 border-t border-zinc-800">
         <label className="label">Add Existing Links to Bio</label>
         <input
           className="input text-xs"
