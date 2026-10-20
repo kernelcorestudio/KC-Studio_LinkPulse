@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="client/public/logo.jpg" alt="LinkPulse Logo" width="110" style="border-radius: 24px; box-shadow: 0 0 35px rgba(234, 97, 19, 0.45);" />
+  <img src="client/public/README_banner.jpg" alt="LinkPulse - Next-Gen URL Infrastructure & Telemetry Route Engine" width="100%" style="border-radius: 12px;" />
 </p>
 
 <h1 align="center">⚡ LinkPulse</h1>
