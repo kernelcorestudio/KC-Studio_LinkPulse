@@ -49,24 +49,115 @@ async function breakdown(ownerId, ids, from, to, column) {
   return rows;
 }
 
-async function clicksOverTime(ownerId, ids, from, to, bucket) {
+async function clicksOverTime(ownerId, ids, from, to, bucket = 'day', tzOffset = 0) {
   if (!ids.length) return [];
   const params = [];
   const period = inPeriod('clicked_at', from, to, params);
-  // clicked_at is ISO-8601 TEXT: substr gives 'YYYY-MM-DD' (day) or 'YYYY-MM-DDTHH' (hour).
   const len = bucket === 'hour' ? 13 : 10;
   const rows = await query(
-    `SELECT substr(clicked_at, 1, ${len}) AS bucket, COUNT(*) AS clicks
+    `SELECT substr(clicked_at, 1, ${len}) AS raw_bucket, COUNT(*) AS clicks
      FROM click_events
      WHERE link_id IN (${ids.map(() => '?').join(',')}) AND is_bot = 0 AND ${period}
-     GROUP BY bucket ORDER BY bucket ASC`,
+     GROUP BY raw_bucket ORDER BY raw_bucket ASC`,
     [...ids, ...params],
   );
-  return rows;
+
+  // Map database UTC counts into client local timezone counts
+  const counts = {};
+  for (const r of rows) {
+    if (!r.raw_bucket) continue;
+    let localKey;
+    if (bucket === 'hour') {
+      // raw_bucket is 'YYYY-MM-DDTHH'
+      const utcMs = Date.parse(`${r.raw_bucket}:00:00.000Z`);
+      if (isNaN(utcMs)) continue;
+      // Convert to local time by subtracting tzOffset (minutes)
+      const localDate = new Date(utcMs - tzOffset * 60000);
+      const y = localDate.getUTCFullYear();
+      const m = String(localDate.getUTCMonth() + 1).padStart(2, '0');
+      const d = String(localDate.getUTCDate()).padStart(2, '0');
+      const h = String(localDate.getUTCHours()).padStart(2, '0');
+      localKey = `${y}-${m}-${d}T${h}`;
+    } else {
+      // raw_bucket is 'YYYY-MM-DD'
+      const utcMs = Date.parse(`${r.raw_bucket}T12:00:00.000Z`);
+      if (isNaN(utcMs)) continue;
+      const localDate = new Date(utcMs - tzOffset * 60000);
+      const y = localDate.getUTCFullYear();
+      const m = String(localDate.getUTCMonth() + 1).padStart(2, '0');
+      const d = String(localDate.getUTCDate()).padStart(2, '0');
+      localKey = `${y}-${m}-${d}`;
+    }
+    counts[localKey] = (counts[localKey] || 0) + Number(r.clicks);
+  }
+
+  // Generate continuous, zero-filled series from 'from' to 'to'
+  const result = [];
+  const fromMs = Date.parse(from);
+  const toMs = Date.parse(to);
+
+  if (!isNaN(fromMs) && !isNaN(toMs) && fromMs <= toMs) {
+    const startLocalMs = fromMs - tzOffset * 60000;
+    const endLocalMs = toMs - tzOffset * 60000;
+
+    if (bucket === 'hour') {
+      let cur = new Date(startLocalMs);
+      cur.setUTCMinutes(0, 0, 0);
+      const end = new Date(endLocalMs);
+
+      while (cur <= end) {
+        const y = cur.getUTCFullYear();
+        const m = String(cur.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(cur.getUTCDate()).padStart(2, '0');
+        const h = String(cur.getUTCHours()).padStart(2, '0');
+        const key = `${y}-${m}-${d}T${h}`;
+        result.push({
+          bucket: key,
+          clicks: counts[key] || 0,
+        });
+        cur = new Date(cur.getTime() + 3600000);
+      }
+
+      // Ensure at least 2 data points for line chart rendering
+      if (result.length === 1) {
+        const nextHour = new Date(cur.getTime());
+        const y = nextHour.getUTCFullYear();
+        const m = String(nextHour.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(nextHour.getUTCDate()).padStart(2, '0');
+        const h = String(nextHour.getUTCHours()).padStart(2, '0');
+        result.push({
+          bucket: `${y}-${m}-${d}T${h}`,
+          clicks: 0,
+        });
+      }
+    } else {
+      let cur = new Date(startLocalMs);
+      cur.setUTCHours(0, 0, 0, 0);
+      const end = new Date(endLocalMs);
+
+      while (cur <= end) {
+        const y = cur.getUTCFullYear();
+        const m = String(cur.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(cur.getUTCDate()).padStart(2, '0');
+        const key = `${y}-${m}-${d}`;
+        result.push({
+          bucket: key,
+          clicks: counts[key] || 0,
+        });
+        cur = new Date(cur.getTime() + 86400000);
+      }
+    }
+  }
+
+  if (!result.length) {
+    return rows.map((r) => ({ bucket: r.raw_bucket, clicks: Number(r.clicks) }));
+  }
+
+  return result;
 }
 
 /** Full analytics payload for a scope (single link, campaign, or all links). */
-export async function getAnalytics(ownerId, { from, to, linkId, campaignId, bucket = 'day', adminScope = false }) {
+export async function getAnalytics(ownerId, { from, to, linkId, campaignId, bucket = 'day', adminScope = false, tzOffset = 0 }) {
   const ids = await scopeLinkIds(ownerId, { linkId, campaignId, adminScope });
   const empty = {
     totalClicks: 0, uniqueVisitors: 0, totalLinks: ids.length,
@@ -86,7 +177,7 @@ export async function getAnalytics(ownerId, { from, to, linkId, campaignId, buck
   );
 
   const [timeseries, referrers, devices, os, browsers, countries, cities, sources] = await Promise.all([
-    clicksOverTime(ownerId, ids, from, to, bucket),
+    clicksOverTime(ownerId, ids, from, to, bucket, tzOffset),
     breakdown(ownerId, ids, from, to, 'referrer'),
     breakdown(ownerId, ids, from, to, 'device_type'),
     breakdown(ownerId, ids, from, to, 'os'),
@@ -100,13 +191,13 @@ export async function getAnalytics(ownerId, { from, to, linkId, campaignId, buck
     totalClicks: Number(totals?.totalClicks ?? totals?.totalclicks ?? 0),
     uniqueVisitors: Number(totals?.uniqueVisitors ?? totals?.uniquevisitors ?? 0),
     totalLinks: ids.length,
-    timeseries: timeseries.map((r) => ({ bucket: r.bucket, clicks: Number(r.clicks) })),
+    timeseries,
     referrers, devices, os, browsers, countries, cities, sources,
   };
 }
 
 /** Dashboard summary: period metrics + top links for the owner. */
-export async function getDashboardSummary(ownerId, { from, to, campaignId }) {
+export async function getDashboardSummary(ownerId, { from, to, campaignId, bucket = 'day', tzOffset = 0 }) {
   const ids = await scopeLinkIds(ownerId, { campaignId });
   if (!ids.length) {
     return {
@@ -125,7 +216,7 @@ export async function getDashboardSummary(ownerId, { from, to, campaignId }) {
   const campParams = campaignId ? [ownerId, campaignId] : [ownerId];
 
   const [stats, linksCounts, topLinks] = await Promise.all([
-    getAnalytics(ownerId, { from, to, campaignId }),
+    getAnalytics(ownerId, { from, to, campaignId, bucket, tzOffset }),
     queryOne(
       `SELECT COUNT(*) AS total_links, COUNT(CASE WHEN status = 'active' THEN 1 END) AS active_links FROM links WHERE owner_id = ?${campClause}`,
       campParams,

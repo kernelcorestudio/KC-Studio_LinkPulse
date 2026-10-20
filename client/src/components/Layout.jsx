@@ -6,7 +6,7 @@ import { useTheme } from '../lib/theme';
 import {
   DashboardIcon, LinksIcon, CampaignIcon, TagIcon,
   CreateIcon, ImportIcon, BioIcon, AdminIcon,
-  SunIcon, MoonIcon,
+  SunIcon, MoonIcon, MenuIcon, CloseIcon,
 } from './Icons';
 import MouseGlow from './MouseGlow';
 
@@ -28,7 +28,13 @@ export default function Layout() {
   const location = useLocation();
 
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const profileMenuRef = useRef(null);
+
+  useEffect(() => {
+    setMobileDrawerOpen(false);
+    setProfileMenuOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -83,8 +89,8 @@ export default function Layout() {
             </span>
           </Link>
 
-          {/* ── CENTER: Floating Dock ── */}
-          <div className="relative flex items-center justify-center min-w-0 max-w-fit mx-auto px-1">
+          {/* ── CENTER: Floating Dock (Desktop only) ── */}
+          <div className="hidden md:flex relative items-center justify-center min-w-0 max-w-fit mx-auto px-1">
             {/* Radiant neon underglow behind the dock */}
             <div className="pointer-events-none absolute -inset-2 rounded-3xl bg-gradient-to-r from-[#EA6113]/25 via-[#F88F22]/45 to-[#EA6113]/25 blur-xl opacity-75 animate-dock-glow -z-10" />
 
@@ -138,7 +144,7 @@ export default function Layout() {
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-[#EA6113] to-[#F88F22] text-[10px] font-bold text-white shadow-[0_0_8px_rgba(234,97,19,0.5)]">
                   {user?.email?.charAt(0).toUpperCase() || 'U'}
                 </span>
-                <span className="text-xs font-medium max-w-[90px] sm:max-w-[120px] truncate" title={user?.email}>
+                <span className="hidden sm:inline text-xs font-medium max-w-[120px] truncate" title={user?.email}>
                   {user?.email}
                 </span>
                 {user?.role === 'admin' && (
@@ -200,44 +206,208 @@ export default function Layout() {
               )}
             </button>
 
-            {/* Clear, Prominent Direct Logout Button */}
+            {/* Mobile Hamburger / Menu Button */}
             <button
-              onClick={handleLogout}
+              onClick={() => setMobileDrawerOpen((prev) => !prev)}
               type="button"
-              title="Log out of session"
-              className={`group inline-flex items-center gap-1.5 rounded-xl border px-2.5 sm:px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:scale-95 cursor-pointer ${
-                isLight
-                  ? 'border-rose-300/80 bg-rose-50 text-rose-700 hover:bg-rose-100 hover:border-rose-400 hover:shadow-[0_2px_10px_rgba(225,29,72,0.18)]'
-                  : 'border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 hover:border-rose-500/60 hover:text-white hover:shadow-[0_0_14px_rgba(244,63,94,0.35)]'
+              className={`flex md:hidden items-center justify-center rounded-xl border p-2 transition-all duration-200 cursor-pointer ${
+                mobileDrawerOpen
+                  ? 'border-[#EA6113] bg-[#EA6113]/20 text-[#FBB931]'
+                  : isLight
+                  ? 'border-zinc-300 bg-white hover:border-[#EA6113]/40 text-zinc-800'
+                  : 'border-zinc-800 bg-[#080808]/90 hover:border-[#F88F22]/40 text-white'
               }`}
+              title="Toggle Navigation Menu"
+              aria-label="Toggle Navigation Menu"
             >
-              <svg
-                className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-              <span>Logout</span>
+              {mobileDrawerOpen ? (
+                <CloseIcon className="h-4 w-4 text-[#EA6113]" />
+              ) : (
+                <MenuIcon className="h-4 w-4" />
+              )}
             </button>
           </div>
         </div>
       </header>
 
       {/* ── MAIN CONTENT ── */}
-      <main className="relative z-10 flex-1 overflow-y-auto px-6 py-6 lg:px-8 lg:py-8">
+      <main className="relative z-10 flex-1 overflow-y-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pb-24 md:pb-8">
         {/* Ambient top spotlight */}
         <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[450px] w-full max-w-4xl rounded-full bg-[#EA6113]/[0.08] blur-[120px] -z-10" aria-hidden="true" />
         <div key={location.pathname} className="page-transition-enter min-h-full max-w-7xl mx-auto">
           <Outlet />
         </div>
       </main>
+
+      {/* ── MOBILE BOTTOM NAVIGATION DOCK (Native App Feel) ── */}
+      <nav
+        className={`fixed bottom-0 inset-x-0 z-40 md:hidden border-t px-2 py-1.5 backdrop-blur-2xl transition-colors duration-200 ${
+          isLight
+            ? 'bg-white/95 border-amber-900/15 shadow-[0_-4px_20px_rgba(234,97,19,0.12)]'
+            : 'bg-[#080808]/95 border-white/[0.08] shadow-[0_-8px_30px_rgba(0,0,0,0.85)]'
+        }`}
+      >
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          {/* Dashboard */}
+          <NavLink
+            to="/app"
+            end
+            className={({ isActive }) =>
+              `flex flex-col items-center gap-1 py-1 px-2.5 rounded-lg text-[10px] font-medium transition-all ${
+                isActive
+                  ? 'text-[#EA6113] font-bold scale-105'
+                  : isLight
+                  ? 'text-amber-900/60 hover:text-amber-900'
+                  : 'text-amber-200/50 hover:text-white'
+              }`
+            }
+          >
+            <DashboardIcon className="h-5 w-5" />
+            <span>Dashboard</span>
+          </NavLink>
+
+          {/* Links */}
+          <NavLink
+            to="/links"
+            className={({ isActive }) =>
+              `flex flex-col items-center gap-1 py-1 px-2.5 rounded-lg text-[10px] font-medium transition-all ${
+                isActive
+                  ? 'text-[#EA6113] font-bold scale-105'
+                  : isLight
+                  ? 'text-amber-900/60 hover:text-amber-900'
+                  : 'text-amber-200/50 hover:text-white'
+              }`
+            }
+          >
+            <LinksIcon className="h-5 w-5" />
+            <span>Links</span>
+          </NavLink>
+
+          {/* Elevated Center Create Button */}
+          <NavLink
+            to="/create"
+            className="flex flex-col items-center -mt-5 group"
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-tr from-[#EA6113] via-[#F88F22] to-[#FBB931] text-white shadow-[0_0_20px_rgba(234,97,19,0.65)] border-2 border-black active:scale-90 transition-transform">
+              <CreateIcon className="h-6 w-6" />
+            </div>
+            <span className="text-[10px] font-semibold text-[#EA6113] mt-0.5">Create</span>
+          </NavLink>
+
+          {/* Campaigns */}
+          <NavLink
+            to="/campaigns"
+            className={({ isActive }) =>
+              `flex flex-col items-center gap-1 py-1 px-2.5 rounded-lg text-[10px] font-medium transition-all ${
+                isActive
+                  ? 'text-[#EA6113] font-bold scale-105'
+                  : isLight
+                  ? 'text-amber-900/60 hover:text-amber-900'
+                  : 'text-amber-200/50 hover:text-white'
+              }`
+            }
+          >
+            <CampaignIcon className="h-5 w-5" />
+            <span>Campaigns</span>
+          </NavLink>
+
+          {/* More Menu Trigger */}
+          <button
+            type="button"
+            onClick={() => setMobileDrawerOpen((v) => !v)}
+            className={`flex flex-col items-center gap-1 py-1 px-2.5 rounded-lg text-[10px] font-medium transition-all cursor-pointer ${
+              mobileDrawerOpen
+                ? 'text-[#EA6113] font-bold scale-105'
+                : isLight
+                ? 'text-amber-900/60 hover:text-amber-900'
+                : 'text-amber-200/50 hover:text-white'
+            }`}
+          >
+            <MenuIcon className="h-5 w-5" />
+            <span>More</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* ── MOBILE SLIDE-UP DRAWER ("MORE" MENU) ── */}
+      {mobileDrawerOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex flex-col justify-end">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+            onClick={() => setMobileDrawerOpen(false)}
+          />
+
+          {/* Drawer Sheet */}
+          <div
+            className={`relative z-10 w-full rounded-t-3xl border-t p-5 shadow-2xl backdrop-blur-2xl max-h-[85vh] overflow-y-auto animate-fade-in-up ${
+              isLight
+                ? 'bg-[#FFFDF9] border-amber-900/20 text-[#1F0E02]'
+                : 'bg-[#0c0d0e] border-white/10 text-white'
+            }`}
+          >
+            {/* Grab Handle */}
+            <div className="mx-auto w-12 h-1 rounded-full bg-zinc-700/50 mb-4" />
+
+            <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3 mb-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-amber-500">Navigation Hub</p>
+                <p className="text-sm font-bold truncate max-w-[240px]">{user?.email}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileDrawerOpen(false)}
+                className="rounded-full p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition"
+              >
+                <CloseIcon className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Grid of All Links */}
+            <div className="grid grid-cols-2 gap-2.5 mb-5">
+              {NAV.filter((n) => !n.adminOnly || user?.role === 'admin').map((n) => {
+                const Icon = n.Icon;
+                const active = isTabActive(n);
+                return (
+                  <NavLink
+                    key={n.to}
+                    to={n.to}
+                    end={n.end}
+                    onClick={() => setMobileDrawerOpen(false)}
+                    className={`flex items-center gap-2.5 rounded-xl border p-3 text-xs font-semibold transition-all ${
+                      active
+                        ? 'border-[#EA6113] bg-[#EA6113]/15 text-[#EA6113] shadow-sm'
+                        : isLight
+                        ? 'border-amber-900/10 bg-white hover:border-[#EA6113]/40 text-[#1F0E02]'
+                        : 'border-zinc-800 bg-[#121212] hover:border-zinc-700 text-amber-200/80 hover:text-white'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 shrink-0 text-[#EA6113]" />
+                    <span>{n.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+
+            {/* Direct Logout Action in Drawer */}
+            <button
+              onClick={() => {
+                setMobileDrawerOpen(false);
+                handleLogout();
+              }}
+              type="button"
+              className="w-full flex items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 py-3 text-xs font-bold text-rose-400 hover:bg-rose-500/20 transition-colors cursor-pointer"
+            >
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              <span>Log Out of Session</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

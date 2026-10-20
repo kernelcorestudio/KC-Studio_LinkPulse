@@ -83,18 +83,18 @@ export default function Bio() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-zinc-800/80 pb-4 sm:pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <BioIcon className="h-6 w-6 text-[#FBB931]" />
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
+            <BioIcon className="h-5 w-5 sm:h-6 sm:w-6 text-[#FBB931]" />
             <span>Link-in-Bio Pages</span>
           </h1>
-          <p className="text-xs text-amber-200/60 mt-1">
+          <p className="text-xs text-amber-200/60 mt-0.5 sm:mt-1">
             Build mobile-optimized profile landing pages for social channels and bio links.
           </p>
         </div>
         <button
-          className="btn-primary text-xs py-2 px-3.5"
+          className="btn-primary w-full sm:w-auto text-xs py-2 px-3.5"
           onClick={() => { setCreating(true); setForm(emptyForm); setMsg(null); }}
         >
           + Create Bio Page

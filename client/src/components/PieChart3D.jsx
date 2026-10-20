@@ -102,7 +102,7 @@ export function PieChart3D({
           <div className="absolute inset-0 rounded-full border border-dashed border-[#F88F22]/40 animate-spin" />
           <div className="h-10 w-10 rounded-full border border-[#F88F22]/30" />
         </div>
-        <p className="mt-3 text-xs text-amber-200/50 font-mono">No telemetry recorded yet</p>
+        <p className={`mt-3 text-xs font-mono ${isLight ? 'text-amber-900/70 font-medium' : 'text-amber-200/50'}`}>No telemetry recorded yet</p>
       </div>
     );
   }
@@ -293,27 +293,31 @@ export function PieChart3D({
         <svg
           viewBox="0 0 540 280"
           className="w-full h-auto overflow-visible"
-          style={{ filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.65))' }}
+          style={{
+            filter: isLight
+              ? 'drop-shadow(0 10px 18px rgba(180, 83, 9, 0.12))'
+              : 'drop-shadow(0 15px 25px rgba(0,0,0,0.65))',
+          }}
         >
           <defs>
             {/* Soft ground drop shadow beneath 3D pie */}
             <radialGradient id="pie-ground-shadow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(0,0,0,0.65)" />
-              <stop offset="60%" stopColor="rgba(0,0,0,0.3)" />
-              <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+              <stop offset="0%" stopColor={isLight ? 'rgba(120, 53, 15, 0.18)' : 'rgba(0,0,0,0.65)'} />
+              <stop offset="60%" stopColor={isLight ? 'rgba(120, 53, 15, 0.05)' : 'rgba(0,0,0,0.3)'} />
+              <stop offset="100%" stopColor={isLight ? 'rgba(120, 53, 15, 0)' : 'rgba(0,0,0,0)'} />
             </radialGradient>
 
             {/* Cylindrical lighting gradient for side walls */}
             <linearGradient id="wall-lighting" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.16" />
+              <stop offset="0%" stopColor="#ffffff" stopOpacity={isLight ? '0.25' : '0.16'} />
               <stop offset="40%" stopColor="#000000" stopOpacity="0.1" />
-              <stop offset="100%" stopColor="#000000" stopOpacity="0.48" />
+              <stop offset="100%" stopColor="#000000" stopOpacity={isLight ? '0.35' : '0.48'} />
             </linearGradient>
 
             {/* Inner hole depth shadow */}
             <linearGradient id="hole-shadow" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#000000" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#000000" stopOpacity="0.6" />
+              <stop offset="0%" stopColor="#000000" stopOpacity={isLight ? '0.16' : '0.25'} />
+              <stop offset="100%" stopColor="#000000" stopOpacity={isLight ? '0.42' : '0.6'} />
             </linearGradient>
           </defs>
 
@@ -347,11 +351,13 @@ export function PieChart3D({
                   transformBox: 'view-box',
                   transition:
                     'transform 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms cubic-bezier(0.22, 1, 0.36, 1), filter 300ms cubic-bezier(0.22, 1, 0.36, 1)',
-                  opacity: hoveredIndex === null || isHovered ? 1 : 0.55,
+                  opacity: hoveredIndex === null || isHovered ? 1 : (isLight ? 0.65 : 0.55),
                   filter: isHovered
-                    ? 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.55)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.25)) brightness(1.08)'
+                    ? (isLight
+                        ? 'drop-shadow(0 6px 14px rgba(234, 97, 19, 0.35)) brightness(1.04)'
+                        : 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.55)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.25)) brightness(1.08)')
                     : hoveredIndex !== null
-                    ? 'saturate(0.85) brightness(0.85)'
+                    ? (isLight ? 'saturate(0.75) opacity(0.75)' : 'saturate(0.85) brightness(0.85)')
                     : 'none',
                 }}
                 onPointerEnter={() => setHoveredIndex(slice.id)}
@@ -375,7 +381,7 @@ export function PieChart3D({
                       <path
                         d={d}
                         fill="none"
-                        stroke="#ffffff"
+                        stroke={isLight ? 'rgba(31,14,2,0.45)' : '#ffffff'}
                         strokeWidth="1.2"
                         strokeOpacity="0.75"
                         strokeLinejoin="round"
@@ -394,7 +400,7 @@ export function PieChart3D({
                       <path
                         d={slice.cut1Path}
                         fill="none"
-                        stroke="#ffffff"
+                        stroke={isLight ? 'rgba(31,14,2,0.45)' : '#ffffff'}
                         strokeWidth="1.5"
                         strokeOpacity="0.9"
                         strokeLinejoin="round"
@@ -413,7 +419,7 @@ export function PieChart3D({
                       <path
                         d={slice.cut2Path}
                         fill="none"
-                        stroke="#ffffff"
+                        stroke={isLight ? 'rgba(31,14,2,0.45)' : '#ffffff'}
                         strokeWidth="1.5"
                         strokeOpacity="0.9"
                         strokeLinejoin="round"
@@ -432,7 +438,7 @@ export function PieChart3D({
                       <path
                         d={d}
                         fill="none"
-                        stroke="#ffffff"
+                        stroke={isLight ? 'rgba(31,14,2,0.45)' : '#ffffff'}
                         strokeWidth="1.4"
                         strokeOpacity="0.9"
                         strokeLinejoin="round"
@@ -581,64 +587,132 @@ export function PieChart3D({
       <div className="w-full max-w-[420px] px-2 min-h-[56px] flex items-center justify-center mt-0.5 mb-1">
         {hoveredSlice ? (
           <div
-            className="w-full rounded-xl border border-[#F88F22]/40 bg-[#0d0906]/95 px-3.5 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.85),0_0_15px_rgba(248,143,34,0.18)] backdrop-blur-md transition-all duration-200 ease-out"
+            className={`w-full rounded-xl border px-3.5 py-2 backdrop-blur-md transition-all duration-200 ease-out ${
+              isLight
+                ? 'border-[#EA6113]/30 bg-white/95 shadow-[0_8px_24px_rgba(234,97,19,0.12),0_1px_3px_rgba(0,0,0,0.06)]'
+                : 'border-[#F88F22]/40 bg-[#0d0906]/95 shadow-[0_8px_24px_rgba(0,0,0,0.85),0_0_15px_rgba(248,143,34,0.18)]'
+            }`}
           >
             {/* Header: Region Name + Country Code Badge */}
-            <div className="flex items-center justify-between gap-2 border-b border-zinc-800/80 pb-1.5 mb-1.5">
+            <div
+              className={`flex items-center justify-between gap-2 border-b pb-1.5 mb-1.5 ${
+                isLight ? 'border-[#EA6113]/15' : 'border-zinc-800/80'
+              }`}
+            >
               <div className="flex items-center gap-2 min-w-0">
                 <span
                   className="h-2.5 w-2.5 rounded-full shrink-0 shadow-sm transition-transform duration-200"
                   style={{
                     backgroundColor: hoveredSlice.color,
-                    boxShadow: `0 0 10px ${hoveredSlice.color}`,
+                    boxShadow: isLight
+                      ? `0 0 6px ${hoveredSlice.color}`
+                      : `0 0 10px ${hoveredSlice.color}`,
                     transform: 'scale(1.2)',
                   }}
                 />
-                <span className="text-xs font-bold text-white tracking-wide truncate">
+                <span
+                  className={`text-xs font-bold tracking-wide truncate ${
+                    isLight ? 'text-[#1F0E02]' : 'text-white'
+                  }`}
+                >
                   {hoveredRegion?.name}
                 </span>
                 {hoveredRegion?.code && (
-                  <span className="text-[11px] font-mono text-zinc-400">
+                  <span
+                    className={`text-[11px] font-mono ${
+                      isLight ? 'text-[#8C5523]' : 'text-zinc-400'
+                    }`}
+                  >
                     ({hoveredRegion.code})
                   </span>
                 )}
               </div>
               {hoveredRegion?.code && (
-                <span className="rounded bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 font-mono text-[10px] font-bold text-amber-300 shrink-0">
+                <span
+                  className={`rounded px-2 py-0.5 font-mono text-[10px] font-bold shrink-0 border ${
+                    isLight
+                      ? 'bg-[#EA6113]/10 border-[#EA6113]/30 text-[#EA6113]'
+                      : 'bg-amber-500/10 border-amber-500/30 text-amber-300'
+                  }`}
+                >
                   {hoveredRegion.code}
                 </span>
               )}
             </div>
 
             {/* Metrics Row: Clicks • Traffic Share • Uniques / Delta */}
-            <div className="flex items-center justify-between text-xs gap-3">
+            <div className="flex flex-wrap items-center justify-between text-xs gap-2 sm:gap-3">
               <div className="flex items-baseline gap-1.5">
-                <span className="text-zinc-400 text-[11px]">Clicks:</span>
-                <span className="font-mono font-bold text-white tracking-tight">
+                <span
+                  className={`text-[11px] ${
+                    isLight ? 'text-[#8C5523]' : 'text-zinc-400'
+                  }`}
+                >
+                  Clicks:
+                </span>
+                <span
+                  className={`font-mono font-bold tracking-tight ${
+                    isLight ? 'text-[#1F0E02]' : 'text-white'
+                  }`}
+                >
                   {hoveredSlice.value.toLocaleString()}
                 </span>
               </div>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-zinc-400 text-[11px]">Share:</span>
-                <span className="font-mono font-semibold text-[#FBB931]">
+                <span
+                  className={`text-[11px] ${
+                    isLight ? 'text-[#8C5523]' : 'text-zinc-400'
+                  }`}
+                >
+                  Share:
+                </span>
+                <span
+                  className={`font-mono font-semibold ${
+                    isLight ? 'text-[#EA6113]' : 'text-[#FBB931]'
+                  }`}
+                >
                   {hoveredSlice.percentage}% of Total
                 </span>
               </div>
               {hoveredSlice.change !== undefined ? (
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-zinc-400 text-[11px]">Change:</span>
                   <span
-                    className={`font-mono font-semibold ${
-                      hoveredSlice.change >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                    className={`text-[11px] ${
+                      isLight ? 'text-[#8C5523]' : 'text-zinc-400'
                     }`}
                   >
-                    {hoveredSlice.change >= 0 ? `+${hoveredSlice.change}%` : `${hoveredSlice.change}%`}
+                    Change:
+                  </span>
+                  <span
+                    className={`font-mono font-semibold ${
+                      hoveredSlice.change >= 0
+                        ? isLight
+                          ? 'text-emerald-700'
+                          : 'text-emerald-400'
+                        : isLight
+                        ? 'text-rose-700'
+                        : 'text-rose-400'
+                    }`}
+                  >
+                    {hoveredSlice.change >= 0
+                      ? `+${hoveredSlice.change}%`
+                      : `${hoveredSlice.change}%`}
                   </span>
                 </div>
               ) : hoveredSlice.uniques !== undefined ? (
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-zinc-400 text-[11px]">Uniques:</span>
-                  <span className="font-mono text-zinc-300 font-medium">
+                  <span
+                    className={`text-[11px] ${
+                      isLight ? 'text-[#8C5523]' : 'text-zinc-400'
+                    }`}
+                  >
+                    Uniques:
+                  </span>
+                  <span
+                    className={`font-mono font-medium ${
+                      isLight ? 'text-[#1F0E02]' : 'text-zinc-300'
+                    }`}
+                  >
                     {hoveredSlice.uniques.toLocaleString()}
                   </span>
                 </div>
@@ -646,8 +720,14 @@ export function PieChart3D({
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-2 rounded-lg border border-zinc-800/40 bg-zinc-900/30 px-3 py-1.5 text-[11px] text-zinc-500 font-mono transition-opacity duration-200">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#F88F22]/70 animate-pulse" />
+          <div
+            className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-[11px] font-mono transition-opacity duration-200 ${
+              isLight
+                ? 'border-[#EA6113]/25 bg-white/70 text-[#8C5523] shadow-sm'
+                : 'border-zinc-800/40 bg-zinc-900/30 text-zinc-500'
+            }`}
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#EA6113] animate-pulse" />
             <span>Hover or tap a segment to inspect regional telemetry</span>
           </div>
         )}
@@ -659,6 +739,18 @@ export function PieChart3D({
           const isHovered = hoveredIndex === slice.id;
           const region = formatRegion(slice.label);
 
+          const pillClasses = isHovered
+            ? isLight
+              ? 'border-[#EA6113] bg-white text-[#1F0E02] scale-105 shadow-[0_4px_14px_rgba(234,97,19,0.25)] ring-2 ring-[#EA6113]/30'
+              : 'border-white/90 bg-white/10 text-white scale-105 shadow-[0_0_15px_rgba(255,255,255,0.35),0_0_3px_#ffffff] ring-1 ring-white/60'
+            : hoveredIndex !== null
+            ? isLight
+              ? 'border-amber-900/15 bg-white/60 text-[#8C5523] opacity-60 hover:opacity-100 hover:border-[#EA6113]/40'
+              : 'border-zinc-800/60 bg-[#0d0905]/60 text-zinc-500 opacity-60 hover:opacity-100 hover:border-zinc-700'
+            : isLight
+            ? 'border-amber-900/20 bg-white/90 text-[#522700] hover:border-[#EA6113] hover:text-[#EA6113] shadow-sm'
+            : 'border-zinc-800 bg-[#121212] text-amber-200/70 hover:border-[#F88F22]/40 hover:text-white';
+
           return (
             <button
               key={slice.id}
@@ -669,27 +761,35 @@ export function PieChart3D({
               onFocus={() => setHoveredIndex(slice.id)}
               onBlur={() => setHoveredIndex(null)}
               onClick={() => setHoveredIndex(hoveredIndex === slice.id ? null : slice.id)}
-              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium border transition-all duration-200 outline-none ${
-                isHovered
-                  ? 'border-white/90 bg-white/10 text-white scale-105 shadow-[0_0_15px_rgba(255,255,255,0.35),0_0_3px_#ffffff] ring-1 ring-white/60'
-                  : hoveredIndex !== null
-                  ? 'border-zinc-800/60 bg-[#0d0905]/60 text-zinc-500 opacity-60 hover:opacity-100 hover:border-zinc-700'
-                  : 'border-zinc-800 bg-[#121212] text-amber-200/70 hover:border-[#F88F22]/40 hover:text-white'
-              }`}
+              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium border transition-all duration-200 outline-none ${pillClasses}`}
               title={`${region.name} (${slice.label}): ${slice.value.toLocaleString()} clicks (${slice.percentage}%)`}
             >
               <span
                 className="h-2 w-2 rounded-full shrink-0 transition-transform duration-200"
                 style={{
                   backgroundColor: slice.color,
-                  boxShadow: isHovered ? `0 0 8px ${slice.color}` : 'none',
+                  boxShadow: isHovered
+                    ? isLight
+                      ? `0 0 6px ${slice.color}`
+                      : `0 0 8px ${slice.color}`
+                    : 'none',
                   transform: isHovered ? 'scale(1.3)' : 'scale(1)',
                 }}
               />
               <span className="font-semibold tracking-wide">
                 {slice.label}
               </span>
-              <span className="font-mono text-[10px] text-amber-200/60 font-semibold ml-0.5">
+              <span
+                className={`font-mono text-[10px] font-semibold ml-0.5 ${
+                  isHovered
+                    ? isLight
+                      ? 'text-[#EA6113]'
+                      : 'text-white'
+                    : isLight
+                    ? 'text-[#8C5523]'
+                    : 'text-amber-200/60'
+                }`}
+              >
                 {slice.percentage}%
               </span>
             </button>

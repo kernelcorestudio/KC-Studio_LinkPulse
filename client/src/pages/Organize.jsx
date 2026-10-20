@@ -88,9 +88,9 @@ export default function Organize() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-zinc-800/80 pb-5">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Tags & Folders</h1>
-        <p className="text-xs text-zinc-400 mt-1">
+      <div className="border-b border-zinc-800/80 pb-4 sm:pb-5">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Tags & Folders</h1>
+        <p className="text-xs text-zinc-400 mt-0.5 sm:mt-1">
           Structure and categorize your link collection with flexible tags and folders.
         </p>
       </div>
@@ -166,7 +166,7 @@ export default function Organize() {
 
           <form className="flex gap-2" onSubmit={createFolder}>
             <input
-              className="input text-xs py-2"
+              className="input text-xs py-2 flex-1 min-w-0"
               placeholder="New folder name…"
               value={newFolder}
               onChange={(e) => setNewFolder(e.target.value)}

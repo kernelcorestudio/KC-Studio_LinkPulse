@@ -195,7 +195,10 @@ export default function Dashboard() {
     else setRefreshing(true);
     setError('');
     try {
-      const qs = new URLSearchParams({ period });
+      const qs = new URLSearchParams({
+        period,
+        tzOffset: new Date().getTimezoneOffset().toString(),
+      });
       if (campaignId) qs.set('campaignId', campaignId);
       const [d, a] = await Promise.all([
         api.dashboard(`?${qs}`),
@@ -222,21 +225,21 @@ export default function Dashboard() {
   if (!data) return <DashboardSkeleton />;
 
   const tsLabels = data.timeseries.map((t) => (t.bucket.length > 10 ? `${t.bucket.slice(11)}:00` : t.bucket.slice(5)));
-  const hasData = (data?.totalClicks || 0) > 0 || (data?.timeseries && data.timeseries.some((t) => Number(t.clicks) > 0));
+  const hasData = (data?.totalClicks || 0) > 0 || (data?.totalLinks || 0) > 0 || (data?.timeseries && data.timeseries.length > 0);
   const urgent = alerts.filter((a) => a.severity === 'critical').length;
 
   return (
     <div className="space-y-6">
       {/* Header and Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-zinc-800/80 pb-4 sm:pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">System Dashboard</h1>
-          <p className="text-xs text-amber-200/60 mt-1">Real-Time Traffic & Performance Telemetry</p>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">System Dashboard</h1>
+          <p className="text-[11px] sm:text-xs text-amber-200/60 mt-0.5 sm:mt-1">Real-Time Traffic & Performance Telemetry</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full sm:w-auto justify-between sm:justify-start">
           {campaigns.length > 0 && (
             <select
-              className="rounded-lg border border-zinc-800 bg-[#080808] px-3 py-1.5 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
+              className="rounded-lg border border-zinc-800 bg-[#080808] px-2.5 sm:px-3 py-1.5 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22] flex-1 sm:flex-initial min-w-[130px]"
               value={campaignId}
               onChange={(e) => setCampaignId(e.target.value)}
               title="Filter by campaign"
@@ -252,12 +255,12 @@ export default function Dashboard() {
             </div>
           )}
           {/* Segmented Period Tabs */}
-          <div className="flex rounded-lg border border-zinc-800 bg-[#080808] p-0.5 text-xs shadow-inner">
+          <div className="flex rounded-lg border border-zinc-800 bg-[#080808] p-0.5 text-xs shadow-inner shrink-0">
             {PERIODS.map(([val, label]) => (
               <button
                 key={val}
                 onClick={() => setPeriod(val)}
-                className={`rounded-md px-3 py-1 font-semibold text-[11px] tracking-wide transition duration-150 ${
+                className={`rounded-md px-2.5 sm:px-3 py-1 font-semibold text-[10px] sm:text-[11px] tracking-wide transition duration-150 ${
                   period === val
                     ? 'border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] text-white shadow-sm'
                     : 'text-amber-200/50 hover:text-amber-100'
@@ -271,7 +274,7 @@ export default function Dashboard() {
       </div>
 
       {/* Metric Cards Row with Staggered Entrance */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
         <StatCard
           label="Total clicks"
           value={data.totalClicks.toLocaleString()}
@@ -303,8 +306,8 @@ export default function Dashboard() {
       </div>
 
       {/* Row 2: Charts */}
-      <div className="grid gap-5 lg:grid-cols-3">
-        <div className="card lg:col-span-2 animate-fade-in-up stagger-3">
+      <div className="grid gap-4 sm:gap-5 lg:grid-cols-3">
+        <div className="card p-3.5 sm:p-5 lg:col-span-2 animate-fade-in-up stagger-3">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Clicks Timeline</h2>
             <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
@@ -321,7 +324,7 @@ export default function Dashboard() {
             <EmptyState title="No traffic recorded" hint="Deploy your short links to begin capturing real-time telemetry." />
           )}
         </div>
-        <div className="card animate-fade-in-up stagger-3">
+        <div className="card p-3.5 sm:p-5 animate-fade-in-up stagger-3">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Geo Distribution</h2>
             <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
@@ -363,8 +366,8 @@ export default function Dashboard() {
       </div>
 
       {/* Row 3: Leaderboard & Alerts */}
-      <div className="grid gap-5 lg:grid-cols-3">
-        <div className="card lg:col-span-2 animate-fade-in-up stagger-4">
+      <div className="grid gap-4 sm:gap-5 lg:grid-cols-3">
+        <div className="card p-3.5 sm:p-5 lg:col-span-2 animate-fade-in-up stagger-4">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">Top Transmission Nodes</h2>
             <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-[#121212] px-2.5 py-1 text-[11px] font-mono text-amber-200/70 shadow-sm">
@@ -376,26 +379,26 @@ export default function Dashboard() {
             </div>
           </div>
           {data.topLinks.length ? (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto -mx-3.5 sm:mx-0 px-3.5 sm:px-0">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
-                    <th className="pb-3">Short Code</th>
-                    <th className="pb-3">Destination Target</th>
-                    <th className="pb-3 text-right">Hits</th>
+                  <tr className="border-b border-zinc-800 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                    <th className="pb-3 pr-2">Short Code</th>
+                    <th className="pb-3 px-2">Destination Target</th>
+                    <th className="pb-3 pl-2 text-right">Hits</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-800/60 font-mono">
                   {data.topLinks.map((l) => (
                     <tr key={l.id} className="hover:bg-[#121214] transition">
-                      <td className="py-3">
+                      <td className="py-2.5 sm:py-3 pr-2 whitespace-nowrap">
                         <Link to={`/links/${l.id}`} className="font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline">
                           /{l.short_code}
                         </Link>
-                        {l.title && <span className="ml-2 font-sans text-xs text-amber-200/60 font-normal">· {l.title}</span>}
+                        {l.title && <span className="hidden sm:inline ml-2 font-sans text-xs text-amber-200/60 font-normal">· {l.title}</span>}
                       </td>
-                      <td className="max-w-[240px] truncate py-3 text-amber-200/70">{l.destination_url}</td>
-                      <td className="py-3 text-right font-semibold text-[#FFE3B3]">{l.clicks.toLocaleString()}</td>
+                      <td className="max-w-[130px] sm:max-w-[240px] truncate py-2.5 sm:py-3 px-2 text-amber-200/70">{l.destination_url}</td>
+                      <td className="py-2.5 sm:py-3 pl-2 text-right font-semibold text-[#FFE3B3]">{l.clicks.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>

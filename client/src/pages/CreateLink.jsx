@@ -215,11 +215,11 @@ export default function CreateLink() {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       {/* Header and Step Indicator */}
-      <div className="border-b border-zinc-800/80 pb-5">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Create Short Link</h1>
-        <p className="text-xs text-amber-200/60 mt-1">Configure your destination target, custom slug, and routing protocols.</p>
+      <div className="border-b border-zinc-800/80 pb-4 sm:pb-5">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Create Short Link</h1>
+        <p className="text-xs text-amber-200/60 mt-0.5 sm:mt-1">Configure your destination target, custom slug, and routing protocols.</p>
 
-        <div className="mt-4 flex items-center gap-3 text-xs font-medium">
+        <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-medium">
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 ${
             step >= 1
               ? 'border border-[#F88F22]/30 bg-[#F88F22]/10 text-[#FBB931] font-semibold'
@@ -421,15 +421,15 @@ export default function CreateLink() {
           </details>
 
           {/* Configuration Summary Card */}
-          <div className="rounded-xl border border-zinc-800 bg-[#080808] p-4 text-xs space-y-1.5">
+          <div className="rounded-xl border border-zinc-800 bg-[#080808] p-3.5 sm:p-4 text-xs space-y-1.5">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60 block mb-2">Configuration Summary</span>
-            <div className="flex justify-between"><span className="text-amber-200/40">Destination:</span> <span className="font-mono text-[#FFE3B3] truncate max-w-[260px]">{form.destinationUrl}</span></div>
-            <div className="flex justify-between"><span className="text-amber-200/40">Short Code:</span> <span className="font-mono text-[#FBB931]">{form.alias.trim() || 'Auto-generated'}</span></div>
-            {form.campaignId && <div className="flex justify-between"><span className="text-amber-200/40">Campaign:</span> <span className="text-amber-200/80">{campaigns.find((c) => c.id === form.campaignId)?.name}</span></div>}
-            {form.folderId && <div className="flex justify-between"><span className="text-amber-200/40">Folder:</span> <span className="text-amber-200/80">{folders.find((f) => f.id === form.folderId)?.name}</span></div>}
-            {form.expiresAt && <div className="flex justify-between"><span className="text-amber-200/40">Expires:</span> <span className="text-amber-200/80">{form.expiresAt.replace('T', ' ')}</span></div>}
-            {form.maxClicks && <div className="flex justify-between"><span className="text-amber-200/40">Click Cap:</span> <span className="text-amber-200/80">{form.maxClicks} clicks</span></div>}
-            {form.password && <div className="flex justify-between"><span className="text-amber-200/40">Protection:</span> <span className="text-amber-400 font-medium">Password Protected</span></div>}
+            <div className="flex justify-between gap-2"><span className="text-amber-200/40 shrink-0">Destination:</span> <span className="font-mono text-[#FFE3B3] truncate max-w-[170px] sm:max-w-[260px]">{form.destinationUrl}</span></div>
+            <div className="flex justify-between gap-2"><span className="text-amber-200/40 shrink-0">Short Code:</span> <span className="font-mono text-[#FBB931]">{form.alias.trim() || 'Auto-generated'}</span></div>
+            {form.campaignId && <div className="flex justify-between gap-2"><span className="text-amber-200/40 shrink-0">Campaign:</span> <span className="text-amber-200/80 truncate">{campaigns.find((c) => c.id === form.campaignId)?.name}</span></div>}
+            {form.folderId && <div className="flex justify-between gap-2"><span className="text-amber-200/40 shrink-0">Folder:</span> <span className="text-amber-200/80 truncate">{folders.find((f) => f.id === form.folderId)?.name}</span></div>}
+            {form.expiresAt && <div className="flex justify-between gap-2"><span className="text-amber-200/40 shrink-0">Expires:</span> <span className="text-amber-200/80">{form.expiresAt.replace('T', ' ')}</span></div>}
+            {form.maxClicks && <div className="flex justify-between gap-2"><span className="text-amber-200/40 shrink-0">Click Cap:</span> <span className="text-amber-200/80">{form.maxClicks} clicks</span></div>}
+            {form.password && <div className="flex justify-between gap-2"><span className="text-amber-200/40 shrink-0">Protection:</span> <span className="text-amber-400 font-medium">Password Protected</span></div>}
           </div>
 
           {warnings.length > 0 && (

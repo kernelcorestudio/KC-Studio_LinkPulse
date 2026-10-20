@@ -30,7 +30,7 @@ function Overview({ isLight }) {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
         <StatCard label="Registered Users" value={stats.users} />
         <StatCard
           label="Total Links"
@@ -222,27 +222,29 @@ function LinksTab({ isLight }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+        <div className="relative flex-1 min-w-0">
           <input
-            className="input w-full"
+            className="input w-full text-xs"
             placeholder="Search url, slug or owner email…"
             value={search}
             onChange={(e) => { setSearch(e.target.value); setOffset(0); }}
           />
         </div>
-        <select
-          className="input w-auto cursor-pointer"
-          value={status}
-          onChange={(e) => { setStatus(e.target.value); setOffset(0); }}
-        >
-          <option value="">All Statuses</option>
-          {['active', 'disabled', 'expired'].map((s) => (
-            <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2">
+          <select
+            className="input flex-1 sm:w-auto cursor-pointer text-xs"
+            value={status}
+            onChange={(e) => { setStatus(e.target.value); setOffset(0); }}
+          >
+            <option value="">All Statuses</option>
+            {['active', 'disabled', 'expired'].map((s) => (
+              <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
+            ))}
+          </select>
+        </div>
         {data && (
-          <span className={`text-xs font-mono ml-auto ${isLight ? 'text-[#8C5523]' : 'text-zinc-400'}`}>
+          <span className={`text-xs font-mono sm:ml-auto ${isLight ? 'text-[#8C5523]' : 'text-zinc-400'}`}>
             {data.total} total links
           </span>
         )}
@@ -547,22 +549,22 @@ export default function Admin() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className={`text-2xl font-bold tracking-tight flex items-center gap-2.5 ${isLight ? 'text-[#1F0E02]' : 'text-white'}`}>
-          <span className={`rounded-lg p-2 border ${
+        <h1 className={`text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2.5 ${isLight ? 'text-[#1F0E02]' : 'text-white'}`}>
+          <span className={`rounded-lg p-1.5 sm:p-2 border ${
             isLight
               ? 'bg-[#EA6113]/10 text-[#EA6113] border-[#EA6113]/25'
               : 'bg-[#F88F22]/10 text-[#FBB931] border-[#F88F22]/20'
           }`}>
-            <AdminIcon className="h-5 w-5" />
+            <AdminIcon className="h-4 w-4 sm:h-5 sm:w-5" />
           </span>
           <span>Security & Moderation</span>
         </h1>
-        <p className={`mt-1 text-xs ${isLight ? 'text-[#6B3B10]' : 'text-amber-200/60'}`}>
+        <p className={`mt-0.5 sm:mt-1 text-xs ${isLight ? 'text-[#6B3B10]' : 'text-amber-200/60'}`}>
           Platform-wide telemetry, threat monitoring, and global domain enforcement.
         </p>
       </div>
 
-      <div className={`inline-flex rounded-xl border p-1 backdrop-blur gap-1 ${
+      <div className={`flex items-center overflow-x-auto no-scrollbar max-w-full rounded-xl border p-1 backdrop-blur gap-1 ${
         isLight
           ? 'border-[#EA6113]/25 bg-[#FFF6E5]/90 shadow-sm'
           : 'border-zinc-800 bg-[#080808]/80'
@@ -572,7 +574,7 @@ export default function Admin() {
           return (
             <button
               key={id}
-              className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition ${
+              className={`flex items-center gap-2 rounded-lg px-3 sm:px-3.5 py-1.5 text-xs font-medium whitespace-nowrap shrink-0 transition ${
                 active
                   ? (isLight
                       ? 'bg-white text-[#1F0E02] font-semibold shadow-sm border border-[#EA6113]/40'

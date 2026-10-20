@@ -73,7 +73,7 @@ export default function Campaigns() {
   async function loadStats(id, period) {
     setStatsLoading(true);
     try {
-      setStats(await api.campaignAnalytics(id, `?period=${period}`));
+      setStats(await api.campaignAnalytics(id, `?period=${period}&tzOffset=${new Date().getTimezoneOffset()}`));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -91,19 +91,19 @@ export default function Campaigns() {
   return (
     <div className="space-y-6">
       {/* Header and Create Campaign */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-zinc-800/80 pb-4 sm:pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <CampaignIcon className="h-6 w-6 text-[#FBB931]" />
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
+            <CampaignIcon className="h-5 w-5 sm:h-6 sm:w-6 text-[#FBB931]" />
             <span>Campaigns</span>
           </h1>
-          <p className="text-xs text-amber-200/60 mt-1">
+          <p className="text-xs text-amber-200/60 mt-0.5 sm:mt-1">
             Group links into initiatives and track cross-channel marketing performance.
           </p>
         </div>
-        <form className="flex gap-2" onSubmit={create}>
+        <form className="flex w-full sm:w-auto gap-2" onSubmit={create}>
           <input
-            className="input w-auto min-w-[200px] text-xs py-2"
+            className="input flex-1 sm:w-auto sm:min-w-[200px] text-xs py-2"
             placeholder="New campaign title…"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -219,7 +219,7 @@ export default function Campaigns() {
                     <Spinner label="Loading campaign metrics…" />
                   ) : stats && (
                     <>
-                      <LineChart labels={stats.timeseries.map((t) => t.bucket)} data={stats.timeseries.map((t) => t.clicks)} color="#F88F22" />
+                      <LineChart labels={stats.timeseries.map((t) => (t.bucket.length > 10 ? `${t.bucket.slice(11)}:00` : t.bucket.slice(5)))} data={stats.timeseries.map((t) => t.clicks)} color="#F88F22" />
                       {stats.countries?.length > 0 && (
                         <p className="text-[11px] text-amber-200/60 pt-1">
                           Top regions: {stats.countries.slice(0, 3).map((x) => `${x.label} (${x.clicks})`).join(' · ')}

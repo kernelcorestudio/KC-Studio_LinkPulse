@@ -248,11 +248,10 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
             ? 'text-emerald-400 bg-emerald-500/15'
             : 'text-amber-200/50 hover:text-indigo-400 hover:bg-indigo-500/10'
         }`}
-        title={shared ? 'Link copied!' : 'Share short link'}
         aria-label="Share short link"
       >
         <ShareIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="tooltip-bubble">
           {shared ? 'Copied!' : 'Share'}
         </span>
       </button>
@@ -266,11 +265,10 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
             ? 'text-emerald-400 bg-emerald-500/15'
             : 'text-amber-200/50 hover:text-[#FBB931] hover:bg-[#F88F22]/10'
         }`}
-        title={copied ? 'Copied!' : 'Copy short link'}
         aria-label="Copy short link"
       >
         {copied ? <CheckIcon className="h-3.5 w-3.5" /> : <CopyIcon className="h-3.5 w-3.5" />}
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="tooltip-bubble">
           {copied ? 'Copied!' : 'Copy'}
         </span>
       </button>
@@ -281,11 +279,10 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         target="_blank"
         rel="noopener noreferrer"
         className="relative group h-7 w-7 rounded-md flex items-center justify-center text-amber-200/50 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all duration-150"
-        title="Open in new tab"
         aria-label="Open in new tab"
       >
         <ExternalLinkIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="tooltip-bubble">
           Open
         </span>
       </a>
@@ -295,11 +292,10 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         type="button"
         onClick={() => onOpenQr(link)}
         className="relative group h-7 w-7 rounded-md flex items-center justify-center text-amber-200/50 hover:text-violet-400 hover:bg-violet-500/10 transition-all duration-150"
-        title="QR Code"
         aria-label="QR Code"
       >
         <QrIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="tooltip-bubble">
           QR Code
         </span>
       </button>
@@ -314,11 +310,10 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
             ? 'text-emerald-400 hover:text-rose-400 hover:bg-rose-500/10 shadow-[0_0_8px_rgba(52,211,153,0.25)]'
             : 'text-zinc-600 hover:text-emerald-400 hover:bg-emerald-500/10'
         } ${toggling ? 'opacity-50 cursor-wait' : ''}`}
-        title={isActive ? 'Disable link' : 'Enable link'}
         aria-label={isActive ? 'Disable link' : 'Enable link'}
       >
         <PowerIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-amber-200/90 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="tooltip-bubble">
           {isActive ? 'Disable' : 'Enable'}
         </span>
       </button>
@@ -328,11 +323,10 @@ function LinkActions({ link, onToggleStatus, onOpenQr, onRequestDelete }) {
         type="button"
         onClick={() => onRequestDelete(link)}
         className="relative group h-7 w-7 rounded-md flex items-center justify-center text-amber-200/50 hover:text-rose-400 hover:bg-rose-500/10 transition-all duration-150"
-        title="Delete link"
         aria-label="Delete link"
       >
         <TrashIcon className="h-3.5 w-3.5" />
-        <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[#000000] border border-zinc-800 px-2 py-0.5 text-[10px] font-medium text-rose-300 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 z-30">
+        <span className="tooltip-bubble tooltip-bubble-danger">
           Delete
         </span>
       </button>
@@ -460,22 +454,22 @@ export default function Links() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-zinc-800/80 pb-4 sm:pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Links Directory</h1>
-          <p className="text-xs text-amber-200/60 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Links Directory</h1>
+          <p className="text-xs text-amber-200/60 mt-0.5 sm:mt-1">
             {data ? `${data.total} total short links tracked` : 'Manage your short links and routing'}
           </p>
         </div>
-        <Link to="/create" className="btn-primary">
+        <Link to="/create" className="btn-primary w-full sm:w-auto text-xs py-2">
           <CreateIcon className="h-4 w-4" />
           <span>+ Create Link</span>
         </Link>
       </div>
 
       {/* Search & Filters */}
-      <form onSubmit={applyFilters} className="flex flex-wrap items-center gap-2.5">
-        <div className="relative flex-1 min-w-[240px] max-w-md">
+      <form onSubmit={applyFilters} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+        <div className="relative flex-1 min-w-0">
           <input
             className="w-full rounded-lg border border-zinc-800 bg-[#080808] pl-9 pr-3.5 py-2 text-xs text-[#FFE3B3] placeholder-zinc-500 outline-none transition focus:border-[#F88F22]"
             placeholder="Search by code, title, or destination target…"
@@ -489,19 +483,21 @@ export default function Links() {
             </svg>
           </span>
         </div>
-        <select
-          className="rounded-lg border border-zinc-800 bg-[#080808] px-3 py-2 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option value="">All Statuses</option>
-          <option value="active">Active</option>
-          <option value="disabled">Disabled</option>
-          <option value="expired">Expired</option>
-        </select>
-        <button type="submit" className="btn-ghost text-xs py-2">
-          Filter
-        </button>
+        <div className="flex items-center gap-2">
+          <select
+            className="flex-1 sm:flex-initial rounded-lg border border-zinc-800 bg-[#080808] px-3 py-2 text-xs text-amber-200/80 outline-none transition focus:border-[#F88F22]"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="disabled">Disabled</option>
+            <option value="expired">Expired</option>
+          </select>
+          <button type="submit" className="btn-ghost text-xs py-2 px-3.5">
+            Filter
+          </button>
+        </div>
       </form>
 
       {orgChips.length > 0 && (
@@ -532,7 +528,79 @@ export default function Links() {
         />
       ) : (
         <>
-          <div className="overflow-hidden rounded-xl border border-zinc-800/80 bg-[#080808] shadow-sm">
+          {/* Mobile Card List View (Phones) */}
+          <div className="space-y-3 md:hidden">
+            {data.links.map((l) => (
+              <div
+                key={l.id}
+                className="card p-3.5 space-y-3 border border-zinc-800/80 bg-[#080808]"
+              >
+                {/* Header row: Short Code + Clicks Badge */}
+                <div className="flex items-center justify-between gap-2">
+                  <Link
+                    to={`/links/${l.id}`}
+                    className="font-mono text-sm font-bold text-[#FBB931] hover:text-[#FFE3B3] hover:underline truncate"
+                  >
+                    /{l.short_code}
+                  </Link>
+                  <span className="inline-flex items-center rounded-md bg-[#121212] border border-zinc-800 px-2 py-0.5 text-xs font-semibold text-[#FFE3B3] font-mono shrink-0">
+                    {Number(l.click_count).toLocaleString()} clicks
+                  </span>
+                </div>
+
+                {/* Title if present */}
+                {l.title && (
+                  <p className="text-xs font-medium text-amber-200/80 truncate -mt-1">
+                    {l.title}
+                  </p>
+                )}
+
+                {/* Destination URL */}
+                <p className="text-xs text-amber-200/60 truncate font-mono bg-black/40 rounded px-2 py-1 border border-zinc-800/60">
+                  {l.destination_url}
+                </p>
+
+                {/* Status + Badges + Date row */}
+                <div className="flex items-center justify-between gap-2 text-[11px] pt-1 border-t border-zinc-800/60">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${STATUS_STYLES[l.status] || 'border-zinc-800 text-amber-200/70'}`}>
+                      {l.status}
+                    </span>
+                    {l.password_hash && (
+                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">
+                        <LockIcon className="h-2.5 w-2.5" />
+                        <span>Pass</span>
+                      </span>
+                    )}
+                    {l.expires_at && new Date(l.expires_at) < new Date() && l.status === 'active' && (
+                      <span className="inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">
+                        Expired
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-zinc-500 font-sans">
+                    {new Date(l.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+
+                {/* Actions Toolbar on Mobile */}
+                <div className="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
+                  <LinkActions
+                    link={l}
+                    onToggleStatus={handleToggleStatus}
+                    onOpenQr={setQrLink}
+                    onRequestDelete={(item) => {
+                      setDeleteError('');
+                      setDeleteLink(item);
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View (Tablets & Desktops) */}
+          <div className="hidden md:block overflow-hidden rounded-xl border border-zinc-800/80 bg-[#080808] shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>

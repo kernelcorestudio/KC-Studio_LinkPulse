@@ -101,19 +101,19 @@ export function ErrorState({ message, onRetry }) {
 export function StatCard({ label, value, sub, icon, className = '' }) {
   const isPositive = typeof sub === 'string' && sub.startsWith('+');
   return (
-    <div className={`group relative overflow-hidden rounded-xl border border-zinc-800/80 bg-[#080808] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.7)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[0_12px_35px_-10px_rgba(234,97,19,0.3)] ${className}`}>
-      <div className="flex items-center justify-between">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">{label}</p>
+    <div className={`group relative overflow-hidden rounded-xl border border-zinc-800/80 bg-[#080808] p-3.5 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.7)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#F88F22]/40 hover:shadow-[0_12px_35px_-10px_rgba(234,97,19,0.3)] ${className}`}>
+      <div className="flex items-center justify-between gap-1">
+        <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-amber-200/60 truncate">{label}</p>
         {icon && (
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#F88F22]/20 bg-[#F88F22]/10 text-[#FBB931] shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:border-[#F88F22]/40 group-hover:bg-[#F88F22]/20 group-hover:text-amber-200">
+          <div className="flex h-7 w-7 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg border border-[#F88F22]/20 bg-[#F88F22]/10 text-[#FBB931] shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:border-[#F88F22]/40 group-hover:bg-[#F88F22]/20 group-hover:text-amber-200">
             {icon}
           </div>
         )}
       </div>
-      <div className="mt-3 flex items-baseline gap-2.5">
-        <p className="text-2xl lg:text-3xl font-bold tracking-tight text-white">{value ?? '—'}</p>
+      <div className="mt-2 sm:mt-3 flex flex-wrap items-baseline gap-1.5 sm:gap-2.5">
+        <p className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white">{value ?? '—'}</p>
         {sub && (
-          <span className={`inline-flex items-center rounded px-2 py-0.5 text-[11px] font-medium ${
+          <span className={`inline-flex items-center rounded px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-[11px] font-medium truncate ${
             isPositive
               ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm'
               : 'bg-[#121212] text-amber-200/50 border border-zinc-800'
@@ -215,7 +215,7 @@ export function LineChart({ labels, data, label = 'Total Clicks', color = '#F88F
   const effectiveColor = isLight ? '#B83800' : color; // Bold, punchy dark burnt orange in light theme
 
   return (
-    <div className="h-64">
+    <div className="h-56 sm:h-64">
       <Line
         options={lineOpts(effectiveColor, isLight)}
         data={{

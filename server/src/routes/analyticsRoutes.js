@@ -7,26 +7,51 @@ import { getAnalytics, getDashboardSummary, getAlerts } from '../services/analyt
 export const analyticsRoutes = Router();
 analyticsRoutes.use(requireAuth);
 
-// Resolve a period preset (today/7d/30d) or explicit custom from/to.
+// Resolve a period preset (today/7d/30d) or explicit custom from/to, respecting client timezone offset.
 function resolvePeriod(query) {
   const preset = String(query.period || '30d');
+  const offset = Number(query.tzOffset) || 0; // minutes offset from UTC (e.g. -330 for IST)
   const now = new Date();
+
   if (query.from || query.to) {
+    const f = query.from ? new Date(query.from) : new Date(0);
+    const t = query.to ? new Date(query.to) : now;
+    const diffDays = Math.max(1, Math.round((t - f) / 864e5));
     return {
-      from: query.from || new Date(0).toISOString(),
-      to: query.to || now.toISOString(),
-      bucket: preset === 'today' ? 'hour' : 'day',
+      from: f.toISOString(),
+      to: t.toISOString(),
+      bucket: preset === 'today' || diffDays <= 2 ? 'hour' : 'day',
+      tzOffset: offset,
     };
   }
-  const map = { today: 0, '7d': 7, '30d': 30, '90d': 90 };
+
+  // Calculate user local time
+  const localNowMs = now.getTime() - offset * 60000;
+  const localNow = new Date(localNowMs);
+
   if (preset === 'today') {
-    const d = new Date(now); d.setUTCHours(0, 0, 0, 0);
-    return { from: d.toISOString(), to: now.toISOString(), bucket: 'hour' };
+    // Start of today in user's local timezone (local midnight)
+    const localMidnightMs = Date.UTC(localNow.getUTCFullYear(), localNow.getUTCMonth(), localNow.getUTCDate(), 0, 0, 0);
+    const fromUtc = new Date(localMidnightMs + offset * 60000);
+    return {
+      from: fromUtc.toISOString(),
+      to: now.toISOString(),
+      bucket: 'hour',
+      tzOffset: offset,
+    };
   }
+
+  const map = { '7d': 7, '30d': 30, '90d': 90 };
   const days = map[preset] ?? 30;
-  const from = new Date(now.getTime() - days * 864e5);
-  from.setUTCHours(0, 0, 0, 0);
-  return { from: from.toISOString(), to: now.toISOString(), bucket: days <= 2 ? 'hour' : 'day' };
+  // Start of the N-day window in user's local timezone
+  const localStartMs = Date.UTC(localNow.getUTCFullYear(), localNow.getUTCMonth(), localNow.getUTCDate() - (days - 1), 0, 0, 0);
+  const fromUtc = new Date(localStartMs + offset * 60000);
+  return {
+    from: fromUtc.toISOString(),
+    to: now.toISOString(),
+    bucket: days <= 2 ? 'hour' : 'day',
+    tzOffset: offset,
+  };
 }
 
 // GET /api/analytics/dashboard
@@ -34,7 +59,13 @@ analyticsRoutes.get(
   '/dashboard',
   asyncHandler(async (req, res) => {
     const p = resolvePeriod(req.query);
-    const summary = await getDashboardSummary(req.user.id, { from: p.from, to: p.to, campaignId: req.query.campaignId });
+    const summary = await getDashboardSummary(req.user.id, {
+      from: p.from,
+      to: p.to,
+      campaignId: req.query.campaignId,
+      bucket: p.bucket,
+      tzOffset: p.tzOffset,
+    });
     res.json(summary);
   }),
 );
@@ -44,7 +75,13 @@ analyticsRoutes.get(
   '/link/:id',
   asyncHandler(async (req, res) => {
     const p = resolvePeriod(req.query);
-    const data = await getAnalytics(req.user.id, { from: p.from, to: p.to, linkId: req.params.id, bucket: p.bucket });
+    const data = await getAnalytics(req.user.id, {
+      from: p.from,
+      to: p.to,
+      linkId: req.params.id,
+      bucket: p.bucket,
+      tzOffset: p.tzOffset,
+    });
     res.json({ period: p, ...data });
   }),
 );
@@ -54,7 +91,13 @@ analyticsRoutes.get(
   '/campaign/:id',
   asyncHandler(async (req, res) => {
     const p = resolvePeriod(req.query);
-    const data = await getAnalytics(req.user.id, { from: p.from, to: p.to, campaignId: req.params.id, bucket: p.bucket });
+    const data = await getAnalytics(req.user.id, {
+      from: p.from,
+      to: p.to,
+      campaignId: req.params.id,
+      bucket: p.bucket,
+      tzOffset: p.tzOffset,
+    });
     res.json({ period: p, ...data });
   }),
 );

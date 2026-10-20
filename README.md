@@ -14,6 +14,8 @@
   <a href="#tech-stack"><img src="https://img.shields.io/badge/React%2018-Vite%206-61dafb?style=for-the-badge&logo=react&logoColor=black" alt="React 18" /></a>
   <a href="#tech-stack"><img src="https://img.shields.io/badge/PostgreSQL-Supabase-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" /></a>
   <a href="#tech-stack"><img src="https://img.shields.io/badge/Tailwind-3.4%20SaaS-06b6d4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="#mobile-first-responsive-portal--native-app-bottom-dock"><img src="https://img.shields.io/badge/Mobile-Native%20Dock-10b981?style=for-the-badge&logo=android&logoColor=white" alt="Mobile Native Dock" /></a>
+  <a href="#dual-theme-architecture-pure-black-000000--warm-sunset-cream-ffe3b3"><img src="https://img.shields.io/badge/Theme-Dark%20%26%20%23FFE3B3%20Light-EA6113?style=for-the-badge" alt="Dual Theme" /></a>
   <a href="#testing"><img src="https://img.shields.io/badge/Tests-73%2F73%20Passing-emerald?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Test Suite" /></a>
   <a href="#security--privacy"><img src="https://img.shields.io/badge/Security-SHA--256%20+%20bcrypt-F88F22?style=for-the-badge&logo=auth0&logoColor=white" alt="Security" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-EA6113?style=for-the-badge" alt="License MIT" /></a>
@@ -21,8 +23,8 @@
 
 <p align="center">
   <a href="https://kcstudio-linkpluse.vercel.app"><strong>🌐 Launch Live Production App</strong></a> ·
+  <a href="#instant-demo-sandbox-credentials"><strong>🔑 Demo Credentials</strong></a> ·
   <a href="#platform-preview--visual-tour"><strong>🖼️ Screenshots</strong></a> ·
-  <a href="#interactive-demo-access--test-credentials"><strong>🔑 Demo Access</strong></a> ·
   <a href="#system-architecture"><strong>🏛️ Architecture</strong></a> ·
   <a href="#data-flow-diagrams-dfd"><strong>🔄 Data Flow (DFD)</strong></a> ·
   <a href="#redirect-engine-flowchart"><strong>⚡ Redirect Engine</strong></a> ·
@@ -30,6 +32,24 @@
   <a href="#api-reference"><strong>📡 API Reference</strong></a> ·
   <a href="#local-development--quickstart"><strong>💻 Quickstart</strong></a>
 </p>
+
+---
+
+<div align="center">
+
+<a id="instant-demo-sandbox-credentials"></a>
+### ⚡ INSTANT DEMO SANDBOX CREDENTIALS (NO SIGNUP REQUIRED)
+**Test the live application immediately with pre-configured accounts**
+
+| Account Role | Demo Email / Username | Password | Access Privileges | Instant 1-Click Launch |
+| :--- | :--- | :--- | :--- | :---: |
+| 👑 **System Administrator** | `admin@linkpulse.dev` | `admin1234` | Full platform telemetry, global blocklist & killswitches | [**🔑 Open Admin Console**](https://kcstudio-linkpluse.vercel.app/login) |
+| 👤 **Standard User (Creator)** | `ada@example.com` | `password123` | Short links, device smart routing, bio builder & QR codes | [**⚡ Open Creator Studio**](https://kcstudio-linkpluse.vercel.app/login) |
+| 🔬 **Secondary User (Analyst)** | `grace@example.com` | `password123` | Workspace isolation, campaign tracking & bulk CSV import | [**📊 Open Sandbox**](https://kcstudio-linkpluse.vercel.app/login) |
+
+*💡 **Tip**: On the [`/login`](https://kcstudio-linkpluse.vercel.app/login) page, click the **"Admin Demo"** or **"User Demo"** button to auto-fill credentials with 1 tap!*
+
+</div>
 
 ---
 
@@ -44,11 +64,11 @@
 | :--- | :--- |
 | `01` &nbsp; [**Executive Overview**](#executive-overview) &nbsp; ![Overview](https://img.shields.io/badge/OVERVIEW-f97316?style=flat-square) <br> Sub-millisecond edge redirect engine, LRU caching & async micro-batch logging | `06` &nbsp; [**Core Workflow Flowcharts**](#core-workflow-flowcharts) ➔ &nbsp; ⚙️ <br> • [1. 8-Step Redirect Decision Pipeline](#1-8-step-redirect-decision-pipeline) ➔ <br> • [2. Google OAuth 2.0 & GIS Pipeline](#2-google-oauth-20--gis-pipeline) ➔ <br> • [3. Asynchronous Click Batch Queue](#3-asynchronous-click-batch-queue) ➔ |
 | `02` &nbsp; [**Platform Preview & Visual Tour**](#platform-preview--visual-tour) ➔ &nbsp; 🖼️ <br> Full UI showcase: Glassmorphic landing page & real-time telemetry dashboard | `07` &nbsp; [**Database Architecture & ER Diagram**](#database-architecture--er-diagram) ➔ &nbsp; 🔗 <br> Dual-adapter schema (PostgreSQL / SQLite) with foreign-key cascades & indexes |
-| `03` &nbsp; [**Interactive Demo Access & Credentials**](#interactive-demo-access--test-credentials) ➔ &nbsp; 🔑 <br> Pre-configured Admin & User test accounts with 1-click autofill & role matrix | `08` &nbsp; [**Telemetry & Analytics Visualization Engine**](#telemetry--analytics-visualization-engine) ➔ &nbsp; 📈 <br> Real-time cubic spline wave charts (`#FFE3B3`), timelines & geo metrics |
-| `04` &nbsp; [**Key Features & Capabilities**](#key-features--capabilities) ➔ &nbsp; ✔️ <br> Device routing (iOS/Android), bcrypt protection, click limits & QR synthesis | `09` &nbsp; [**Security, Privacy & Edge Performance**](#security-privacy--edge-performance) ➔ &nbsp; 🛡️ <br> Bcrypt password hashing, signed HTTP cookies, CAS limits & domain blocklist |
-| `05` &nbsp; [**Tech Stack & Architecture Matrix**](#tech-stack--architecture-matrix) &nbsp; ![JS](https://img.shields.io/badge/JS-ES6-yellow?style=flat-square) ![React](https://img.shields.io/badge/React-18-blue?style=flat-square) <br> Node.js 24 LTS, React 18, Vite 6, Supabase PostgreSQL, Tailwind CSS | `10` &nbsp; [**API Reference**](#api-reference) ➔ &nbsp; ![API](https://img.shields.io/badge/API-REST-f43f5e?style=flat-square) <br> Standardized RESTful endpoints for Auth, Links, Analytics & Bios |
-| `06` &nbsp; [**System Architecture & Data Flow**](#system-architecture) ➔ &nbsp; 🌐 <br> Multi-tier decoupled edge redirect gateway, DFD Level 0 & Level 1 models | `11` &nbsp; [**Local Development & Quickstart**](#local-development--quickstart) ➔ &nbsp; 🚀 <br> • [Local Setup & Seed Accounts](#local-development--quickstart) <br> • [Production Deployment (Vercel + Supabase)](#production-deployment-vercel--supabase) |
-| | `12` &nbsp; [**Testing & Quality Assurance**](#testing--quality-assurance) ➔ &nbsp; 🧪 <br> 73/73 Passing tests (unit, integration & edge-case test suites) |
+| `03` &nbsp; [**Key Features & Capabilities**](#key-features--capabilities) ➔ &nbsp; ✔️ <br> Device routing (iOS/Android), bcrypt protection, click limits & QR synthesis | `08` &nbsp; [**Telemetry & Analytics Visualization Engine**](#telemetry--analytics-visualization-engine) ➔ &nbsp; 📈 <br> Real-time cubic spline wave charts (`#FFE3B3`), 3D donuts & continuous hourly timelines |
+| `04` &nbsp; [**Tech Stack & Architecture Matrix**](#tech-stack--architecture-matrix) &nbsp; ![JS](https://img.shields.io/badge/JS-ES6-yellow?style=flat-square) ![React](https://img.shields.io/badge/React-18-blue?style=flat-square) <br> Node.js 24 LTS, React 18, Vite 6, Supabase PostgreSQL, Tailwind CSS | `09` &nbsp; [**Security, Privacy & Edge Performance**](#security-privacy--edge-performance) ➔ &nbsp; 🛡️ <br> Bcrypt password hashing, signed HTTP cookies, CAS limits & domain blocklist |
+| `05` &nbsp; [**System Architecture & Data Flow**](#system-architecture) ➔ &nbsp; 🌐 <br> Multi-tier decoupled edge redirect gateway, DFD Level 0 & Level 1 models | `10` &nbsp; [**API Reference**](#api-reference) ➔ &nbsp; ![API](https://img.shields.io/badge/API-REST-f43f5e?style=flat-square) <br> Standardized RESTful endpoints for Auth, Links, Analytics & Bios |
+| | `11` &nbsp; [**Local Development & Quickstart**](#local-development--quickstart) ➔ &nbsp; 🚀 <br> • [Local Setup & Seed Accounts](#local-development--quickstart) <br> • [12. Production Deployment (Vercel + Supabase)](#production-deployment-vercel--supabase) |
+| | `13` &nbsp; [**Testing & Quality Assurance**](#testing--quality-assurance) ➔ &nbsp; 🧪 <br> 73/73 Passing tests (unit, integration & edge-case test suites) |
 
 <div align="center">
   <sub>POWERED BY KC STUDIO • COPYRIGHT © 2026</sub>
@@ -82,7 +102,7 @@ Unlike traditional URL shorteners that block visitor redirects while synchronous
     <a href="https://kcstudio-linkpluse.vercel.app">
       <img src="https://img.shields.io/badge/Live%20Demo-Explore%20LinkPulse-EA6113?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Live Demo" />
     </a>
-    <a href="#interactive-demo-access--test-credentials">
+    <a href="#instant-demo-sandbox-credentials">
       <img src="https://img.shields.io/badge/Instant%20Access-Demo%20Credentials-F88F22?style=for-the-badge&logo=1password&logoColor=white" alt="Demo Credentials" />
     </a>
   </p>
@@ -121,47 +141,78 @@ The LinkPulse operations dashboard equips creators and enterprise teams with sub
 
 ---
 
-## 🔑 Interactive Demo Access & Test Credentials
-
-LinkPulse provides pre-configured sandbox accounts for evaluating both **creator workflows** and **system-wide administrative controls**. You can test the platform live on the production deployment or in your local development environment without registering a new email.
-
-<div align="center">
-
-| Account Type | Identity / Email | Password | Access Level | Primary Evaluation Features |
-| :--- | :--- | :--- | :---: | :--- |
-| <img src="https://img.shields.io/badge/ROLE-ADMIN-red?style=flat-square&logo=shield" alt="Admin" /> <br> **System Administrator** | `admin@linkpulse.dev` | `admin1234` | **Superuser** <br> (Full Platform) | • System-wide telemetry & click stream <br> • Global malicious domain blocklist <br> • Moderate & disable links (with 410 reason) <br> • User directory & audit inspection |
-| <img src="https://img.shields.io/badge/ROLE-CREATOR-amber?style=flat-square&logo=user" alt="User" /> <br> **Standard User** | `ada@example.com` | `password123` | **Member** <br> (Workspace Level) | • Create short links & custom aliases <br> • Smart device rules (iOS / Android / Desktop) <br> • Password gating (bcrypt) & click quotas <br> • Link-in-Bio multi-theme builder <br> • Real-time QR code generation (PNG/SVG) |
-| <img src="https://img.shields.io/badge/ROLE-ANALYST-blue?style=flat-square&logo=databricks" alt="Secondary User" /> <br> **Secondary User** | `grace@example.com` | `password123` | **Member** <br> (Independent) | • Multi-tenant workspace isolation testing <br> • Independent campaign tracking & tagging <br> • CSV bulk link import testing |
-
-</div>
-
-> [!TIP]
-> ### ⚡ 1-Click Instant Autofill
-> On the **Login / Register Page** (`/login`), click either the **`User Demo`** or **`Admin Demo`** quick-fill button below the social login options to instantly populate the credentials and test the platform with zero typing.
+### 3. 📱 Mobile-First Responsive Portal & Native App Bottom Dock
+LinkPulse provides a smartphone-optimized portal experience engineered for fast on-the-go link management and analytics.
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                       DEMO ACCOUNT PERMISSIONS MATRIX                       │
-├──────────────────────────────────────┬──────────────────┬───────────────────┤
-│ FEATURE CAPABILITY                   │ USER (ADA)       │ ADMIN (SUPERUSER) │
-├──────────────────────────────────────┼──────────────────┼───────────────────┤
-│ Short Link Creation & Custom Alias   │ ✅ Yes           │ ✅ Yes            │
-│ Real-Time Click Telemetry & Graphs   │ ✅ Own Links     │ ✅ Platform-Wide  │
-│ Device Smart Routing (iOS / Android) │ ✅ Yes           │ ✅ Yes            │
-│ Password Protection (Bcrypt Gating)  │ ✅ Yes           │ ✅ Yes            │
-│ Atomic Max Clicks & Link Expiry      │ ✅ Yes           │ ✅ Yes            │
-│ Dynamic Link-in-Bio Page Builder     │ ✅ Yes           │ ✅ Yes            │
-│ High-Res QR Code Export (PNG / SVG)  │ ✅ Yes           │ ✅ Yes            │
-│ CSV Bulk Link Import & Validation    │ ✅ Yes           │ ✅ Yes            │
-│ Emergency Link Killswitch & 410 Gone │ ❌ Own Only      │ ✅ ANY User Link  │
-│ Phishing / Domain Blocklist Engine   │ ❌ Restricted    │ ✅ Full Access    │
-│ Platform User Directory & Moderation │ ❌ Restricted    │ ✅ Full Access    │
-│ System Health & Bot Traffic Audits   │ ❌ Restricted    │ ✅ Full Access    │
-└──────────────────────────────────────┴──────────────────┴───────────────────┘
+┌────────────────────────────────────────────────────────┐
+│ [≡ LinkPulse]                            [U] [☼] [≡]  │  ◄ Top Header
+├────────────────────────────────────────────────────────┤
+│ System Dashboard                                       │
+│ ┌──────────────────────┐    ┌──────────────────────┐   │
+│ │ TOTAL CLICKS         │    │ UNIQUE VISITORS      │   │  ◄ 2x2 Responsive Metric Grid
+│ │ 3,924    +12.4%      │    │ 1,842     +8.2%      │   │
+│ └──────────────────────┘    └──────────────────────┘   │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │  LIVE CUBIC SPLINE TELEMETRY (Fluid Scaling)       │ │  ◄ Zero-Filled Hourly Wave
+│ └────────────────────────────────────────────────────┘ │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │  3D ISOMETRIC GEO DISTRIBUTION (Touch Slices)      │ │  ◄ Pure SVG Extruded Cylinder
+│ └────────────────────────────────────────────────────┘ │
+│                                                        │
+├────────────────────────────────────────────────────────┤
+│  [Dashboard]   [Links]    ( + )   [Campaigns]   [More] │  ◄ Native App Bottom Dock
+└───────────────────────────┴───┴────────────────────────┘
 ```
 
-> [!NOTE]
-> **Sandbox Safety**: All test credentials run in isolated, safe environments. The database includes automated sanitization and rate limits to prevent abuse while allowing full inspection of all features.
+#### Desktop Data Table vs. Mobile Adaptive Cards (`/links`)
+```
+[ DESKTOP VIEWPORT (md: >= 768px) ]
+┌──────────────┬─────────────────────────────┬──────────┬────────┬─────────────────────────────┐
+│ SHORT CODE   │ ORIGINAL TARGET URL         │ CLICKS   │ STATUS │ ACTIONS                     │
+├──────────────┼─────────────────────────────┼──────────┼────────┼─────────────────────────────┤
+│ lp.dev/xyz   │ https://example.com/product │ 1,420    │ Active │ [🔗] [📋] [↗] [QR] [⚡] [🗑️] │
+└──────────────┴─────────────────────────────┴──────────┴────────┴─────────────────────────────┘
+
+[ MOBILE PHONE VIEWPORT (< 768px) ]
+┌────────────────────────────────────────────────────────┐
+│ ⚡ lp.dev/xyz                      [ ACTIVE BADGE ]   │
+│ 🎯 https://example.com/product...                      │
+│ 📅 Oct 20, 2026  ·  📊 1,420 Clicks                    │
+├────────────────────────────────────────────────────────┤
+│ [Share]  [Copy]  [Open ↗]  [QR Code]  [Power]  [Trash] │ ◄ Full Touch Strip
+└────────────────────────────────────────────────────────┘
+```
+
+*Key Mobile Highlights:*
+- **Fixed Bottom Navigation Dock**: Native mobile dock anchored at the bottom with quick tabs for `Dashboard`, `Links`, an elevated center glowing `+ Create` button, `Campaigns`, and `More`.
+- **Slide-Up "More" Navigation Hub Drawer**: Quick tap on "More" or the top hamburger menu slides up a frosted-glass navigation drawer (`backdrop-blur-xl`) containing secondary routes (`Tags & Folders`, `Bulk Import`, `Link-in-Bio`, `Admin Console`), user session info, and direct logout action.
+- **Adaptive 2×2 Metric Grid**: StatCards transform from 4-columns on desktop into a clean, compact 2-column grid on mobile phones (`p-3.5 sm:p-5`) so metrics never wrap or clip.
+- **Native Card View for Links (`/links`)**: On mobile viewports, the multi-column data table automatically converts into high-velocity mobile cards showing the short code, destination target, status badge, click counter, and touch-friendly action buttons (`Share`, `Copy`, `QR`, `Power`, `Delete`).
+
+---
+
+### 4. 🎨 Dual Theme Architecture: Pure Black `#000000` & Warm Sunset Cream `#FFE3B3`
+LinkPulse features a curated dual-theme system that maintains retro-cyberpunk aesthetics in Dark Mode while providing a warm, high-contrast peach/cream canvas in Light Mode without color washouts.
+
+```
+┌──────────────────────────────────────┬──────────────────────────────────────┐
+│  DARK MODE (PURE OLED #000000)       │  LIGHT MODE (WARM SUNSET #FFE3B3)    │
+├──────────────────────────────────────┼──────────────────────────────────────┤
+│ Background : #000000 (Pure Black)    │ Background : #FFE3B3 (Warm Cream)    │
+│ Card Fill  : #0A0A0A (Charcoal Tint) │ Card Fill  : #FFF0D6 (Soft Parchment)│
+│ Primary Text: #FFE3B3 (Warm Gold)    │ Primary Text: #1F0E02 (Deep Espresso)│
+│ Accents    : #EA6113 & #F88F22 Neon │ Accents    : #B84700 & #8A3400 Rust  │
+│ Tooltips   : #0C0D0E on Gold Border  │ Tooltips   : #1F0E02 Deep Espresso   │
+│ Contrast   : > 14:1 AAA Accessible   │ Contrast   : > 12:1 AAA Accessible   │
+└──────────────────────────────────────┴──────────────────────────────────────┘
+```
+
+*Key Design Highlights:*
+- **Dark Mode (Pure Black `#000000`)**: Deep OLED-black canvas with vibrant neon amber (`#EA6113`, `#F88F22`, `#FBB931`), ambient top spotlights, and glassmorphic glowing docks.
+- **Light Mode (Warm Sunset `#FFE3B3`)**: Warm cream background with rich espresso typography (`#1F0E02`) and amber borders (`rgba(234, 97, 19, 0.25)`).
+- **High-Contrast Tooltip Bubble (`.tooltip-bubble`)**: Dedicated dark espresso tooltips (`#1F0E02`) with warm cream text (`#FFE3B3`), downward pointing carets, and 12:1 contrast ratio ensuring instant readability in both light and dark themes. Eliminates browser default tooltip clashes.
+- **Accessible State Badges**: Custom color overrides for emerald (`#047857`), rose (`#be123c`), and violet (`#6d28d9`) icons for effortless visibility on light surfaces.
 
 ---
 
@@ -171,6 +222,10 @@ LinkPulse provides pre-configured sandbox accounts for evaluating both **creator
 |:---|:---|:---|
 | **⚡ Sub-Millisecond Redirect Engine** | Evaluates rules in a strict 8-step pipeline without DB contention. | In-memory LRU cache + HTTP 302 `no-store` headers. |
 | **📈 Live Telemetry & Spline Wave Graph** | Real-time traffic visualization with smooth cubic spline wave interpolation. | Chart.js with monotone interpolation, `#FFE3B3` theme & hover triggers. |
+| **📱 Mobile-First Native Experience** | Fixed bottom dock, slide-up navigation hub drawer, and mobile card views. | Fixed bottom bar + CSS backdrop-blur + responsive `md:hidden` card layouts. |
+| **🎨 Dual Theme System (Pure Black & Warm Sunset)** | Seamless toggle between OLED pure black (`#000000`) and warm cream (`#FFE3B3`). | Dedicated `.tooltip-bubble` with downward carets, custom color overrides, and theme persistence. |
+| **📊 3D Isometric Extruded Donut Telemetry** | Multi-segment 3D isometric global traffic visualization with exploded slice physics. | Pure SVG cylinder rendering + specular cylindrical lighting + Painter's algorithm z-sorting. |
+| **⏱️ Continuous Hourly Timeseries Telemetry** | Real-time zero-filled continuous hourly click streams for `today` and historical periods. | Dynamic timezone offset bucket calculation (`tzOffset`) + zero-fill SQL aggregation service. |
 | **🛡️ 8-Step Enforcement Pipeline** | Granular link control before redirection. | Cache ➔ Status ➔ Blocklist ➔ Expiry ➔ Click Limit ➔ Password ➔ Device Rules ➔ 302 Found. |
 | **📱 Device-Class Smart Routing** | Routes traffic dynamically to different targets based on OS. | `ua-parser-js` device classification (iOS vs. Android vs. Desktop). |
 | **🔐 Password Protection** | Gated destination with bcrypt hash & signed 12-hour session cookies. | `bcryptjs` verification + JWT `lp_pw` signed HTTP-only cookies. |
@@ -649,14 +704,58 @@ The LinkPulse dashboard renders real-time telemetry through a custom **monotone 
   120 │                        ╭─────╯                     ╰──╮
    80 │           ╭──╮   ╭─────╯                              ╰──╮
    40 │    ╭──────╯  ╰───╯                                       ╰────────
-    0 └───┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴────────► Date
-        Oct 01  Oct 04  Oct 07  Oct 10  Oct 13  Oct 16  Oct 19  Oct 20
+    0 └───┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴────────► Hour / Date
+        00:00   03:00   06:00   09:00   12:00   15:00   18:00   21:00
 ```
 
-### Visual Specifications
-- **Spline Wave Interpolation**: Powered by `cubicInterpolationMode: 'monotone'` with `tension: 0.45` to render organic curves that prevent unnatural overshoot spikes.
-- **Micro-Interaction Markers**: Default state hides dense point markers (`pointRadius: 0`) for an uninterrupted line. Hovering over any timestamp reveals a crisp circular node (`pointHoverRadius: 5.5`) with a white border.
+### Visual Specifications & Algorithms
+
+#### 1. Continuous Zero-Filled Hourly Timeseries (`tzOffset` Synchronization)
+When analyzing high-velocity daily campaigns (`period=today`), traditional aggregations drop inactive hours, resulting in misleading spikes or disjointed time gaps. LinkPulse synchronizes the client browser's local timezone offset with the server:
+
+```
+Browser Client                                                    Backend Server
+  │                                                                     │
+  ├─► GET /api/analytics/dashboard?period=today&tzOffset=-330 ─────────►│
+  │   (tzOffset = -new Date().getTimezoneOffset())                      │
+  │                                                                     ├─► Compute client local midnight
+  │                                                                     │   t_start = local_midnight - tzOffset
+  │                                                                     ├─► Bucket SQL clicks into hourly bins
+  │                                                                     │   (00:00, 01:00, ... up to current_hour)
+  │                                                                     ├─► Zero-fill missing hours with count: 0
+  │◄──────────────── JSON Array of Continuous Buckets ──────────────────┤
+```
+
+*Technical Implementation:*
+- **Monotone Cubic Spline Interpolation**: Configured with `cubicInterpolationMode: 'monotone'` and `tension: 0.45` to render organic curves that prevent unnatural overshoot spikes or negative valleys.
+- **Dynamic Micro-Interaction Markers**: Default state hides dense point markers (`pointRadius: 0`) for an uninterrupted line. Hovering over any timestamp reveals a crisp circular node (`pointHoverRadius: 5.5`) with an illuminated white border.
 - **Dual-State Zero Fallback**: Telemetry cards dynamically toggle between the live stream and an animated empty state when no traffic is detected.
+
+---
+
+#### 2. Pure SVG 3D Isometric Extruded Donut Telemetry
+Global geographic traffic is rendered in real-time using a custom pure-SVG 3D isometric cylinder engine (`PieChart3D.jsx`) without heavy WebGL/Three.js dependencies:
+
+```
+         ╭─────────────────────────────────────╮  ◄ Top Elliptical Rim (Outer Rx=105, Ry=54)
+      ╭──┴─────────────────────────────────────┴──╮
+   ╭──┤       ╭────────────────────────╮       ├──╮
+   │  │    ╭──┴────────────────────────┴──╮    │  │ ◄ Inner Elliptical Hole (rx=46, ry=24)
+   │  │    │                              │    │  │
+   │  ╰────┤   [ SPECULAR CYLINDER ]      ├────╯  │
+   │       ╰──────────────────────────────╯       │
+   ╰──────────────────────────────────────────────╯ ◄ Bottom Rim Skirt (Extrusion H=26)
+```
+
+*Geometric Foundations:*
+- **Parametric Elliptical Projection**: 
+  $$\begin{aligned}
+  x_{top}(\theta) &= c_x + R_x \cos\theta, \quad y_{top}(\theta) = c_y + R_y \sin\theta \\
+  x_{bottom}(\theta) &= x_{top}(\theta), \quad y_{bottom}(\theta) = y_{top}(\theta) + H
+  \end{aligned}$$
+- **Painter's Algorithm Depth Z-Sorting**: To ensure proper 3D occlusion without visual artifacts, slices are sorted by their midpoint angle $\theta_{mid} = (\theta_{start} + \theta_{end}) / 2$. Back-facing slices ($\pi \le \theta_{mid} < 2\pi$) are rendered first, while front-facing slices ($0 \le \theta_{mid} < \pi$) are drawn on top.
+- **Specular Cylindrical Lighting**: Lateral face skirts calculate the surface normal relative to a virtual light source at $(-0.5, -0.8)$, dynamically tinting the slice color with ambient shadows and specular highlights.
+- **Exploded Slice Physics**: Hovering over or tapping any geographic slice radially translates its vectors by $10\text{px}$ along its angular bisector $\mathbf{v} = (\cos\theta_{mid}, \sin\theta_{mid})$, while updating the dedicated telemetry inspection card positioned underneath without occluding the donut.
 
 ---
 
@@ -791,23 +890,56 @@ LinkPulse is built for zero-configuration, single-project full-stack deployment 
 ```
 
 ### 1. Vercel Project Settings
+In your Vercel Project Settings (`General` tab):
 - **Framework Preset**: `Other`
-- **Root Directory**: `./`
+- **Root Directory**: `./` (leave as repository root)
 - **Build Command**: `npm --prefix client install && npm --prefix client run build`
 - **Output Directory**: `client/dist`
+- **Install Command**: `npm install`
+
+---
 
 ### 2. Production Environment Variables (Vercel Dashboard)
-| Variable Key | Recommended Production Value |
-|:---|:---|
-| `DATABASE_URL` | `postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:5432/postgres?sslmode=require` |
-| `JWT_SECRET` | A secure 32+ character random string |
-| `IP_HASH_SALT` | A secure random salt string |
-| `COOKIE_SECURE` | `true` |
-| `VITE_GOOGLE_CLIENT_ID` | Your Google OAuth 2.0 Web Client ID |
-| `BASE_URL` | `https://<your-vercel-domain>.vercel.app` |
-| `CLIENT_ORIGIN` | `https://<your-vercel-domain>.vercel.app` |
+Configure these variables under **Project Settings ➔ Environment Variables** in the Vercel dashboard:
 
-> ⚠️ **Important Supabase Note**: Use the **IPv4 Connection Pooler** host (`aws-0-[region].pooler.supabase.com`) on port `5432` or `6543`. Direct connection hostnames (`db.xxxx.supabase.co`) are IPv6-only and will fail with `getaddrinfo ENOTFOUND` on serverless platforms.
+| Variable Key | Required | Example Production Value | Purpose & Clear Instructions |
+|:---|:---:|:---|:---|
+| `DATABASE_URL` | **Yes** | `postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:5432/postgres?sslmode=require` | **Supabase IPv4 Pooler URI**: Obtained from Supabase ➔ Project Settings ➔ Database ➔ Connection String (Transaction Pooler). Must be port `5432` or `6543`. |
+| `BASE_URL` | **Yes** | `https://kcstudio-linkpluse.vercel.app` | **Public Short-Link Domain**: Your live Vercel URL (e.g. `https://your-domain.vercel.app`) without trailing slash. Used for short URLs and redirect loop guards. |
+| `CLIENT_ORIGIN` | **Yes** | `https://kcstudio-linkpluse.vercel.app` | **CORS Allowed Origin**: Same as `BASE_URL` for full-stack deployments. Controls browser CORS authorization headers. |
+| `JWT_SECRET` | **Yes** | `b8e7c1...` (32+ random characters) | **Cryptographic Key**: Signs auth session tokens and password gate cookies. |
+| `IP_HASH_SALT` | **Yes** | `9f4a21...` (32+ random characters) | **Salt String**: Hashes visitor IPs via HMAC-SHA256 for GDPR-compliant telemetry. |
+| `COOKIE_SECURE` | **Yes** | `true` | **HTTPS Flag**: Forces `Secure; SameSite=Lax` on all cookies in production. |
+| `VITE_GOOGLE_CLIENT_ID` | Optional | `123456...apps.googleusercontent.com` | **Google Identity Services**: OAuth 2.0 Web Client ID for 1-click Google Sign-In. |
+
+> [!IMPORTANT]
+> ### 🔍 `BASE_URL` vs. `CLIENT_ORIGIN` Explained
+> - **What should I put in `BASE_URL`?**
+>   Put your exact Vercel production domain: `https://kcstudio-linkpluse.vercel.app` (or your custom apex domain `https://linkpulse.dev`). **Do NOT include a trailing slash `/`**.
+> - **What should I put in `CLIENT_ORIGIN`?**
+>   Because LinkPulse is deployed as a unified full-stack application on Vercel, the frontend and API share the exact same origin. Simply enter the same domain: `https://kcstudio-linkpluse.vercel.app`.
+> - **Why does direct Supabase hostname fail on Vercel?**
+>   Direct Supabase hostnames (`db.xxxx.supabase.co`) are IPv6-only. Vercel Serverless Functions currently connect via IPv4. Always use the **Supabase Connection Pooler** host: `aws-0-[region].pooler.supabase.com` on port `5432` or `6543`.
+
+---
+
+### 3. Google OAuth 2.0 Console Setup (Optional)
+If enabling Google Sign-In on production:
+1. Navigate to [Google Cloud Console](https://console.cloud.google.com/) ➔ **APIs & Services** ➔ **Credentials**.
+2. Select your OAuth 2.0 Client ID (Application type: **Web application**).
+3. Under **Authorized JavaScript origins**, add:
+   - `http://localhost:5173` *(for local dev)*
+   - `https://kcstudio-linkpluse.vercel.app` *(your production Vercel domain)*
+4. Under **Authorized redirect URIs**, add:
+   - `https://kcstudio-linkpluse.vercel.app`
+5. Copy the Client ID and assign it to `VITE_GOOGLE_CLIENT_ID` in Vercel.
+
+---
+
+### 4. Edge Rewrites & Serverless Architecture (`vercel.json`)
+LinkPulse handles routing at the edge via `vercel.json`:
+- `/api/*` and `/:code` (short redirects) are routed serverlessly to `api/index.js`.
+- All static assets and React client routes fallback seamlessly to `client/dist/index.html`.
 
 ---
 

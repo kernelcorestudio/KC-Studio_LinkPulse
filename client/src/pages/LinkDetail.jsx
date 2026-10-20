@@ -59,22 +59,22 @@ function Overview({ link }) {
   return (
     <div className="space-y-5">
       {/* Short URL Banner */}
-      <div className="card flex flex-wrap items-center justify-between gap-4">
-        <div>
+      <div className="card flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="min-w-0">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-200/60">Short Link URL</span>
           <div className="mt-1 flex items-center gap-3">
             <a
               href={url}
               target="_blank"
               rel="noreferrer"
-              className="font-mono text-base sm:text-lg font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline"
+              className="break-all font-mono text-base sm:text-lg font-semibold text-[#FBB931] hover:text-[#FFE3B3] hover:underline"
             >
               {url}
             </a>
           </div>
         </div>
         <button
-          className="btn-ghost text-xs py-1.5 px-3"
+          className="btn-ghost text-xs py-1.5 px-3 self-start sm:self-auto shrink-0"
           onClick={async () => {
             try {
               await navigator.clipboard.writeText(url);
@@ -128,7 +128,7 @@ function Analytics({ linkId }) {
     setLoading(true);
     setError('');
     try {
-      setData(await api.linkAnalytics(linkId, `?period=${period}`));
+      setData(await api.linkAnalytics(linkId, `?period=${period}&tzOffset=${new Date().getTimezoneOffset()}`));
     } catch (e) {
       setError(e.message);
     } finally {
@@ -167,7 +167,7 @@ function Analytics({ linkId }) {
       </div>
 
       {/* Top 4 Stats */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
         <StatCard label="Total Clicks" value={data.totalClicks.toLocaleString()} icon={<ClickIcon className="h-4 w-4" />} />
         <StatCard label="Unique Visitors" value={data.uniqueVisitors.toLocaleString()} icon={<UsersIcon className="h-4 w-4" />} />
         <StatCard label="QR Code Scans" value={(data.sources.find((s) => s.label === 'qr')?.clicks || 0).toLocaleString()} icon={<DeviceIcon className="h-4 w-4" />} />
@@ -442,19 +442,19 @@ export default function LinkDetail() {
         <Link to="/links" className="text-xs font-medium text-amber-200/60 hover:text-white transition flex items-center gap-1 mb-2">
           <span>← Back to Links</span>
         </Link>
-        <div className="flex flex-wrap items-baseline gap-3">
-          <h1 className="font-mono text-2xl font-bold text-white">/{link.short_code}</h1>
-          {link.title && <span className="text-sm text-amber-200/60 font-normal">· {link.title}</span>}
+        <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
+          <h1 className="font-mono text-xl sm:text-2xl font-bold text-white break-all">/{link.short_code}</h1>
+          {link.title && <span className="text-xs sm:text-sm text-amber-200/60 font-normal">· {link.title}</span>}
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-zinc-800">
+      <div className="flex border-b border-zinc-800 overflow-x-auto no-scrollbar">
         {tabs.map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}
-            className={`border-b-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition ${
+            className={`border-b-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
               tab === key
                 ? 'border-[#F88F22] text-[#FFE3B3]'
                 : 'border-transparent text-amber-200/50 hover:text-amber-100'

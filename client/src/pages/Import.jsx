@@ -95,25 +95,25 @@ export default function Import() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-zinc-800/80 pb-5">
-        <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-          <ImportIcon className="h-6 w-6 text-[#FBB931]" />
+      <div className="border-b border-zinc-800/80 pb-4 sm:pb-5">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
+          <ImportIcon className="h-5 w-5 sm:h-6 sm:w-6 text-[#FBB931]" />
           <span>Bulk Import</span>
         </h1>
-        <p className="text-xs text-amber-200/60 mt-1">
+        <p className="text-xs text-amber-200/60 mt-0.5 sm:mt-1">
           Upload a CSV file or paste raw rows with a <code className="text-[#FBB931] font-mono">url</code> column (optional: <code className="text-[#FBB931] font-mono">alias</code>, <code className="text-[#FBB931] font-mono">title</code>). Up to 500 links per batch.
         </p>
       </div>
 
       {!rows && (
         <div className="card space-y-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="btn-primary cursor-pointer text-xs py-2 px-3.5">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+            <label className="btn-primary cursor-pointer text-xs py-2 px-3.5 text-center">
               <span>Choose CSV File</span>
               <input type="file" accept=".csv,text/csv" className="hidden" onChange={onFile} />
             </label>
-            <span className="text-xs text-zinc-500">or paste CSV records directly:</span>
-            <button className="btn-ghost text-xs py-2 px-3.5 ml-auto" onClick={() => parse(SAMPLE)}>
+            <span className="text-xs text-zinc-500 text-center sm:text-left">or paste CSV records directly:</span>
+            <button className="btn-ghost text-xs py-2 px-3.5 sm:ml-auto" onClick={() => parse(SAMPLE)}>
               Load Sample CSV
             </button>
           </div>
