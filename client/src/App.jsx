@@ -37,28 +37,29 @@ function PublicOnly({ children }) {
   return children;
 }
 
-// Root: guests see the landing page, signed-in users go straight to the app.
+// Root: Landing page is accessible to both guests and signed-in users.
+// Signed-in users remain fully authenticated with session intact.
 function Root() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   if (loading) return <div className="grid min-h-screen place-items-center"><Spinner label="Booting…" /></div>;
-  if (user) return <Navigate to="/app" replace />;
   return <Landing />;
 }
 
-// Catch-all: If a short link (single-segment slug like /6X0utK) is hit via client-side routing,
-// force a real browser navigation so the redirect engine processes the 302 redirect.
+// Catch-all: If a short link (single-segment slug like /6X0utK) or server route (/bio/:slug, /qr/:code)
+// is hit via client-side routing, force a real browser navigation so the backend processes the request.
 function CatchAll() {
   const location = useLocation();
   const raw = location.pathname.replace(/^\/+/, '');
   const isShortCode = raw && !raw.includes('/');
+  const isServerRoute = isShortCode || location.pathname.startsWith('/bio/') || location.pathname.startsWith('/qr/');
 
   useEffect(() => {
-    if (isShortCode) {
+    if (isServerRoute) {
       window.location.href = location.pathname + location.search;
     }
-  }, [isShortCode, location]);
+  }, [isServerRoute, location]);
 
-  if (isShortCode) {
+  if (isServerRoute) {
     return (
       <div className="grid min-h-screen place-items-center bg-[#000000] text-zinc-400">
         <Spinner label="Redirecting…" />

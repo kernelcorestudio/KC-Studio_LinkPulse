@@ -74,7 +74,8 @@ export default function Layout() {
 
           {/* ── LEFT: Logo & Brand ── */}
           <Link
-            to="/app"
+            to="/"
+            title="LinkPulse Homepage"
             className="group flex items-center gap-2.5 shrink-0 transition-transform active:scale-95 duration-200"
           >
             <div className="brand-logo-badge relative w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#000000] border border-[#F88F22]/40 p-0.5 flex items-center justify-center overflow-hidden shadow-[0_0_22px_rgba(234,97,19,0.35)] group-hover:border-[#FBB931]/80 group-hover:shadow-[0_0_30px_rgba(251,185,49,0.6)] group-hover:scale-105 transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-tr before:from-[#EA6113]/20 before:to-[#FBB931]/25">

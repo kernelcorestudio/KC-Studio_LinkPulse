@@ -41,7 +41,7 @@ function resolvePeriod(query) {
     };
   }
 
-  const map = { '7d': 7, '30d': 30, '90d': 90 };
+  const map = { '7d': 7, '30d': 30, '90d': 90, '1y': 365 };
   const days = map[preset] ?? 30;
   // Start of the N-day window in user's local timezone
   const localStartMs = Date.UTC(localNow.getUTCFullYear(), localNow.getUTCMonth(), localNow.getUTCDate() - (days - 1), 0, 0, 0);

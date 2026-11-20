@@ -32,6 +32,27 @@ if (!env.JWT_SECRET) {
   console.warn('[config] JWT_SECRET not set - using an insecure fallback secret');
 }
 
+function resolveSqlitePath() {
+  if (env.SQLITE_FILE) return path.resolve(process.cwd(), env.SQLITE_FILE);
+  if (env.VERCEL) return '/tmp/linkpulse.db';
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const serverDb = path.resolve(__dirname, '../linkpulse.db');
+  const rootDb = path.resolve(__dirname, '../../linkpulse.db');
+  const cwdDb = path.resolve(process.cwd(), 'linkpulse.db');
+
+  // Pick the populated database file
+  for (const candidate of [serverDb, rootDb, cwdDb]) {
+    try {
+      if (fs.existsSync(candidate) && fs.statSync(candidate).size > 4096) {
+        return candidate;
+      }
+    } catch {
+      // ignore
+    }
+  }
+  return fs.existsSync(serverDb) ? serverDb : cwdDb;
+}
+
 export const config = {
   port: Number(env.PORT || 3001),
   // Base URL that serves short links (the redirect host), e.g. https://linkpulse.onrender.com
@@ -59,7 +80,7 @@ export const config = {
   supabaseUrl: env.SUPABASE_URL || null,
   supabaseAnonKey: env.SUPABASE_ANON_KEY || null,
   supabaseServiceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY || null,
-  sqliteFile: env.SQLITE_FILE || (env.VERCEL ? '/tmp/linkpulse.db' : 'linkpulse.db'),
+  sqliteFile: resolveSqlitePath(),
   jwtSecret: env.JWT_SECRET || 'dev-insecure-secret-change-me',
   // Salt used when hashing client IPs so raw IPs are never stored
   ipHashSalt: env.IP_HASH_SALT || env.JWT_SECRET || 'dev-insecure-salt',

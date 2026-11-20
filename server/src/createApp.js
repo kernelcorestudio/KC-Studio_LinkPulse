@@ -64,6 +64,7 @@ export function createApp() {
   });
   app.use('/api/auth', authLimiter);
 
+  app.get('/health', (_req, res) => res.json({ ok: true, service: 'linkpulse-api', time: new Date().toISOString() }));
   app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'linkpulse-api', time: new Date().toISOString() }));
 
   app.use('/api/auth', authRoutes);

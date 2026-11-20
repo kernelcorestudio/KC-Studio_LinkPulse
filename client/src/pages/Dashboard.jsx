@@ -8,7 +8,13 @@ import {
   ClockIcon, ChartIcon, BlockIcon, ZapIcon, CheckIcon,
 } from '../components/Icons';
 
-const PERIODS = [['today', 'TODAY'], ['7d', '7 DAYS'], ['30d', '30 DAYS']];
+const PERIODS = [
+  ['today', 'TODAY'],
+  ['7d', '7 DAYS'],
+  ['30d', '30 DAYS'],
+  ['90d', '90 DAYS'],
+  ['1y', '1 YEAR'],
+];
 
 const ALERT_LABEL = {
   expiring_soon: [ClockIcon, 'Expiring soon', 'border-amber-500/30 text-amber-400 bg-amber-500/10'],

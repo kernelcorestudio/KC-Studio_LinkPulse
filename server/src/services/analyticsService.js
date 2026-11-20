@@ -32,8 +32,15 @@ async function scopeLinkIds(ownerId, { linkId, campaignId, adminScope = false })
   return rows.map((r) => r.id);
 }
 
+const ALLOWED_BREAKDOWN_COLUMNS = new Set([
+  'country', 'city', 'device_type', 'browser', 'os', 'referrer', 'source',
+]);
+
 async function breakdown(ownerId, ids, from, to, column) {
   if (!ids.length) return [];
+  if (!ALLOWED_BREAKDOWN_COLUMNS.has(column)) {
+    throw new HttpError(400, `Invalid breakdown column: ${column}`);
+  }
   const params = [];
   const inList = ids.map(() => '?').join(',');
   const period = inPeriod('clicked_at', from, to, params);
@@ -43,7 +50,7 @@ async function breakdown(ownerId, ids, from, to, column) {
             COUNT(DISTINCT COALESCE(visitor_id, ip_hash)) AS uniques
      FROM click_events
      WHERE link_id IN (${inList}) AND is_bot = 0 AND ${period}
-     GROUP BY label ORDER BY clicks DESC LIMIT 12`,
+     GROUP BY 1 ORDER BY clicks DESC LIMIT 12`,
     [...ids, ...params],
   );
   return rows;
@@ -58,7 +65,7 @@ async function clicksOverTime(ownerId, ids, from, to, bucket = 'day', tzOffset =
     `SELECT substr(clicked_at, 1, ${len}) AS raw_bucket, COUNT(*) AS clicks
      FROM click_events
      WHERE link_id IN (${ids.map(() => '?').join(',')}) AND is_bot = 0 AND ${period}
-     GROUP BY raw_bucket ORDER BY raw_bucket ASC`,
+     GROUP BY 1 ORDER BY 1 ASC`,
     [...ids, ...params],
   );
 
@@ -230,7 +237,8 @@ export async function getDashboardSummary(ownerId, { from, to, campaignId, bucke
                 COUNT(c.id) AS clicks
          FROM links l JOIN click_events c ON c.link_id = l.id
          WHERE l.id IN (${inList}) AND c.is_bot = 0 AND ${period}
-         GROUP BY l.id ORDER BY clicks DESC LIMIT 8`,
+         GROUP BY l.id, l.short_code, l.title, l.destination_url, l.status
+         ORDER BY clicks DESC LIMIT 8`,
         [...ids, ...params],
       );
     })(),

@@ -41,6 +41,8 @@ test('destination URL validation blocks unsafe schemes & self-reference', () => 
   assert.equal(validateDestinationUrl('not a url').ok, false);
   // self-referencing shortener host (BASE_URL=localhost:3001) is rejected
   assert.equal(validateDestinationUrl('http://localhost:3001/x').ok, false);
+  assert.equal(validateDestinationUrl('http://localhost:3001').ok, false);
+  assert.equal(validateDestinationUrl('http://localhost:3001/abc?q=1').ok, false);
 });
 
 test('generated codes are unique & well-shaped', async () => {
@@ -306,6 +308,9 @@ test('redirect engine applies rules in the documented order', async () => {
     assert.equal(e.headers.get('location'), 'https://ios.example/target', 'iOS visitor gets the ios target');
     const f = await get(devi);
     assert.equal(f.headers.get('location'), `https://order.example/${devi}`, 'desktop visitor gets the default');
+
+    const fWithQuery = await fetch(`${base}/${devi}?utm_source=newsletter&ref=123`, { redirect: 'manual', headers: { 'user-agent': CHROME } });
+    assert.equal(fWithQuery.headers.get('location'), `https://order.example/${devi}?utm_source=newsletter&ref=123`, 'query params forwarded');
 
     const g = await get('ord-does-not-exist');
     assert.equal(g.status, 404, 'unknown code -> 404 page');

@@ -1,6 +1,7 @@
 // Public landing page: Modern Dark SaaS hero with 3D Taffy Chain background + interactive feature grid.
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../lib/auth';
 import { useTheme } from '../lib/theme';
 import {
   ChartIcon, ZapIcon, CampaignIcon, BioIcon, QrIcon, ImportIcon, SparkleIcon,
@@ -66,6 +67,7 @@ const FEATURES = [
 export default function Landing() {
   const [isMetallic, setIsMetallic] = useState(false);
   const { isLight, toggleTheme } = useTheme();
+  const { user } = useAuth();
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#000000] text-[#FFE3B3]">
@@ -136,18 +138,30 @@ export default function Landing() {
               </span>
             </button>
 
-            <Link
-              to="/login"
-              className="rounded-lg px-3.5 py-1.5 text-xs font-medium text-amber-200/70 transition hover:text-white"
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/register"
-              className="rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-3.5 py-1.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(251,185,49,0.55)] active:scale-[0.98]"
-            >
-              Get Started Free
-            </Link>
+            {user ? (
+              <Link
+                to="/app"
+                className="rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-4 py-1.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(251,185,49,0.55)] active:scale-[0.98] flex items-center gap-1.5"
+              >
+                <span>Dashboard</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="rounded-lg px-3.5 py-1.5 text-xs font-medium text-amber-200/70 transition hover:text-white"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-3.5 py-1.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(251,185,49,0.55)] active:scale-[0.98]"
+                >
+                  Get Started Free
+                </Link>
+              </>
+            )}
           </div>
         </header>
 
@@ -171,25 +185,37 @@ export default function Landing() {
           </p>
 
           <div className="pointer-events-auto mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              to="/register"
-              className="w-full sm:w-auto rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(251,185,49,0.55)] active:scale-[0.98]"
-            >
-              Start Free Trial →
-            </Link>
-            <Link
-              to="/login"
-              className="w-full sm:w-auto rounded-lg border border-zinc-800 bg-[#121212] px-6 py-2.5 text-sm font-medium text-amber-200 transition hover:border-[#F88F22]/40 hover:bg-[#1a1a1a] hover:text-white"
-            >
-              Sign In to Dashboard
-            </Link>
+            {user ? (
+              <Link
+                to="/app"
+                className="w-full sm:w-auto rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(251,185,49,0.55)] active:scale-[0.98] flex items-center justify-center gap-2"
+              >
+                <span>Go to Dashboard</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/register"
+                  className="w-full sm:w-auto rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(234,97,19,0.35)] transition-all duration-200 hover:from-[#F88F22] hover:to-[#FBB931] hover:shadow-[0_0_28px_rgba(251,185,49,0.55)] active:scale-[0.98]"
+                >
+                  Start Free Trial →
+                </Link>
+                <Link
+                  to="/login"
+                  className="w-full sm:w-auto rounded-lg border border-zinc-800 bg-[#121212] px-6 py-2.5 text-sm font-medium text-amber-200 transition hover:border-[#F88F22]/40 hover:bg-[#1a1a1a] hover:text-white"
+                >
+                  Sign In to Dashboard
+                </Link>
+              </>
+            )}
           </div>
 
 
           {/* Make it Short Card */}
           <div className="mt-8 flex flex-col items-center">
             <Link
-              to="/register"
+              to={user ? "/create" : "/register"}
               className={`pointer-events-auto group inline-flex items-center gap-3.5 sm:gap-4 rounded-full p-2 pl-3.5 pr-3 border backdrop-blur-md transition-all duration-300 active:scale-[0.98] ${
                 isLight
                   ? 'border-[#EA6113]/35 bg-[#FFF8EB]/95 shadow-[0_6px_25px_rgba(234,97,19,0.12)] hover:border-[#EA6113]/60 hover:shadow-[0_8px_30px_rgba(234,97,19,0.22)]'
@@ -403,18 +429,30 @@ export default function Landing() {
               Free account, 30-second setup. Bring your domains and links — we'll bring real-time intelligence.
             </p>
             <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link
-                to="/register"
-                className="w-full sm:w-auto rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-lg shadow-[#EA6113]/30 transition hover:from-[#F88F22] hover:to-[#FBB931]"
-              >
-                Create Free Account
-              </Link>
-              <Link
-                to="/login"
-                className="w-full sm:w-auto rounded-lg border border-zinc-800 bg-[#121212] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-200 transition hover:border-[#F88F22]/40 hover:bg-[#1a1a1a] hover:text-white"
-              >
-                Sign In
-              </Link>
+              {user ? (
+                <Link
+                  to="/app"
+                  className="w-full sm:w-auto rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-lg shadow-[#EA6113]/30 transition hover:from-[#F88F22] hover:to-[#FBB931] flex items-center justify-center gap-1.5"
+                >
+                  <span>Go to Dashboard</span>
+                  <span aria-hidden="true">→</span>
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    to="/register"
+                    className="w-full sm:w-auto rounded-lg border border-[#F88F22]/40 bg-gradient-to-r from-[#EA6113] to-[#F88F22] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-lg shadow-[#EA6113]/30 transition hover:from-[#F88F22] hover:to-[#FBB931]"
+                  >
+                    Create Free Account
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="w-full sm:w-auto rounded-lg border border-zinc-800 bg-[#121212] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-200 transition hover:border-[#F88F22]/40 hover:bg-[#1a1a1a] hover:text-white"
+                  >
+                    Sign In
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </section>

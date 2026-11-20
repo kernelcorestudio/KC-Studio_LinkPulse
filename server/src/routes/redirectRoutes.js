@@ -134,6 +134,21 @@ const handler = asyncHandler(async (req, res, next) => {
     if (candidate && /^https?:\/\//i.test(candidate)) target = candidate;
   }
 
+  // Forward incoming query parameters (e.g. UTM parameters, affiliate tags) to destination
+  if (req.query && Object.keys(req.query).length > 0) {
+    try {
+      const parsedTarget = new URL(target);
+      for (const [key, val] of Object.entries(req.query)) {
+        if (!parsedTarget.searchParams.has(key) && typeof val === 'string') {
+          parsedTarget.searchParams.set(key, val);
+        }
+      }
+      target = parsedTarget.toString();
+    } catch {
+      // Keep target as is if not a standard parseable URL
+    }
+  }
+
   // 8. REDIRECT + async click logging.
   const event = buildClickEvent(req, link);
   // Issue a first-party visitor id cookie so unique-visitor counting works.

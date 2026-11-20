@@ -98,19 +98,32 @@ export async function initDb() {
         connectionString: config.databaseUrl.replace(/[?&]sslmode=[^&]+/, ''),
         ssl: isLocalhost ? false : { rejectUnauthorized: false },
         max: 10,
+        connectionTimeoutMillis: 5000,
       });
       pool.on('error', (err) => console.error('[db] pg pool error:', err.message));
-      await applySchema(path.join(__dirname, 'schema.pg.sql'));
-      console.log('[db] connected to PostgreSQL');
-    } else {
-      mode = 'sqlite';
-      const { DatabaseSync } = await import('node:sqlite');
-      sqlite = new DatabaseSync(config.sqliteFile);
-      sqlite.exec('PRAGMA journal_mode = WAL');
-      sqlite.exec('PRAGMA foreign_keys = ON');
-      await applySchema(path.join(__dirname, 'schema.sqlite.sql'));
-      console.log(`[db] using built-in node:sqlite fallback at ${config.sqliteFile}`);
+      try {
+        const client = await pool.connect();
+        client.release();
+        await applySchema(path.join(__dirname, 'schema.pg.sql'));
+        console.log('[db] connected to PostgreSQL');
+        return;
+      } catch (err) {
+        console.error(`[db] PostgreSQL connection failed (${err.message}).`);
+        console.warn(`[db] Falling back to built-in SQLite database at ${config.sqliteFile}...`);
+        if (pool) {
+          try { await pool.end(); } catch {}
+          pool = null;
+        }
+      }
     }
+
+    mode = 'sqlite';
+    const { DatabaseSync } = await import('node:sqlite');
+    sqlite = new DatabaseSync(config.sqliteFile);
+    sqlite.exec('PRAGMA journal_mode = WAL');
+    sqlite.exec('PRAGMA foreign_keys = ON');
+    await applySchema(path.join(__dirname, 'schema.sqlite.sql'));
+    console.log(`[db] using built-in node:sqlite fallback at ${config.sqliteFile}`);
   })();
   return initDbPromise;
 }

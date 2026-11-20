@@ -28,10 +28,13 @@ export function validateDestinationUrl(raw) {
     return { ok: false, reason: 'URL must include a valid domain' };
   }
   // Self-referencing: pointing back at our own short host would loop.
-  const ourHost = new URL(config.baseUrl).hostname;
-  if (url.hostname === ourHost || url.hostname === 'localhost' && ourHost === 'localhost') {
+  const ourUrl = new URL(config.baseUrl);
+  const ourHost = ourUrl.hostname;
+  if (url.hostname === ourHost || (url.hostname === 'localhost' && ourHost === 'localhost')) {
     // allow other ports, but block identical host+port
-    if (url.port === (new URL(config.baseUrl).port || '80') || (url.port === '' && (new URL(config.baseUrl).port || '80') === '80')) {
+    const ourPort = ourUrl.port || (ourUrl.protocol === 'https:' ? '443' : '80');
+    const urlPort = url.port || (url.protocol === 'https:' ? '443' : '80');
+    if (urlPort === ourPort) {
       return { ok: false, reason: 'Destination cannot point back at this shortener' };
     }
   }
@@ -53,7 +56,8 @@ export function validateAlias(alias) {
 /** Is this destination domain on the admin blocklist? */
 export async function isDomainBlocked(destinationUrl) {
   try {
-    const host = new URL(destinationUrl).hostname.toLowerCase();
+    const candidate = /^\w+:\/\//.test(destinationUrl) ? destinationUrl : `https://${destinationUrl}`;
+    const host = new URL(candidate).hostname.toLowerCase();
     const row = await queryOne('SELECT domain FROM blocked_domains WHERE domain = ?', [host]);
     if (row) return true;
     // also block if a parent domain is blocked (e.g. spam.com blocks a.spam.com)

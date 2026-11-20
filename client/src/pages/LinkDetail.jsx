@@ -5,7 +5,7 @@ import { api, shortUrl, qrUrl } from '../lib/api';
 import { Spinner, ErrorState, StatCard, LineChart, BarChart, DoughnutChart } from '../components/ui';
 import { LockIcon, ClockIcon, ChartIcon, DeviceIcon, WorldIcon, UsersIcon, ClickIcon } from '../components/Icons';
 
-const PERIODS = [['7d', '7 Days'], ['30d', '30 Days'], ['90d', '90 Days']];
+const PERIODS = [['7d', '7 Days'], ['30d', '30 Days'], ['90d', '90 Days'], ['1y', '1 Year']];
 
 function QrPanel({ code }) {
   const [size, setSize] = useState(320);

@@ -33,16 +33,26 @@ export function setToken(token) {
 async function request(path, { method = 'GET', body, auth = true } = {}) {
   const headers = { 'content-type': 'application/json' };
   if (auth && getToken()) headers.authorization = `Bearer ${getToken()}`;
-  const res = await fetch(`${API_BASE}${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch (netErr) {
+    const err = new Error('Cannot connect to LinkPulse server. Please make sure the backend is running.');
+    err.status = 0;
+    throw err;
+  }
   const text = await res.text();
   let data;
   try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
   if (!res.ok) {
-    const err = new Error(data.error || `Request failed (${res.status})`);
+    const defaultMsg = res.status === 500
+      ? 'Server error (500). Please ensure the LinkPulse backend server is running.'
+      : `Request failed (${res.status})`;
+    const err = new Error(data.error || defaultMsg);
     err.status = res.status;
     err.details = data.details;
     throw err;

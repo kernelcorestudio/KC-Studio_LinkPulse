@@ -136,7 +136,7 @@ export async function getPlatformStats() {
   const timeseries = await query(
     `SELECT substr(clicked_at, 1, 10) AS bucket, COUNT(*) AS clicks
      FROM click_events WHERE is_bot = 0 AND clicked_at >= ?
-     GROUP BY bucket ORDER BY bucket ASC`,
+     GROUP BY 1 ORDER BY 1 ASC`,
     [from14],
   );
   const topLinks = await query(
@@ -200,7 +200,7 @@ export async function getAbuseAlerts() {
   const newBulk = await query(
     `SELECT u.id, u.email, u.created_at, COUNT(l.id) AS links
      FROM users u JOIN links l ON l.owner_id = u.id
-     WHERE u.created_at >= ? GROUP BY u.id HAVING COUNT(l.id) > 10 ORDER BY links DESC`,
+     WHERE u.created_at >= ? GROUP BY u.id, u.email, u.created_at HAVING COUNT(l.id) > 10 ORDER BY links DESC`,
     [from24],
   );
   newBulk.forEach((u) => alerts.push({ type: 'new_user_bulk', user: u }));
