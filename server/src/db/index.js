@@ -169,6 +169,9 @@ async function applySchema(file) {
   await ensureDemoUsers();
 }
 
+const DEMO_ADA_ID = 'usr_demo_ada_lovelace';
+const DEMO_ADMIN_ID = 'usr_demo_admin';
+
 async function ensureDemoUsers() {
   try {
     let count = 0;
@@ -181,22 +184,149 @@ async function ensureDemoUsers() {
     }
     if (count === 0) {
       const bcrypt = (await import('bcryptjs')).default;
-      const { nanoid } = await import('nanoid');
       const hash = await bcrypt.hash('password123', 10);
       const adminHash = await bcrypt.hash('admin1234', 10);
       const nowIso = new Date().toISOString();
       const insertSql = 'INSERT INTO users (id, name, email, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?, ?)';
       if (mode === 'pg') {
-        await pool.query(toPgSql(insertSql), [nanoid(), 'Ada Lovelace', 'ada@example.com', hash, 'user', nowIso]);
-        await pool.query(toPgSql(insertSql), [nanoid(), 'Admin User', 'admin@linkpulse.dev', adminHash, 'admin', nowIso]);
+        await pool.query(toPgSql(insertSql), [DEMO_ADA_ID, 'Ada Lovelace', 'ada@example.com', hash, 'user', nowIso]);
+        await pool.query(toPgSql(insertSql), [DEMO_ADMIN_ID, 'Admin User', 'admin@linkpulse.dev', adminHash, 'admin', nowIso]);
       } else {
-        sqlite.prepare(insertSql).run(nanoid(), 'Ada Lovelace', 'ada@example.com', hash, 'user', nowIso);
-        sqlite.prepare(insertSql).run(nanoid(), 'Admin User', 'admin@linkpulse.dev', adminHash, 'admin', nowIso);
+        sqlite.prepare(insertSql).run(DEMO_ADA_ID, 'Ada Lovelace', 'ada@example.com', hash, 'user', nowIso);
+        sqlite.prepare(insertSql).run(DEMO_ADMIN_ID, 'Admin User', 'admin@linkpulse.dev', adminHash, 'admin', nowIso);
       }
       console.log('[db] seeded default demo users (ada@example.com, admin@linkpulse.dev)');
     }
+
+    if (process.env.NODE_ENV !== 'test') {
+      await ensureDemoLinks();
+    }
   } catch (err) {
     console.warn('[db] ensureDemoUsers warning:', err.message);
+  }
+}
+
+async function ensureDemoLinks() {
+  try {
+    let linkCount = 0;
+    if (mode === 'pg') {
+      const lr = await pool.query('SELECT COUNT(*) AS c FROM links');
+      linkCount = Number(lr.rows[0]?.c || 0);
+    } else {
+      const lr = sqlite.prepare('SELECT COUNT(*) AS c FROM links').get();
+      linkCount = Number(lr?.c || 0);
+    }
+    if (linkCount > 0) return;
+
+    let adaId = DEMO_ADA_ID;
+    if (mode === 'pg') {
+      const u = await pool.query("SELECT id FROM users WHERE email = 'ada@example.com' LIMIT 1");
+      if (u.rows[0]?.id) adaId = u.rows[0].id;
+    } else {
+      const u = sqlite.prepare("SELECT id FROM users WHERE email = 'ada@example.com' LIMIT 1").get();
+      if (u?.id) adaId = u.id;
+    }
+
+    const { nanoid } = await import('nanoid');
+    const now = Date.now();
+    const iso = (ms) => new Date(ms).toISOString();
+
+    const demoLinks = [
+      {
+        id: 'lnk_demo_systemdesign13',
+        code: 'systemdesign13',
+        url: 'https://www.geeksforgeeks.org/system-design/what-is-low-level-design-or-lld-learn-system-design/',
+        title: 'System Design Notes (GFG)',
+      },
+      {
+        id: 'lnk_demo_d1000',
+        code: 'd1000',
+        url: 'https://github.com/kernelcorestudio/KC-Studio_LinkPulse',
+        title: 'KC Studio LinkPulse Repository',
+      },
+      {
+        id: 'lnk_demo_d1001',
+        code: 'd1001',
+        url: 'https://en.wikipedia.org/wiki/Systems_design',
+        title: 'Systems Design Architecture',
+      },
+      {
+        id: 'lnk_demo_d1002',
+        code: 'd1002',
+        url: 'https://youtube.com/watch?v=demo',
+        title: 'Product Walkthrough Video',
+      },
+      {
+        id: 'lnk_demo_d1003',
+        code: 'd1003',
+        url: 'https://www.geeksforgeeks.org',
+        title: 'GeeksforGeeks Portal',
+      },
+    ];
+
+    const linkSql = `INSERT INTO links (id, owner_id, short_code, destination_url, title, status, click_count, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, 'active', ?, ?, ?)`;
+
+    const clickSql = `INSERT INTO click_events (id, link_id, clicked_at, ip_hash, visitor_id, referrer, device_type, os, browser, country, city, is_bot, is_unique, source)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const devices = [
+      ['desktop', 'Windows', 'Chrome'],
+      ['desktop', 'macOS', 'Safari'],
+      ['mobile', 'Android', 'Chrome'],
+      ['mobile', 'iOS', 'Safari'],
+      ['desktop', 'Windows', 'Edge'],
+      ['tablet', 'iPad', 'Safari'],
+    ];
+    const referrers = ['https://google.com', 'https://linkedin.com', 'https://github.com', 'https://twitter.com', null, null];
+    const countries = ['IN', 'IN', 'IN', 'US', 'GB', 'DE', 'CA', 'AU'];
+    const cities = {
+      IN: ['New Delhi', 'Mumbai', 'Bengaluru', 'Pune', 'Nainital', 'Dehradun'],
+      US: ['New York', 'San Francisco', 'Seattle'],
+      GB: ['London', 'Manchester'],
+      DE: ['Berlin', 'Munich'],
+      CA: ['Toronto', 'Vancouver'],
+      AU: ['Sydney', 'Melbourne'],
+    };
+
+    for (const dl of demoLinks) {
+      const clickCount = 35 + Math.floor(Math.random() * 40);
+      const createdAt = iso(now - 45 * 864e5);
+      if (mode === 'pg') {
+        await pool.query(toPgSql(linkSql), [dl.id, adaId, dl.code, dl.url, dl.title, clickCount, createdAt, createdAt]);
+      } else {
+        sqlite.prepare(linkSql).run(dl.id, adaId, dl.code, dl.url, dl.title, clickCount, createdAt, createdAt);
+      }
+
+      for (let i = 0; i < clickCount; i++) {
+        const dayAgo = Math.floor(Math.random() * 35);
+        const clickTs = iso(now - dayAgo * 864e5 - Math.floor(Math.random() * 864e5));
+        const [device, os, browser] = devices[i % devices.length];
+        const country = countries[i % countries.length];
+        const cityList = cities[country] || ['Unknown'];
+        const city = cityList[i % cityList.length];
+        const ref = referrers[i % referrers.length];
+        const isBot = 0;
+        const isUnique = i % 2 === 0 ? 1 : 0;
+        const source = i % 5 === 0 ? 'qr' : 'direct';
+        const clickId = nanoid();
+        const ipHash = 'hash-' + nanoid(6);
+        const visitorId = 'vis-' + nanoid(8);
+
+        if (mode === 'pg') {
+          await pool.query(toPgSql(clickSql), [
+            clickId, dl.id, clickTs, ipHash, visitorId, ref, device, os, browser, country, city, isBot, isUnique, source,
+          ]);
+        } else {
+          sqlite.prepare(clickSql).run(
+            clickId, dl.id, clickTs, ipHash, visitorId, ref, device, os, browser, country, city, isBot, isUnique, source,
+          );
+        }
+      }
+    }
+    console.log('[db] seeded demo links and analytics telemetry successfully');
+  } catch (err) {
+    console.warn('[db] ensureDemoLinks warning:', err.message);
   }
 }
 
