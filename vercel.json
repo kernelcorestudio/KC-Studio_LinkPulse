@@ -10,11 +10,11 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/api"
     },
     {
       "source": "/bio/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/api"
     },
     {
       "source": "/(app|login|register|dashboard|links|create|campaigns|tags|folders|settings|admin|import)(.*)",
@@ -22,7 +22,7 @@
     },
     {
       "source": "/:code([a-zA-Z0-9_-]{4,10})",
-      "destination": "/api/index.js"
+      "destination": "/api"
     },
     {
       "source": "/(.*)",

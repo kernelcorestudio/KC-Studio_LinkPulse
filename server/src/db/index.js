@@ -166,6 +166,38 @@ async function applySchema(file) {
     }
   }
   await addMissingColumns();
+  await ensureDemoUsers();
+}
+
+async function ensureDemoUsers() {
+  try {
+    let count = 0;
+    if (mode === 'pg') {
+      const r = await pool.query('SELECT COUNT(*) AS c FROM users');
+      count = Number(r.rows[0]?.c || 0);
+    } else {
+      const r = sqlite.prepare('SELECT COUNT(*) AS c FROM users').get();
+      count = Number(r?.c || 0);
+    }
+    if (count === 0) {
+      const bcrypt = (await import('bcryptjs')).default;
+      const { nanoid } = await import('nanoid');
+      const hash = await bcrypt.hash('password123', 10);
+      const adminHash = await bcrypt.hash('admin1234', 10);
+      const nowIso = new Date().toISOString();
+      const insertSql = 'INSERT INTO users (id, name, email, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?, ?)';
+      if (mode === 'pg') {
+        await pool.query(toPgSql(insertSql), [nanoid(), 'Ada Lovelace', 'ada@example.com', hash, 'user', nowIso]);
+        await pool.query(toPgSql(insertSql), [nanoid(), 'Admin User', 'admin@linkpulse.dev', adminHash, 'admin', nowIso]);
+      } else {
+        sqlite.prepare(insertSql).run(nanoid(), 'Ada Lovelace', 'ada@example.com', hash, 'user', nowIso);
+        sqlite.prepare(insertSql).run(nanoid(), 'Admin User', 'admin@linkpulse.dev', adminHash, 'admin', nowIso);
+      }
+      console.log('[db] seeded default demo users (ada@example.com, admin@linkpulse.dev)');
+    }
+  } catch (err) {
+    console.warn('[db] ensureDemoUsers warning:', err.message);
+  }
 }
 
 // Additive migrations: CREATE TABLE IF NOT EXISTS never changes an existing
